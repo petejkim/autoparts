@@ -1,3 +1,4 @@
+tmp/
 *.gem
 *.rbc
 .bundle
@@ -14,7 +15,6 @@ rdoc
 spec/reports
 test/tmp
 test/version_tmp
-tmp
 **.orig
 .env
 *.swp

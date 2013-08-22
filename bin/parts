@@ -1,10 +1,15 @@
 #!/usr/bin/env ruby
 
+require 'pathname'
+EXECUTABLE_PATH = Pathname.new(__FILE__).realpath
+PROJECT_ROOT = File.expand_path('../..', EXECUTABLE_PATH)
+
 require 'rubygems'
 require 'bundler'
-Bundler.setup
 
-lib = File.expand_path('../../lib', __FILE__)
+Dir.chdir(PROJECT_ROOT) { Bundler.setup }
+
+lib = File.join(PROJECT_ROOT, 'lib')
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 require 'autoparts'
@@ -13,79 +18,76 @@ require 'commander/import'
 program :version, Autoparts::VERSION
 program :description, 'Autoparts: A Package Manager for Nitrous.IO'
 
-command :list do |c|
-  c.syntax = 'autoparts list [options]'
-  c.summary = ''
-  c.description = ''
-  c.example 'description', 'command example'
-  c.option '--some-switch', 'Some switch that does something'
-  c.action do |args, options|
-    # Do something or c.when_called Autoparts::Commands::List
-  end
-end
+#command :list do |c|
+  #c.syntax = 'parts list [options]'
+  #c.summary = ''
+  #c.description = ''
+  #c.example 'description', 'command example'
+  #c.option '--some-switch', 'Some switch that does something'
+  #c.action do |args, options|
+    ## Do something or c.when_called Autoparts::Commands::List
+  #end
+#end
 
 command :install do |c|
-  c.syntax = 'autoparts install [options]'
-  c.summary = ''
-  c.description = ''
-  c.example 'description', 'command example'
-  c.option '--some-switch', 'Some switch that does something'
-  c.action do |args, options|
-    # Do something or c.when_called Autoparts::Commands::Install
-  end
+  c.syntax = 'parts install PACKAGE_NAME'
+  c.summary = 'Install a package.'
+  c.description = 'Install a package.'
+  c.example 'Install MySQL', 'parts install mysql'
+  c.action Autoparts::Commands::Install
 end
 
-command :uninstall do |c|
-  c.syntax = 'autoparts uninstall [options]'
-  c.summary = ''
-  c.description = ''
-  c.example 'description', 'command example'
-  c.option '--some-switch', 'Some switch that does something'
-  c.action do |args, options|
-    # Do something or c.when_called Autoparts::Commands::Uninstall
-  end
-end
+#command :uninstall do |c|
+  #c.syntax = 'parts uninstall [options]'
+  #c.summary = ''
+  #c.description = ''
+  #c.example 'description', 'command example'
+  #c.option '--some-switch', 'Some switch that does something'
+  #c.action do |args, options|
+    ## Do something or c.when_called Autoparts::Commands::Uninstall
+  #end
+#end
 
-command :update do |c|
-  c.syntax = 'autoparts update [options]'
-  c.summary = ''
-  c.description = ''
-  c.example 'description', 'command example'
-  c.option '--some-switch', 'Some switch that does something'
-  c.action do |args, options|
-    # Do something or c.when_called Autoparts::Commands::Update
-  end
-end
+#command :update do |c|
+  #c.syntax = 'parts update [options]'
+  #c.summary = ''
+  #c.description = ''
+  #c.example 'description', 'command example'
+  #c.option '--some-switch', 'Some switch that does something'
+  #c.action do |args, options|
+    ## Do something or c.when_called Autoparts::Commands::Update
+  #end
+#end
 
-command :upgrade do |c|
-  c.syntax = 'autoparts upgrade [options]'
-  c.summary = ''
-  c.description = ''
-  c.example 'description', 'command example'
-  c.option '--some-switch', 'Some switch that does something'
-  c.action do |args, options|
-    # Do something or c.when_called Autoparts::Commands::Upgrade
-  end
-end
+#command :upgrade do |c|
+  #c.syntax = 'parts upgrade [options]'
+  #c.summary = ''
+  #c.description = ''
+  #c.example 'description', 'command example'
+  #c.option '--some-switch', 'Some switch that does something'
+  #c.action do |args, options|
+    ## Do something or c.when_called Autoparts::Commands::Upgrade
+  #end
+#end
 
-command :search do |c|
-  c.syntax = 'autoparts search [options]'
-  c.summary = ''
-  c.description = ''
-  c.example 'description', 'command example'
-  c.option '--some-switch', 'Some switch that does something'
-  c.action do |args, options|
-    # Do something or c.when_called Autoparts::Commands::Search
-  end
-end
+#command :search do |c|
+  #c.syntax = 'parts search [options]'
+  #c.summary = ''
+  #c.description = ''
+  #c.example 'description', 'command example'
+  #c.option '--some-switch', 'Some switch that does something'
+  #c.action do |args, options|
+    ## Do something or c.when_called Autoparts::Commands::Search
+  #end
+#end
 
-command :info do |c|
-  c.syntax = 'autoparts info [options]'
-  c.summary = ''
-  c.description = ''
-  c.example 'description', 'command example'
-  c.option '--some-switch', 'Some switch that does something'
-  c.action do |args, options|
-    # Do something or c.when_called Autoparts::Commands::Info
-  end
-end
+#command :info do |c|
+  #c.syntax = 'parts info [options]'
+  #c.summary = ''
+  #c.description = ''
+  #c.example 'description', 'command example'
+  #c.option '--some-switch', 'Some switch that does something'
+  #c.action do |args, options|
+    ## Do something or c.when_called Autoparts::Commands::Info
+  #end
+#end
