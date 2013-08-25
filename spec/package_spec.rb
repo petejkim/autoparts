@@ -26,6 +26,27 @@ describe Autoparts::Package do
     bar_package.stub(:system)
   end
 
+  describe '.installed' do
+    before do
+      FileUtils.mkdir_p (Autoparts::Path.packages + 'mysql' + '5.6.13').to_s
+      FileUtils.mkdir_p (Autoparts::Path.packages + 'mysql' + '5.4.0').to_s
+      FileUtils.mkdir_p (Autoparts::Path.packages + 'nodejs' + '0.10.16').to_s
+      FileUtils.mkdir_p (Autoparts::Path.packages + 'nodejs' + '0.8.25').to_s
+      FileUtils.mkdir_p (Autoparts::Path.packages + 'rbenv' + '0.4.0-52').to_s
+      FileUtils.touch (Autoparts::Path.packages + 'junk').to_s
+      FileUtils.touch (Autoparts::Path.packages + 'mysql' + '5.6.13' + '.keep').to_s
+      FileUtils.touch (Autoparts::Path.packages + 'mysql' + '5.4.0' + 'some_file').to_s
+      FileUtils.touch (Autoparts::Path.packages + 'nodejs' + '0.10.16' + 'README').to_s
+    end
+
+    it 'inspects packages path and returns a hash containing all installed packages, ignoring empty directories' do
+      expect(described_class.installed).to eq({
+        'mysql' => ['5.6.13', '5.4.0'],
+        'nodejs' => ['0.10.16']
+      })
+    end
+  end
+
   describe '.find' do
     it 'finds a package class by name' do
       expect(described_class.find('foo')).to eq FooPackage
@@ -69,7 +90,7 @@ describe Autoparts::Package do
   end
 
   describe '#source_type' do
-    it 'returns the file type for the source code archive set using the DSL keyword "source_filetype"' do
+    it 'returns the file type for the source code archive set using the DSL keyword "source_type"' do
       expect(foo_package.source_type).to eq 'tar.gz'
       expect(bar_package.source_type).to eq 'zip'
     end
@@ -88,8 +109,8 @@ describe Autoparts::Package do
     it 'returns the directory at which the package will be installed' do
       expect(foo_package.prefix_path).to be_a Pathname
       expect(bar_package.prefix_path).to be_a Pathname
-      expect(foo_package.prefix_path.to_s).to eq "#{Autoparts::PACKAGES_PATH}/foo/1.0"
-      expect(bar_package.prefix_path.to_s).to eq "#{Autoparts::PACKAGES_PATH}/bar/2.0"
+      expect(foo_package.prefix_path.to_s).to eq "#{Autoparts::Path.packages}/foo/1.0"
+      expect(bar_package.prefix_path.to_s).to eq "#{Autoparts::Path.packages}/bar/2.0"
     end
   end
 
@@ -149,10 +170,10 @@ describe Autoparts::Package do
     end
   end
 
-  describe '#source_filename' do
-    it 'generates a filename for the source code in the following format: <name>-<version>.<source_type>' do
-      expect(foo_package.source_filename).to eq "foo-1.0.tar.gz"
-      expect(bar_package.source_filename).to eq "bar-2.0.zip"
+  describe '#payload_filename' do
+    it 'generates a filename for the source code archive in the following format: <name>-<version>.<source_type>' do
+      expect(foo_package.payload_filename).to eq "foo-1.0.tar.gz"
+      expect(bar_package.payload_filename).to eq "bar-2.0.zip"
     end
   end
 
@@ -160,41 +181,39 @@ describe Autoparts::Package do
     it 'returns the temporary download path' do
       expect(foo_package.download_path).to be_a Pathname
       expect(bar_package.download_path).to be_a Pathname
-      expect(foo_package.download_path.to_s).to eq "#{Autoparts::TMP_PATH}/foo-1.0.tar.gz"
-      expect(bar_package.download_path.to_s).to eq "#{Autoparts::TMP_PATH}/bar-2.0.zip"
+      expect(foo_package.download_path.to_s).to eq "#{Autoparts::Path.tmp}/foo-1.0.tar.gz"
+      expect(bar_package.download_path.to_s).to eq "#{Autoparts::Path.tmp}/bar-2.0.zip"
     end
   end
 
   describe '#source_path' do
-    it 'returns the source filename under the ARCHIVES_PATH' do
+    it 'returns the source filename under the archives path' do
       expect(foo_package.source_path).to be_a Pathname
       expect(bar_package.source_path).to be_a Pathname
-      expect(foo_package.source_path.to_s).to eq "#{Autoparts::ARCHIVES_PATH}/foo-1.0.tar.gz"
-      expect(bar_package.source_path.to_s).to eq "#{Autoparts::ARCHIVES_PATH}/bar-2.0.zip"
+      expect(foo_package.source_path.to_s).to eq "#{Autoparts::Path.archives}/foo-1.0.tar.gz"
+      expect(bar_package.source_path.to_s).to eq "#{Autoparts::Path.archives}/bar-2.0.zip"
     end
   end
 
   describe '#extracted_source_path' do
-    it 'generates a temp path for the source code in the following format: TMP_PATH/<name>-<version>' do
+    it 'generates a temp path for the source code in the following format: <tmp path>/<name>-<version>' do
       expect(foo_package.extracted_source_path).to be_a Pathname
       expect(bar_package.extracted_source_path).to be_a Pathname
-      expect(foo_package.extracted_source_path.to_s).to eq "#{Autoparts::TMP_PATH}/foo-1.0"
-      expect(bar_package.extracted_source_path.to_s).to eq "#{Autoparts::TMP_PATH}/bar-2.0"
+      expect(foo_package.extracted_source_path.to_s).to eq "#{Autoparts::Path.tmp}/foo-1.0"
+      expect(bar_package.extracted_source_path.to_s).to eq "#{Autoparts::Path.tmp}/bar-2.0"
     end
   end
 
   describe '#download_source' do
-    context 'when download to TMP_PATH completes' do
-      it 'makes sure that ARCHIVES_PATH directory exists then moves the downloaded file to source_path' do
+    context 'when download to tmp path completes' do
+      it 'moves the downloaded file to source_path' do
         expect(foo_package).to receive(:system).with("curl http://example.com/foo.tar.gz -L -o #{foo_package.download_path}").and_return true
         expect(foo_package).to receive(:system).with("mv #{foo_package.download_path} #{foo_package.source_path}").and_return true
-        expect(File.directory?(Autoparts::ARCHIVES_PATH)).to be_false
         foo_package.download_source
-        expect(File.directory?(Autoparts::ARCHIVES_PATH)).to be_true
       end
     end
 
-    context 'when download to TMP_PATH fails' do
+    context 'when download to tmp path fails' do
       it 'does not move the downloaded file to source_path' do
         expect(foo_package).to receive(:system).with("curl http://example.com/foo.tar.gz -L -o #{foo_package.download_path}").and_return false
         expect(foo_package).not_to receive(:system).with("mv #{foo_package.download_path} #{foo_package.source_path}")
@@ -238,11 +257,9 @@ describe Autoparts::Package do
           FooPackage.source_type t
         end
 
-        it 'makes sure that TMP_PATH directory exists and then untars the package' do
+        it 'untars the package' do
           expect(foo_package).to receive(:system).with("tar xf #{foo_package.source_path} -C #{foo_package.extracted_source_path}").and_return true
-          expect(File.exists?(foo_package.extracted_source_path)).to be_false
           foo_package.extract_source
-          expect(File.directory?(foo_package.extracted_source_path)).to be_true
         end
       end
     end
@@ -252,11 +269,9 @@ describe Autoparts::Package do
         FooPackage.source_type 'zip'
       end
 
-      it 'makes sure that TMP_PATH directory exists and then unzips the package' do
+      it 'unzips the package' do
         expect(foo_package).to receive(:system).with("unzip -qq #{foo_package.source_path} -d #{foo_package.extracted_source_path}").and_return true
-        expect(File.exists?(foo_package.extracted_source_path)).to be_false
         foo_package.extract_source
-        expect(File.directory?(foo_package.extracted_source_path)).to be_true
       end
     end
   end

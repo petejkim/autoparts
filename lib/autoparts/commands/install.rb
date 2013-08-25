@@ -2,9 +2,7 @@ module Autoparts
   module Commands
     class Install
       def initialize(args, options)
-        if args.length == 0
-          return command(:help).run('install')
-        end
+        return command(:help).run('install') if args.length == 0
         args.each do |package_name|
           require "autoparts/packages/#{package_name}"
           unless package_class = Package.find(package_name)

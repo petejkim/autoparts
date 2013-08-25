@@ -4,6 +4,21 @@ require 'etc'
 module Autoparts
   class Package
     class << self
+      def installed
+        hash = {}
+        Path.packages.each_child do |pkg|
+          if pkg.directory?
+            pkg.each_child do |ver|
+              if ver.directory? && !ver.children.empty?
+                hash[pkg.basename.to_s] ||= []
+                hash[pkg.basename.to_s].push ver.basename.to_s
+              end
+            end
+          end
+        end
+        hash
+      end
+
       def packages
         @@packages ||= {}
       end
@@ -63,7 +78,7 @@ module Autoparts
     end
 
     def prefix_path
-      PACKAGES_PATH + name + version
+      Path.packages + name + version
     end
 
     %w(bin sbin include lib libexec share).each do |d|
@@ -97,26 +112,24 @@ module Autoparts
       end
     end
 
-    def source_filename
+    def payload_filename
       "#{name_with_version}.#{source_type}"
     end
 
     def download_path
-      TMP_PATH + source_filename
+      Path.tmp + payload_filename
     end
 
     def source_path
-      ARCHIVES_PATH + source_filename
+      Path.archives + payload_filename
     end
 
     def extracted_source_path
-      TMP_PATH + "#{name_with_version}"
+      Path.tmp + "#{name_with_version}"
     end
 
     def download_source
-      TMP_PATH.mkpath
       execute 'curl', source_url, '-L', '-o', download_path
-      ARCHIVES_PATH.mkpath
       execute 'mv', download_path, source_path
     end
 
@@ -148,11 +161,11 @@ module Autoparts
     end
 
     def symlink_files
-      symlink_recursively(bin_path, BIN_PATH)
-      symlink_recursively(sbin_path, SBIN_PATH)
-      symlink_recursively(lib_path, LIB_PATH)
-      symlink_recursively(include_path, INCLUDE_PATH)
-      symlink_recursively(share_path, SHARE_PATH)
+      symlink_recursively(bin_path,     Path.bin)
+      symlink_recursively(sbin_path,    Path.sbin)
+      symlink_recursively(lib_path,     Path.lib)
+      symlink_recursively(include_path, Path.include)
+      symlink_recursively(share_path,   Path.share)
     end
 
     def install_from_source
@@ -173,8 +186,8 @@ module Autoparts
           puts "=> Compiling..."
           compile
           puts "=> Installing..."
-          ETC_PATH.mkpath
-          VAR_PATH.mkpath
+          Path.etc
+          Path.var
           install
         end
         Dir.chdir(prefix_path) do

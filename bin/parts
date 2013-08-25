@@ -18,16 +18,13 @@ require 'commander/import'
 program :version, Autoparts::VERSION
 program :description, 'Autoparts: A Package Manager for Nitrous.IO'
 
-#command :list do |c|
-  #c.syntax = 'parts list [options]'
-  #c.summary = ''
-  #c.description = ''
-  #c.example 'description', 'command example'
-  #c.option '--some-switch', 'Some switch that does something'
-  #c.action do |args, options|
-    ## Do something or c.when_called Autoparts::Commands::List
-  #end
-#end
+command :list do |c|
+  c.syntax = 'parts list'
+  c.summary = 'List installed packages.'
+  c.description = 'List installed packages.'
+  c.example 'List', 'parts list'
+  c.action Autoparts::Commands::List
+end
 
 command :install do |c|
   c.syntax = 'parts install PACKAGE_NAME'

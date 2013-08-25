@@ -18,8 +18,8 @@ module Autoparts
             "-DINSTALL_DOCDIR=#{doc_path}",
             "-DINSTALL_INFODIR=#{info_path}",
             "-DINSTALL_MYSQLSHAREDIR=#{share_path.basename}/#{name}",
-            "-DMYSQL_DATADIR=#{VAR_PATH}/mysql",
-            "-DSYSCONFDIR=#{ETC_PATH}",
+            "-DMYSQL_DATADIR=#{Path.var}/mysql",
+            "-DSYSCONFDIR=#{Path.etc}",
             "-DWITH_READLINE=yes",
             "-DWITH_SSL=yes",
             "-DWITH_UNIT_TESTS=OFF"
@@ -41,7 +41,7 @@ module Autoparts
       def post_install
         args = [
           "--basedir=#{prefix_path}",
-          "--datadir=#{VAR_PATH}/mysql",
+          "--datadir=#{Path.var}/mysql",
           "--tmpdir=/tmp",
           "--user=#{user}",
           '--verbose'
