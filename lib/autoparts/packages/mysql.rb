@@ -7,7 +7,7 @@ module Autoparts
       source_sha1 '06e1d856cfb1f98844ef92af47d4f4f7036ef294'
       source_filetype 'tar.gz'
       binary_url 'http://nitrousio-autoparts-use1.s3.amazonaws.com/mysql-5.6.13-binary.tar.gz'
-      binary_sha1 '7bf6ecd2138923043c6018f57af5307765e72b8c'
+      binary_sha1 '9120b1b50c8de5a1336f506a0d10250e98102ad3'
 
       def compile
         Dir.chdir('mysql-5.6.13') do
@@ -37,15 +37,18 @@ module Autoparts
           execute 'make install'
           execute "ln -s #{prefix_path}/support-files/mysql.server #{bin_path}/"
           execute "rm -rf #{prefix_path}/data"
+          execute "rm -rf #{prefix_path}/mysql-test"
         end
       end
 
       def post_install
         unless (Path.var + 'mysql' + 'mysql' + 'user.frm').exist?
+          var_mysql = Path.var + 'mysql'
+          var_mysql.rmtree if var_mysql.exist?
           ENV['TMPDIR'] = nil
           args = [
             "--basedir=#{prefix_path}",
-            "--datadir=#{Path.var}/mysql",
+            "--datadir=#{var_mysql}",
             "--tmpdir=/tmp",
             "--user=#{user}",
             '--verbose'
