@@ -18,6 +18,14 @@ require 'commander/import'
 program :version, Autoparts::VERSION
 program :description, 'Autoparts: A Package Manager for Nitrous.IO'
 
+command :init do |c|
+  c.syntax = 'eval "$(parts init -)"'
+  c.summary = 'Setup environment variables for Autoparts.'
+  c.description = 'Setup environment variables for Autoparts.'
+  c.example 'Init', 'eval "$(parts init -)"'
+  c.action Autoparts::Commands::Init
+end
+
 command :list do |c|
   c.syntax = 'parts list'
   c.summary = 'List installed packages.'
