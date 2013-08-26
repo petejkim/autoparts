@@ -6,7 +6,9 @@ class FooPackage < Autoparts::Package
   version '1.0'
   source_url 'http://example.com/foo.tar.gz'
   source_sha1 'f00f00f00f00f00f00f00f00f00f00f00f00f00f'
-  source_type 'tar.gz'
+  source_filetype 'tar.gz'
+  binary_url 'http://example.com/foo-precompiled.tar.gz'
+  binary_sha1 'dadadadadadadadadadadadadadadadadadadada'
 end
 
 class BarPackage < Autoparts::Package
@@ -14,7 +16,9 @@ class BarPackage < Autoparts::Package
   version '2.0'
   source_url 'http://example.com/bar.zip'
   source_sha1 'babababababababababababababababababababa'
-  source_type 'zip'
+  source_filetype 'zip'
+  binary_url 'http://example.com/bar-precompiled.tar.gz'
+  binary_sha1 'd00d00d00d00d00d00d00d00d00d00d00d00d00d'
 end
 
 describe Autoparts::Package do
@@ -102,10 +106,24 @@ describe Autoparts::Package do
     end
   end
 
-  describe '#source_type' do
-    it 'returns the file type for the source code archive set using the DSL keyword "source_type"' do
-      expect(foo_package.source_type).to eq 'tar.gz'
-      expect(bar_package.source_type).to eq 'zip'
+  describe '#source_filetype' do
+    it 'returns the file type for the source code archive set using the DSL keyword "source_filetype"' do
+      expect(foo_package.source_filetype).to eq 'tar.gz'
+      expect(bar_package.source_filetype).to eq 'zip'
+    end
+  end
+
+  describe '#binary_url' do
+    it 'returns the url for the precompiled binary archive set using the DSL keyword "binary_url"' do
+      expect(foo_package.binary_url).to eq 'http://example.com/foo-precompiled.tar.gz'
+      expect(bar_package.binary_url).to eq 'http://example.com/bar-precompiled.tar.gz'
+    end
+  end
+
+  describe '#binary_sha1' do
+    it 'returns the url for the precompiled binary archive set using the DSL keyword "binary_sha1"' do
+      expect(foo_package.binary_sha1).to eq 'dadadadadadadadadadadadadadadadadadadada'
+      expect(bar_package.binary_sha1).to eq 'd00d00d00d00d00d00d00d00d00d00d00d00d00d'
     end
   end
 
@@ -183,115 +201,249 @@ describe Autoparts::Package do
     end
   end
 
-  describe '#source_archive_filename' do
-    it 'generates a filename for the source code archive in the following format: <name>-<version>.<source_type>' do
-      expect(foo_package.source_archive_filename).to eq "foo-1.0.tar.gz"
-      expect(bar_package.source_archive_filename).to eq "bar-2.0.zip"
-    end
-  end
-
-  describe '#binary_archive_filename' do
-    it 'generates a filename for the precompiled binary archive in the following format: <name>-<version>-binary.tar.gz' do
-      expect(foo_package.binary_archive_filename).to eq "foo-1.0-binary.tar.gz"
-      expect(bar_package.binary_archive_filename).to eq "bar-2.0-binary.tar.gz"
-    end
-  end
-
-  describe '#download_path' do
-    it 'returns the temporary download path' do
-      expect(foo_package.download_path).to be_a Pathname
-      expect(bar_package.download_path).to be_a Pathname
-      expect(foo_package.download_path.to_s).to eq "#{Autoparts::Path.tmp}/foo-1.0.tar.gz"
-      expect(bar_package.download_path.to_s).to eq "#{Autoparts::Path.tmp}/bar-2.0.zip"
-    end
-  end
-
-  describe '#source_path' do
-    it 'returns the source filename under the archives path' do
-      expect(foo_package.source_path).to be_a Pathname
-      expect(bar_package.source_path).to be_a Pathname
-      expect(foo_package.source_path.to_s).to eq "#{Autoparts::Path.archives}/foo-1.0.tar.gz"
-      expect(bar_package.source_path.to_s).to eq "#{Autoparts::Path.archives}/bar-2.0.zip"
-    end
-  end
-
-  describe '#extracted_source_path' do
-    it 'generates a temp path for the source code in the following format: <tmp path>/<name>-<version>' do
-      expect(foo_package.extracted_source_path).to be_a Pathname
-      expect(bar_package.extracted_source_path).to be_a Pathname
-      expect(foo_package.extracted_source_path.to_s).to eq "#{Autoparts::Path.tmp}/foo-1.0"
-      expect(bar_package.extracted_source_path.to_s).to eq "#{Autoparts::Path.tmp}/bar-2.0"
-    end
-  end
-
-  describe '#download_source' do
-    context 'when download to tmp path completes' do
-      it 'moves the downloaded file to source_path' do
-        expect(foo_package).to receive(:system).with("curl http://example.com/foo.tar.gz -L -o #{foo_package.download_path}").and_return true
-        expect(foo_package).to receive(:system).with("mv #{foo_package.download_path} #{foo_package.source_path}").and_return true
-        foo_package.download_source
-      end
-    end
-
-    context 'when download to tmp path fails' do
-      it 'does not move the downloaded file to source_path' do
-        expect(foo_package).to receive(:system).with("curl http://example.com/foo.tar.gz -L -o #{foo_package.download_path}").and_return false
-        expect(foo_package).not_to receive(:system).with("mv #{foo_package.download_path} #{foo_package.source_path}")
-        expect {
-          foo_package.download_source
-        }.to raise_error
-      end
-    end
-  end
-
-  describe '#verify_source' do
-    context 'when sha1 verification succeeds' do
+  describe '#archive_filename' do
+    context 'when @source_install is false' do
       before do
-        foo_package.stub(:`).with("shasum -p #{foo_package.source_path}").and_return "f00f00f00f00f00f00f00f00f00f00f00f00f00f ?foo-1.0.tar.gz\n"
+        foo_package.instance_variable_set :@source_install, false
+        bar_package.instance_variable_set :@source_install, false
       end
 
-      it 'does not raise any error' do
-        expect {
-          foo_package.verify_source
-        }.not_to raise_error
+      it 'generates a filename for the precompiled binary archive in the following format: <name>-<version>-binary.tar.gz' do
+        expect(foo_package.archive_filename).to eq "foo-1.0-binary.tar.gz"
+        expect(bar_package.archive_filename).to eq "bar-2.0-binary.tar.gz"
       end
     end
 
-    context 'when sha1 verification fails' do
+    context 'when @source_install is true' do
       before do
-        foo_package.stub(:`).with("shasum -p #{foo_package.source_path}").and_return "f00f00f00f00f00f00f00f00f00f00f00f00f000 ?foo-2.0.tar.gz\n"
+        foo_package.instance_variable_set :@source_install, true
+        bar_package.instance_variable_set :@source_install, true
       end
 
-      it 'raises VerificationFailedError' do
-        expect {
-          foo_package.verify_source
-        }.to raise_error Autoparts::VerificationFailedError
+      it 'generates a filename for the source code archive in the following format: <name>-<version>.<source_filetype>' do
+        expect(foo_package.archive_filename).to eq "foo-1.0.tar.gz"
+        expect(bar_package.archive_filename).to eq "bar-2.0.zip"
       end
     end
   end
 
-  describe '#extract_source' do
-    %w(tar tar.gz tar.bz2 tar.bz tgz tbz2 tbz).each do |t|
-      context "when source_type is #{t}" do
+  describe '#temporary_archive_path' do
+    context 'when @source_install is false' do
+      before do
+        foo_package.instance_variable_set :@source_install, false
+        bar_package.instance_variable_set :@source_install, false
+      end
+
+      it 'returns the temporary pre-compiled binary archive path' do
+        expect(foo_package.temporary_archive_path).to be_a Pathname
+        expect(bar_package.temporary_archive_path).to be_a Pathname
+        expect(foo_package.temporary_archive_path.to_s).to eq "#{Autoparts::Path.tmp}/foo-1.0-binary.tar.gz"
+        expect(bar_package.temporary_archive_path.to_s).to eq "#{Autoparts::Path.tmp}/bar-2.0-binary.tar.gz"
+      end
+    end
+
+    context 'when @source_install is true' do
+      before do
+        foo_package.instance_variable_set :@source_install, true
+        bar_package.instance_variable_set :@source_install, true
+      end
+
+      it 'returns the temporary source code archive path' do
+        expect(foo_package.temporary_archive_path).to be_a Pathname
+        expect(bar_package.temporary_archive_path).to be_a Pathname
+        expect(foo_package.temporary_archive_path.to_s).to eq "#{Autoparts::Path.tmp}/foo-1.0.tar.gz"
+        expect(bar_package.temporary_archive_path.to_s).to eq "#{Autoparts::Path.tmp}/bar-2.0.zip"
+      end
+    end
+  end
+
+  describe '#archive_path' do
+    context 'when @source_install is false' do
+      before do
+        foo_package.instance_variable_set :@source_install, false
+        bar_package.instance_variable_set :@source_install, false
+      end
+
+      it 'returns the name of the pre-compiled binary archive under the archives path' do
+        expect(foo_package.archive_path).to be_a Pathname
+        expect(bar_package.archive_path).to be_a Pathname
+        expect(foo_package.archive_path.to_s).to eq "#{Autoparts::Path.archives}/foo-1.0-binary.tar.gz"
+        expect(bar_package.archive_path.to_s).to eq "#{Autoparts::Path.archives}/bar-2.0-binary.tar.gz"
+      end
+    end
+
+    context 'when @source_install is true' do
+      before do
+        foo_package.instance_variable_set :@source_install, true
+        bar_package.instance_variable_set :@source_install, true
+      end
+
+      it 'returns the name of the source archive under the archives path' do
+        expect(foo_package.archive_path).to be_a Pathname
+        expect(bar_package.archive_path).to be_a Pathname
+        expect(foo_package.archive_path.to_s).to eq "#{Autoparts::Path.archives}/foo-1.0.tar.gz"
+        expect(bar_package.archive_path.to_s).to eq "#{Autoparts::Path.archives}/bar-2.0.zip"
+      end
+    end
+  end
+
+  describe '#extracted_archive_path' do
+    it 'generates a temp path for the extracted archive in the following format: <tmp path>/<name>-<version>' do
+      expect(foo_package.extracted_archive_path).to be_a Pathname
+      expect(bar_package.extracted_archive_path).to be_a Pathname
+      expect(foo_package.extracted_archive_path.to_s).to eq "#{Autoparts::Path.tmp}/foo-1.0"
+      expect(bar_package.extracted_archive_path.to_s).to eq "#{Autoparts::Path.tmp}/bar-2.0"
+    end
+  end
+
+  describe '#download_archive' do
+    context 'when @source_install is false' do
+      before do
+        foo_package.instance_variable_set :@source_install, false
+        bar_package.instance_variable_set :@source_install, false
+      end
+
+      context 'when downloading source code archive to tmp path completes' do
+        it 'moves the downloaded file to archive path' do
+          expect(foo_package).to receive(:system).with("curl http://example.com/foo-precompiled.tar.gz -L -o #{foo_package.temporary_archive_path}").and_return true
+          expect(foo_package).to receive(:system).with("mv #{foo_package.temporary_archive_path} #{foo_package.archive_path}").and_return true
+          foo_package.download_archive
+        end
+      end
+
+      context 'when downloading source code archive fails' do
+        it 'does not move the downloaded file to archive path' do
+          expect(foo_package).to receive(:system).with("curl http://example.com/foo-precompiled.tar.gz -L -o #{foo_package.temporary_archive_path}").and_return false
+          expect(foo_package).not_to receive(:system).with("mv #{foo_package.temporary_archive_path} #{foo_package.archive_path}")
+          expect {
+            foo_package.download_archive
+          }.to raise_error
+        end
+      end
+    end
+
+    context 'when @source_install is true' do
+      before do
+        foo_package.instance_variable_set :@source_install, true
+        bar_package.instance_variable_set :@source_install, true
+      end
+
+      context 'when downloading pre-compiled binary archive to tmp path completes' do
+        it 'moves the downloaded file to archive path' do
+          expect(foo_package).to receive(:system).with("curl http://example.com/foo.tar.gz -L -o #{foo_package.temporary_archive_path}").and_return true
+          expect(foo_package).to receive(:system).with("mv #{foo_package.temporary_archive_path} #{foo_package.archive_path}").and_return true
+          foo_package.download_archive
+        end
+      end
+
+      context 'when downloading pre-compiled binary fails' do
+        it 'does not move the downloaded file to archive path' do
+          expect(foo_package).to receive(:system).with("curl http://example.com/foo.tar.gz -L -o #{foo_package.temporary_archive_path}").and_return false
+          expect(foo_package).not_to receive(:system).with("mv #{foo_package.temporary_archive_path} #{foo_package.archive_path}")
+          expect {
+            foo_package.download_archive
+          }.to raise_error
+        end
+      end
+    end
+  end
+
+  describe '#verify_archive' do
+    context 'when @source_install is false' do
+      before { foo_package.instance_variable_set :@source_install, false }
+
+      context 'when sha1 of the archive is the same as binary_sha1' do
         before do
-          FooPackage.source_type t
+          Autoparts::Util.stub(:sha1).with(foo_package.archive_path).and_return "dadadadadadadadadadadadadadadadadadadada"
         end
 
-        it 'untars the package' do
-          expect(foo_package).to receive(:system).with("tar xf #{foo_package.source_path} -C #{foo_package.extracted_source_path}").and_return true
-          foo_package.extract_source
+        it 'does not raise any error' do
+          expect {
+            foo_package.verify_archive
+          }.not_to raise_error
+        end
+      end
+
+      context 'when sha1 of the archive is different from binary_sha1' do
+        before do
+          Autoparts::Util.stub(:sha1).with(foo_package.archive_path).and_return "aaaaaaaaaaaaf00f00f00f00f00f00f00f00f00f"
+        end
+
+        it 'raises VerificationFailedError' do
+          expect {
+            foo_package.verify_archive
+          }.to raise_error Autoparts::VerificationFailedError
         end
       end
     end
 
-    context "when source_type is zip" do
-      before do
-        FooPackage.source_type 'zip'
+    context 'when @source_install is true' do
+      before { foo_package.instance_variable_set :@source_install, true }
+
+      context 'when sha1 of the archive is the same as source_sha1' do
+        before do
+          Autoparts::Util.stub(:sha1).with(foo_package.archive_path).and_return "f00f00f00f00f00f00f00f00f00f00f00f00f00f"
+        end
+
+        it 'does not raise any error' do
+          expect {
+            foo_package.verify_archive
+          }.not_to raise_error
+        end
       end
 
-      it 'unzips the package' do
-        expect(foo_package).to receive(:system).with("unzip -qq #{foo_package.source_path} -d #{foo_package.extracted_source_path}").and_return true
-        foo_package.extract_source
+      context 'when sha1 of the archive is different from source_sha1' do
+        before do
+          Autoparts::Util.stub(:sha1).with(foo_package.archive_path).and_return "aaaaaaaaaaaaf00f00f00f00f00f00f00f00f00f"
+        end
+
+        it 'raises VerificationFailedError' do
+          expect {
+            foo_package.verify_archive
+          }.to raise_error Autoparts::VerificationFailedError
+        end
+      end
+    end
+  end
+
+  describe '#extract_archive' do
+    context 'when @source_install is false' do
+      before { foo_package.instance_variable_set :@source_install, false }
+
+      it 'untars the precompiled binary archive' do
+        expect(Dir).to receive(:chdir).with(foo_package.extracted_archive_path).and_yield
+        expect(foo_package).to receive(:system).with("tar xf #{foo_package.archive_path}").and_return true
+        foo_package.extract_archive
+      end
+    end
+
+    context 'when @source_install is true' do
+      before { foo_package.instance_variable_set :@source_install, true }
+
+      %w(tar tar.gz tar.bz2 tar.bz tgz tbz2 tbz).each do |t|
+        context "when source_filetype is #{t}" do
+          before do
+            FooPackage.source_filetype t
+          end
+
+          it 'untars the source code archive' do
+            expect(Dir).to receive(:chdir).with(foo_package.extracted_archive_path).and_yield
+            expect(foo_package).to receive(:system).with("tar xf #{foo_package.archive_path}").and_return true
+            foo_package.extract_archive
+          end
+        end
+      end
+
+      context "when source_filetype is zip" do
+        before do
+          FooPackage.source_filetype 'zip'
+        end
+
+        it 'unzips the source code archive' do
+          expect(Dir).to receive(:chdir).with(foo_package.extracted_archive_path).and_yield
+          expect(foo_package).to receive(:system).with("unzip -qq #{foo_package.archive_path}").and_return true
+          foo_package.extract_archive
+        end
       end
     end
   end

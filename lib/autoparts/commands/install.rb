@@ -9,7 +9,7 @@ module Autoparts
             unless package_class = Package.find(package_name)
               abort "ERROR: #{package_name} not found."
             end
-            package_class.new.install_from_source
+            package_class.new.perform_install(options.source)
           end
         rescue => e
           abort "ERROR: #{e}\nAborting!"

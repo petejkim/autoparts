@@ -5,7 +5,7 @@ module Autoparts
       version '5.6.13'
       source_url 'http://dev.mysql.com/get/Downloads/MySQL-5.6/mysql-5.6.13.tar.gz/from/http://cdn.mysql.com/'
       source_sha1 '06e1d856cfb1f98844ef92af47d4f4f7036ef294'
-      source_type 'tar.gz'
+      source_filetype 'tar.gz'
 
       def compile
         Dir.chdir('mysql-5.6.13') do

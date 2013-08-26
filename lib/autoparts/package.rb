@@ -48,9 +48,21 @@ module Autoparts
         @source_sha1 = val
       end
 
-      def source_type(val)
-        @source_type = val
+      def source_filetype(val)
+        @source_filetype = val
       end
+
+      def binary_url(val)
+        @binary_url = val
+      end
+
+      def binary_sha1(val)
+        @binary_sha1 = val
+      end
+    end
+
+    def initialize
+      @source_install = false
     end
 
     def name
@@ -73,8 +85,16 @@ module Autoparts
       self.class.instance_variable_get(:@source_sha1)
     end
 
-    def source_type
-      self.class.instance_variable_get(:@source_type)
+    def source_filetype
+      self.class.instance_variable_get(:@source_filetype)
+    end
+
+    def binary_url
+      self.class.instance_variable_get(:@binary_url)
+    end
+
+    def binary_sha1
+      self.class.instance_variable_get(:@binary_sha1)
     end
 
     def user
@@ -116,42 +136,46 @@ module Autoparts
       end
     end
 
-    def source_archive_filename
-      "#{name_with_version}.#{source_type}"
+    def archive_filename
+      name_with_version + (@source_install ? ".#{source_filetype}" : '-binary.tar.gz')
     end
 
-    def binary_archive_filename
-      "#{name_with_version}-binary.tar.gz"
+    def temporary_archive_path
+      Path.tmp + archive_filename
     end
 
-    def download_path
-      Path.tmp + source_archive_filename
+    def archive_path
+      Path.archives + archive_filename
     end
 
-    def source_path
-      Path.archives + source_archive_filename
-    end
-
-    def extracted_source_path
+    def extracted_archive_path
       Path.tmp + "#{name_with_version}"
     end
 
-    def download_source
-      execute 'curl', source_url, '-L', '-o', download_path
-      execute 'mv', download_path, source_path
+    def download_archive
+      url = @source_install ? source_url : binary_url
+      execute 'curl', url, '-L', '-o', temporary_archive_path
+      execute 'mv', temporary_archive_path, archive_path
     end
 
-    def verify_source
-      raise VerificationFailedError if Util.sha1(source_path) != source_sha1
+    def verify_archive
+      raise VerificationFailedError if Util.sha1(archive_path) != (@source_install ? source_sha1 : binary_sha1)
     end
 
-    def extract_source
-      extracted_source_path.mkpath
-      case source_type
-      when 'tar', 'tar.gz', 'tar.bz2', 'tar.bz', 'tgz', 'tbz2', 'tbz'
-        execute 'tar', 'xf', source_path, '-C', extracted_source_path
-      when 'zip'
-        execute 'unzip', '-qq', source_path, '-d', extracted_source_path
+    def extract_archive
+      extracted_archive_path.rmtree if extracted_archive_path.exist?
+      extracted_archive_path.mkpath
+      Dir.chdir(extracted_archive_path) do
+        if @source_install
+          case source_filetype
+          when 'tar', 'tar.gz', 'tar.bz2', 'tar.bz', 'tgz', 'tbz2', 'tbz'
+            execute 'tar', 'xf', archive_path
+          when 'zip'
+            execute 'unzip', '-qq', archive_path
+          end
+        else
+          execute 'tar', 'xf', archive_path
+        end
       end
     end
 
@@ -169,13 +193,11 @@ module Autoparts
     end
 
     def archive_installed_package
-      tmp_archive_path = Path.tmp + binary_archive_filename
-      final_archive_path = Path.archives + binary_archive_filename
+      @source_install = false
       Dir.chdir(prefix_path) do
-        execute 'tar -c . | gzip -n >', tmp_archive_path
+        execute 'tar -c . | gzip -n >', temporary_archive_path
       end
-      execute 'mv', tmp_archive_path, final_archive_path
-      final_archive_path
+      execute 'mv', temporary_archive_path, archive_path
     end
 
     def symlink_files
@@ -186,35 +208,48 @@ module Autoparts
       symlink_recursively(share_path,   Path.share)
     end
 
-    def install_from_source
+    def perform_install(source_install=false)
       begin
         ENV['CHOST'] = "x86_64-pc-linux-gnu"
         ENV['CFLAGS'] = "-march=x86-64 -O2 -pipe -fomit-frame-pointer"
         ENV['CXXFLAGS'] = ENV['CFLAGS']
         ENV['MAKEFLAGS'] = '-j 2'
-        unless File.exist? source_path
-          puts "=> Downloading #{source_url}..."
-          download_source
+        @source_install = source_install ||= binary_url.nil?
+
+        unless File.exist? archive_path
+          puts "=> Downloading #{@source_install ? source_url : binary_url}..."
+          download_archive
         end
-        puts "=> Verifying download..."
-        verify_source
-        puts "=> Extracting source..."
-        extract_source
-        Dir.chdir(extracted_source_path) do
-          puts "=> Compiling..."
-          compile
+        puts "=> Verifying archive..."
+        verify_archive
+        puts "=> Extracting archive..."
+        extract_archive
+
+        Path.etc
+        Path.var
+
+        if @source_install # install from source
+          Dir.chdir(extracted_archive_path) do
+            puts "=> Compiling..."
+            compile
+            puts "=> Installing..."
+            install
+          end
+        else # install using pre-compiled binary
           puts "=> Installing..."
-          Path.etc
-          Path.var
-          install
+          prefix_path.rmtree if prefix_path.exist?
+          prefix_path.parent.mkpath
+          execute 'mv', extracted_archive_path, prefix_path
         end
+
         Dir.chdir(prefix_path) do
           post_install
           puts "=> Symlinking..."
           symlink_files
         end
       rescue => e
-        source_path.unlink if e.kind_of? VerificationFailedError
+        archive_path.unlink if e.kind_of? VerificationFailedError
+        prefix_path.rmtree if prefix_path.exist?
         raise e
       else
         puts "=> Installed #{name} #{version}\n"
@@ -224,7 +259,7 @@ module Autoparts
 
     def archive_installed
       puts "=> Archiving #{name} #{version}..."
-      archive_path = archive_installed_package
+      archive_installed_package
       file_size = archive_path.size
       puts "=> Archived: #{archive_path}"
       puts "Size: #{archive_path.size} bytes (#{sprintf "%.2f MiB", file_size / 1024.0 / 1024.0})"
