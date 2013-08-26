@@ -6,6 +6,8 @@ module Autoparts
       source_url 'http://dev.mysql.com/get/Downloads/MySQL-5.6/mysql-5.6.13.tar.gz/from/http://cdn.mysql.com/'
       source_sha1 '06e1d856cfb1f98844ef92af47d4f4f7036ef294'
       source_filetype 'tar.gz'
+      binary_url 'http://nitrousio-autoparts-use1.s3.amazonaws.com/mysql-5.6.13-binary.tar.gz'
+      binary_sha1 '7bf6ecd2138923043c6018f57af5307765e72b8c'
 
       def compile
         Dir.chdir('mysql-5.6.13') do
