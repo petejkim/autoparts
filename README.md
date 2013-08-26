@@ -11,11 +11,11 @@ Autoparts - A Package Manager for Nitrous.IO
    $ git clone https://github.com/petejkim/autoparts.git ~/.parts/autoparts
    ```
 
-2. Run `bundle install` in `~/.parts/autoparts`
+2. Run bundler in `~/.parts/autoparts`
 
     ```sh
     $ cd ~/.parts/autoparts
-    .parts/autoparts $ bundle install
+    .parts/autoparts $ bundle install --path .bundle
     ```
 
 3. Add `~/.parts/autoparts/bin` to your `$PATH` for access to the
@@ -23,7 +23,7 @@ Autoparts - A Package Manager for Nitrous.IO
 
     **bash:**
     ```sh
-    $ echo 'export PATH="$HOME/.parts/autoparts/bin:$PATH"' >> ~/.bashrc
+    $ echo 'export PATH="$HOME/.parts/autoparts/bin:$PATH"' >> ~/.bash_profile
     ```
 
     **zsh:**
@@ -36,7 +36,7 @@ Autoparts - A Package Manager for Nitrous.IO
 
     **bash:**
     ```sh
-    $ echo 'eval "$(parts init -)"' >> ~/.bashrc
+    $ echo 'eval "$(parts init -)"' >> ~/.bash_profile
     ```
 
     **zsh:**
