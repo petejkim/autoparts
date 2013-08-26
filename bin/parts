@@ -34,6 +34,14 @@ command :install do |c|
   c.action Autoparts::Commands::Install
 end
 
+command :archive do |c|
+  c.syntax = 'parts archive PACKAGE_NAME'
+  c.summary = 'Archives a installed package as a downloadable pre-compiled binary.'
+  c.description = 'Archives a installed package as a downloadable pre-compiled binary.'
+  c.example 'Archive MySQL', 'parts archive mysql'
+  c.action Autoparts::Commands::Archive
+end
+
 #command :uninstall do |c|
   #c.syntax = 'parts uninstall [options]'
   #c.summary = ''

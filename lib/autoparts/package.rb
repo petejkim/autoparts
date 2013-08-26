@@ -19,6 +19,10 @@ module Autoparts
         hash
       end
 
+      def installed?(name)
+        installed.has_key? name
+      end
+
       def packages
         @@packages ||= {}
       end
@@ -108,20 +112,24 @@ module Autoparts
     def execute(*args)
       cmd = args.join ' '
       unless system cmd
-        raise ExecutionFailedError.new "\"#{cmd}\" failed"
+        raise ExecutionFailedError.new cmd
       end
     end
 
-    def payload_filename
+    def source_archive_filename
       "#{name_with_version}.#{source_type}"
     end
 
+    def binary_archive_filename
+      "#{name_with_version}-binary.tar.gz"
+    end
+
     def download_path
-      Path.tmp + payload_filename
+      Path.tmp + source_archive_filename
     end
 
     def source_path
-      Path.archives + payload_filename
+      Path.archives + source_archive_filename
     end
 
     def extracted_source_path
@@ -134,7 +142,7 @@ module Autoparts
     end
 
     def verify_source
-      raise VerificationFailedError.new('SHA1 verification failed') if `shasum -p #{source_path}`[/^([0-9a-f]*)/, 1] != source_sha1
+      raise VerificationFailedError if Util.sha1(source_path) != source_sha1
     end
 
     def extract_source
@@ -158,6 +166,16 @@ module Autoparts
           execute 'ln', '-s', f, t
         end
       end if from.directory? && from.executable?
+    end
+
+    def archive_installed_package
+      tmp_archive_path = Path.tmp + binary_archive_filename
+      final_archive_path = Path.archives + binary_archive_filename
+      Dir.chdir(prefix_path) do
+        execute 'tar -c . | gzip -n >', tmp_archive_path
+      end
+      execute 'mv', tmp_archive_path, final_archive_path
+      final_archive_path
     end
 
     def symlink_files
@@ -195,16 +213,22 @@ module Autoparts
           puts "=> Symlinking..."
           symlink_files
         end
-      rescue AutopartsError => e
-        case e
-        when VerificationFailedError
-          source_path.unlink
-        end
-        abort "ERROR: #{e}\nAborting..."
+      rescue => e
+        source_path.unlink if e.kind_of? VerificationFailedError
+        raise e
       else
         puts "=> Installed #{name} #{version}\n"
         puts tips
       end
+    end
+
+    def archive_installed
+      puts "=> Archiving #{name} #{version}..."
+      archive_path = archive_installed_package
+      file_size = archive_path.size
+      puts "=> Archived: #{archive_path}"
+      puts "Size: #{archive_path.size} bytes (#{sprintf "%.2f MiB", file_size / 1024.0 / 1024.0})"
+      puts "SHA1: #{Util.sha1 archive_path}"
     end
 
     # -- override these methods --

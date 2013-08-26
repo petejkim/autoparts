@@ -47,6 +47,19 @@ describe Autoparts::Package do
     end
   end
 
+  describe '.installed?' do
+    before do
+      FileUtils.mkdir_p (Autoparts::Path.packages + 'mysql' + '5.6.13').to_s
+      FileUtils.mkdir_p (Autoparts::Path.packages + 'nodejs' + '0.10.16').to_s
+      FileUtils.touch (Autoparts::Path.packages + 'mysql' + '5.6.13' + '.keep').to_s
+    end
+
+    it 'returns a boolean value of whether a package of a given name is installed' do
+      expect(described_class.installed? 'mysql').to be_true
+      expect(described_class.installed? 'nodejs').to be_false
+    end
+  end
+
   describe '.find' do
     it 'finds a package class by name' do
       expect(described_class.find('foo')).to eq FooPackage
@@ -170,10 +183,17 @@ describe Autoparts::Package do
     end
   end
 
-  describe '#payload_filename' do
+  describe '#source_archive_filename' do
     it 'generates a filename for the source code archive in the following format: <name>-<version>.<source_type>' do
-      expect(foo_package.payload_filename).to eq "foo-1.0.tar.gz"
-      expect(bar_package.payload_filename).to eq "bar-2.0.zip"
+      expect(foo_package.source_archive_filename).to eq "foo-1.0.tar.gz"
+      expect(bar_package.source_archive_filename).to eq "bar-2.0.zip"
+    end
+  end
+
+  describe '#binary_archive_filename' do
+    it 'generates a filename for the precompiled binary archive in the following format: <name>-<version>-binary.tar.gz' do
+      expect(foo_package.binary_archive_filename).to eq "foo-1.0-binary.tar.gz"
+      expect(bar_package.binary_archive_filename).to eq "bar-2.0-binary.tar.gz"
     end
   end
 
