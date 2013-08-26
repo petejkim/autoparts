@@ -234,6 +234,7 @@ module Autoparts
             compile
             puts "=> Installing..."
             install
+            extracted_archive_path.rmtree if extracted_archive_path.exist?
           end
         else # install using pre-compiled binary
           puts "=> Installing..."
@@ -247,9 +248,11 @@ module Autoparts
           puts "=> Symlinking..."
           symlink_files
         end
+
       rescue => e
         archive_path.unlink if e.kind_of? VerificationFailedError
         prefix_path.rmtree if prefix_path.exist?
+        extracted_archive_path.rmtree if extracted_archive_path.exist?
         raise e
       else
         puts "=> Installed #{name} #{version}\n"
