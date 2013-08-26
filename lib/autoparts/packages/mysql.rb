@@ -41,14 +41,17 @@ module Autoparts
       end
 
       def post_install
-        args = [
-          "--basedir=#{prefix_path}",
-          "--datadir=#{Path.var}/mysql",
-          "--tmpdir=/tmp",
-          "--user=#{user}",
-          '--verbose'
-        ]
-        execute "scripts/mysql_install_db", *args
+        unless (Path.var + 'mysql' + 'mysql' + 'user.frm').exist?
+          ENV['TMPDIR'] = nil
+          args = [
+            "--basedir=#{prefix_path}",
+            "--datadir=#{Path.var}/mysql",
+            "--tmpdir=/tmp",
+            "--user=#{user}",
+            '--verbose'
+          ]
+          execute "scripts/mysql_install_db", *args
+        end
       end
 
       def tips
