@@ -210,10 +210,18 @@ module Autoparts
 
     def perform_install(source_install=false)
       begin
-        ENV['CHOST'] = "x86_64-pc-linux-gnu"
-        ENV['CFLAGS'] = "-march=x86-64 -O2 -pipe -fomit-frame-pointer"
+        ENV['CPPFLAGS'] = '-D_FORTIFY_SOURCE=2'
+        ENV['CHOST'] = 'x86_64-pc-linux-gnu'
+        ENV['CFLAGS'] = '-march=x86-64 -mtune=generic -O2 -pipe -fstack-protector --param=ssp-buffer-size=4'
         ENV['CXXFLAGS'] = ENV['CFLAGS']
-        ENV['MAKEFLAGS'] = '-j 2'
+        ENV['LDFLAGS'] = '-Wl,-O1,--sort-common,--as-needed,-z,relro'
+        ENV['MAKEFLAGS'] = '-j2'
+
+        if !source_install && !Util.binary_package_compatible?
+          puts "Warning: This system is incompatible with Nitrous.IO binary packages; installing from source."
+          source_install = true
+        end
+
         @source_install = source_install ||= binary_url.nil?
 
         unless File.exist? archive_path
