@@ -8,7 +8,7 @@ Autoparts - A Package Manager for Nitrous.IO
 1. Check out Autoparts into `~/.parts/autoparts`
 
    ```sh
-   $ git clone https://github.com/petejkim/autoparts.git ~/.parts/autoparts
+   $ git clone https://github.com/action-io/autoparts.git ~/.parts/autoparts
    ```
 
 2. Run bundler in `~/.parts/autoparts`
