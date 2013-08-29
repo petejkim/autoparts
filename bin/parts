@@ -53,6 +53,30 @@ if ENV['AUTOPARTS_DEV'] == '1'
   end
 end
 
+command :start do |c|
+  c.syntax = 'parts start PACKAGE_NAME'
+  c.summary = 'Start a service.'
+  c.description = 'Start a service.'
+  c.example 'Start MongoDB server', 'parts start mongodb'
+  c.action Autoparts::Commands::Start
+end
+
+command :stop do |c|
+  c.syntax = 'parts stop PACKAGE_NAME'
+  c.summary = 'Stop a service.'
+  c.description = 'Stop a service.'
+  c.example 'Stop MongoDB server', 'parts stop mongodb'
+  c.action Autoparts::Commands::Stop
+end
+
+command :restart do |c|
+  c.syntax = 'parts restart PACKAGE_NAME'
+  c.summary = 'Restart a service.'
+  c.description = 'Restart a service.'
+  c.example 'Restart MongoDB server', 'parts restart mongodb'
+  c.action Autoparts::Commands::Restart
+end
+
 #command :uninstall do |c|
   #c.syntax = 'parts uninstall [options]'
   #c.summary = ''

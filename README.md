@@ -54,11 +54,9 @@ Autoparts - A Package Manager for Nitrous.IO
 ### TODO
 
 * Install Script
-* Dependency Tracking
-* Delete package directory if installation fails
+* Dependency Tracking (dsl: depends\_on)
+* Package mutual exclusion (dsl: conflicts\_with)
 * don't move download if sha1 verification fails
-* archiving / binary install should only work when autoparts is
-  installed in /home/action/.parts/autoparts
 
 Copyright (c) 2013 Irrational Industries Inc.
 This software is licensed under the BSD 2-Clause license.

@@ -180,7 +180,7 @@ module Autoparts
     end
 
     def symlink_recursively(from, to) # Pathname, Pathname
-      to.mkpath
+      to.mkpath unless to.exist?
       from.each_child do |f|
         t = to + f.basename
         if f.directory? && !f.symlink?
@@ -242,7 +242,6 @@ module Autoparts
             compile
             puts "=> Installing..."
             install
-            extracted_archive_path.rmtree if extracted_archive_path.exist?
           end
         else # install using pre-compiled binary
           puts "=> Installing..."
@@ -251,16 +250,16 @@ module Autoparts
           execute 'mv', extracted_archive_path, prefix_path
         end
 
+        extracted_archive_path.rmtree if extracted_archive_path.exist?
+
         Dir.chdir(prefix_path) do
           post_install
           puts "=> Symlinking..."
           symlink_files
         end
-
       rescue => e
         archive_path.unlink if e.kind_of? VerificationFailedError
         prefix_path.rmtree if prefix_path.exist?
-        extracted_archive_path.rmtree if extracted_archive_path.exist?
         raise e
       else
         puts "=> Installed #{name} #{version}\n"
@@ -287,12 +286,18 @@ module Autoparts
     def post_install # run post install commands - runs in installed package directory
     end
 
+    def start
+    end
+
+    def stop
+    end
+
     def tips
       ''
     end
 
     def information
-      ''
+      tips
     end
     # -----
   end
