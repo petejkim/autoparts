@@ -57,21 +57,25 @@ module Autoparts
         end
       end
 
+      def start
+        execute "#{bin_path}/mysql.server", 'start'
+      end
+
+      def stop
+        execute "#{bin_path}/mysql.server", 'stop'
+      end
+
       def tips
         <<-STR.unindent
           To start the server:
-            mysql.server start
+            $ parts start mysql
 
           To stop the server:
-            mysql.server stop
+            $ parts stop mysql
 
           To connect to the server:
-            mysql -uroot
+            $ mysql
         STR
-      end
-
-      def information
-        tips
       end
     end
   end
