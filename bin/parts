@@ -43,11 +43,19 @@ command :install do |c|
   c.action Autoparts::Commands::Install
 end
 
+command :uninstall do |c|
+  c.syntax = 'parts uninstall PACKAGE_NAME'
+  c.summary = 'Uninstall an installed package.'
+  c.description = 'Uninstall an installed package.'
+  c.example 'Uninstall PostgreSQL', 'parts uninstall postgresql'
+  c.action Autoparts::Commands::Uninstall
+end
+
 if ENV['AUTOPARTS_DEV'] == '1'
   command :archive do |c|
     c.syntax = 'parts archive PACKAGE_NAME'
-    c.summary = 'Archives a installed package as a downloadable pre-compiled binary.'
-    c.description = 'Archives a installed package as a downloadable pre-compiled binary.'
+    c.summary = 'Archives an installed package as a downloadable pre-compiled binary.'
+    c.description = 'Archives an installed package as a downloadable pre-compiled binary.'
     c.example 'Archive MySQL', 'parts archive mysql'
     c.action Autoparts::Commands::Archive
   end
@@ -76,17 +84,6 @@ command :restart do |c|
   c.example 'Restart MongoDB server', 'parts restart mongodb'
   c.action Autoparts::Commands::Restart
 end
-
-#command :uninstall do |c|
-  #c.syntax = 'parts uninstall [options]'
-  #c.summary = ''
-  #c.description = ''
-  #c.example 'description', 'command example'
-  #c.option '--some-switch', 'Some switch that does something'
-  #c.action do |args, options|
-    ## Do something or c.when_called Autoparts::Commands::Uninstall
-  #end
-#end
 
 #command :update do |c|
   #c.syntax = 'parts update [options]'

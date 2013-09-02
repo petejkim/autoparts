@@ -456,28 +456,59 @@ describe Autoparts::Package do
     end
   end
 
-  describe '#symlink_recursively' do
+  describe 'symlink business' do
     before do
       FileUtils.mkdir_p '/tmp/from/foo/bar'
+      FileUtils.mkdir_p '/tmp/from/boo'
       FileUtils.touch '/tmp/from/aaa'
       FileUtils.touch '/tmp/from/bbb'
       FileUtils.touch '/tmp/from/foo/ccc'
       FileUtils.touch '/tmp/from/foo/bar/ddd'
+      FileUtils.touch '/tmp/from/boo/eee'
       FileUtils.ln_s '/tmp/from/foo', '/tmp/from/baz'
+
+      FileUtils.mkdir_p '/tmp/to'
+      FileUtils.touch '/tmp/to/bbb'  # pre-existing file
     end
 
-    it 'recursively creates symlinks of all files and directories under a given directory' do
-      expect(foo_package).to receive(:system).with('ln', '-s', '/tmp/from/baz', '/tmp/to/baz').and_return true
-      expect(foo_package).to receive(:system).with('ln', '-s', '/tmp/from/aaa', '/tmp/to/aaa').and_return true
-      expect(foo_package).to receive(:system).with('ln', '-s', '/tmp/from/bbb', '/tmp/to/bbb').and_return true
-      expect(foo_package).to receive(:system).with('ln', '-s', '/tmp/from/foo/ccc', '/tmp/to/foo/ccc').and_return true
-      expect(foo_package).to receive(:system).with('ln', '-s', '/tmp/from/foo/bar/ddd', '/tmp/to/foo/bar/ddd').and_return true
+    describe '#symlink_recursively' do
+      it 'recursively creates symlinks of all files and directories under a given directory' do
+        foo_package.symlink_recursively Pathname.new('/tmp/from'), Pathname.new('/tmp/to')
+        expect(Pathname.new('/tmp/to/aaa').realpath.to_s).to eq '/tmp/from/aaa'
+        expect(Pathname.new('/tmp/to/bbb').realpath.to_s).to eq '/tmp/from/bbb'
+        expect(Pathname.new('/tmp/to/foo/ccc').realpath.to_s).to eq '/tmp/from/foo/ccc'
+        expect(Pathname.new('/tmp/to/foo/bar/ddd').realpath.to_s).to eq '/tmp/from/foo/bar/ddd'
+        expect(Pathname.new('/tmp/to/boo/eee').realpath.to_s).to eq '/tmp/from/boo/eee'
+        expect(Pathname.new('/tmp/to/baz').realpath.to_s).to eq '/tmp/from/baz'
+      end
+    end
 
-      expect(Pathname.new('/tmp/to')).not_to exist
-      foo_package.symlink_recursively Pathname.new('/tmp/from'), Pathname.new('/tmp/to')
-      expect(Pathname.new('/tmp/to')).to be_directory
-      expect(Pathname.new('/tmp/to/foo')).to be_directory
-      expect(Pathname.new('/tmp/to/foo/bar')).to be_directory
+    describe '#unsymlink_recursively' do
+      before do
+        FileUtils.mkdir_p '/tmp/to/foo/bar'
+        FileUtils.mkdir_p '/tmp/to/boo'
+        #FileUtils.touch '/tmp/to/aaa'    # - missing symlink
+        FileUtils.touch '/tmp/to/bbb'
+        FileUtils.touch '/tmp/to/foo/ccc'
+        FileUtils.touch '/tmp/to/foo/bar/ddd'
+        FileUtils.touch '/tmp/to/boo/eee'
+        FileUtils.touch '/tmp/to/boo/fff' # - extra file
+        FileUtils.touch '/tmp/to/baz'
+      end
+
+      it 'recursively removes symlinks' do
+        foo_package.unsymlink_recursively Pathname.new('/tmp/from'), Pathname.new('/tmp/to')
+        expect(Pathname.new '/tmp/to/bbb').not_to exist
+        expect(Pathname.new '/tmp/to/foo/ccc').not_to exist
+        expect(Pathname.new '/tmp/to/foo/bar/ddd').not_to exist
+        expect(Pathname.new '/tmp/to/foo/bar').not_to exist
+        expect(Pathname.new '/tmp/to/foo').not_to exist
+        expect(Pathname.new '/tmp/to/boo/eee').not_to exist
+        expect(Pathname.new '/tmp/to/boo/fff').to exist # extra file
+        expect(Pathname.new '/tmp/to/boo').to exist # because boo/fff still exists
+        expect(Pathname.new '/tmp/to/baz').not_to exist
+        expect(Pathname.new '/tmp/to').to exist # because boo still exists
+      end
     end
   end
 end

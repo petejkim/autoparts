@@ -29,5 +29,10 @@ module FakeFS
     def self.executable?(filename)
       (FileSystem.find(filename).mode - 0100000) & 0100 != 0
     end
+
+    def self.realpath(pathname, dir_string=null)
+      path = dir_string ? dir_string + pathname : pathname
+      readlink(path)
+    end
   end
 end

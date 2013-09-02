@@ -194,9 +194,23 @@ module Autoparts
         if f.directory? && !f.symlink?
           symlink_recursively f, t
         else
-          execute('rm', '-rf', t) if t.exist?
-          execute 'ln', '-s', f, t
+          t.rmtree if t.exist?
+          t.make_symlink(f)
         end
+      end if from.directory? && from.executable?
+    end
+
+    def unsymlink_recursively(from, to) # Pathname, Pathname
+      if to.exist?
+        from.each_child do |f|
+          t = to + f.basename
+          if f.directory? && !f.symlink?
+            unsymlink_recursively f, t
+          else
+            t.rmtree if t.exist?
+          end
+        end
+        to.rmtree if to.children.empty?
       end if from.directory? && from.executable?
     end
 
@@ -206,14 +220,6 @@ module Autoparts
         execute 'tar -c . | gzip -n >', temporary_archive_path
       end
       execute 'mv', temporary_archive_path, archive_path
-    end
-
-    def symlink_files
-      symlink_recursively(bin_path,     Path.bin)
-      symlink_recursively(sbin_path,    Path.sbin)
-      symlink_recursively(lib_path,     Path.lib)
-      symlink_recursively(include_path, Path.include)
-      symlink_recursively(share_path,   Path.share)
     end
 
     def perform_install(source_install=false)
@@ -262,8 +268,12 @@ module Autoparts
 
         Dir.chdir(prefix_path) do
           post_install
-          puts "=> Symlinking..."
-          symlink_files
+          puts '=> Symlinking...'
+          symlink_recursively(bin_path,     Path.bin)
+          symlink_recursively(sbin_path,    Path.sbin)
+          symlink_recursively(lib_path,     Path.lib)
+          symlink_recursively(include_path, Path.include)
+          symlink_recursively(share_path,   Path.share)
         end
       rescue => e
         archive_path.unlink if e.kind_of? VerificationFailedError
@@ -273,6 +283,22 @@ module Autoparts
         puts "=> Installed #{name} #{version}\n"
         puts tips
       end
+    end
+
+    def perform_uninstall
+      puts '=> Removing symlinks...'
+      unsymlink_recursively(bin_path,     Path.bin)
+      unsymlink_recursively(sbin_path,    Path.sbin)
+      unsymlink_recursively(lib_path,     Path.lib)
+      unsymlink_recursively(include_path, Path.include)
+      unsymlink_recursively(share_path,   Path.share)
+
+      puts '=> Uninstalling...'
+      prefix_path.rmtree if prefix_path.exist?
+      parent = prefix_path.parent
+      parent.rmtree if parent.children.empty?
+
+      puts "=> Uninstalled #{name} #{version}\n"
     end
 
     def archive_installed
