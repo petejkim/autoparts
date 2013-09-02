@@ -27,8 +27,16 @@ module Autoparts
         @@packages ||= {}
       end
 
-      def find(name)
-        packages[name]
+      def factory(name)
+        begin
+          require "autoparts/packages/#{name}"
+        rescue LoadError
+        end
+        if package_class = packages[name]
+          package_class.new
+        else
+          raise Autoparts::PackageNotFoundError.new(name)
+        end
       end
 
       def name(val)

@@ -5,12 +5,9 @@ module Autoparts
         return command(:help).run('start') if args.length == 0
         begin
           args.each do |package_name|
-            require "autoparts/packages/#{package_name}"
-            unless package_class = Package.find(package_name)
-              abort "ERROR: #{package_name} not found."
-            end
+            package = Package.factory(package_name)
             puts "=> Starting #{package_name}..."
-            package_class.new.start
+            package.start
             puts "=> Started: #{package_name}"
           end
         rescue => e

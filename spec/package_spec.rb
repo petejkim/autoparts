@@ -64,10 +64,18 @@ describe Autoparts::Package do
     end
   end
 
-  describe '.find' do
-    it 'finds a package class by name' do
-      expect(described_class.find('foo')).to eq FooPackage
-      expect(described_class.find('bar')).to eq BarPackage
+  describe '.factory' do
+    it 'attempts to load the package file, and creates an instance of package class by a given name' do
+      expect(described_class).to receive(:require).with('autoparts/packages/foo')
+      expect(described_class.factory('foo')).to be_a FooPackage
+
+      expect(described_class).to receive(:require).with('autoparts/packages/bar')
+      expect(described_class.factory('bar')).to be_a BarPackage
+
+      expect(described_class).to receive(:require).with('autoparts/packages/lol')
+      expect {
+        described_class.factory('lol')
+      }.to raise_error Autoparts::PackageNotFoundError, 'Package "lol" not found'
     end
   end
 

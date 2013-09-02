@@ -20,11 +20,7 @@ module Autoparts
             unless Package.installed? package_name
               raise PackageNotInstalledError.new package_name
             end
-            require "autoparts/packages/#{package_name}"
-            unless package_class = Package.find(package_name)
-              abort "ERROR: #{package_name} not found."
-            end
-            package_class.new.archive_installed
+            Package.factory(package_name).archive_installed
           end
         rescue => e
           abort "ERROR: #{e}\nAborting!"

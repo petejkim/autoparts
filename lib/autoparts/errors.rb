@@ -14,6 +14,12 @@ module Autoparts
     end
   end
 
+  class PackageNotFoundError < AutopartsError
+    def initialize(name)
+      super("Package \"#{name}\" not found")
+    end
+  end
+
   class PackageNotInstalledError < AutopartsError
     def initialize(name = nil)
       super("Package \"#{name}\" not installed")

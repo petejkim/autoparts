@@ -5,11 +5,7 @@ module Autoparts
         return command(:help).run('install') if args.length == 0
         begin
           args.each do |package_name|
-            require "autoparts/packages/#{package_name}"
-            unless package_class = Package.find(package_name)
-              abort "ERROR: #{package_name} not found."
-            end
-            package_class.new.perform_install(options.source)
+            Package.factory(package_name).perform_install(options.source)
           end
         rescue => e
           abort "ERROR: #{e}\nAborting!"
