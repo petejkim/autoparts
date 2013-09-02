@@ -51,10 +51,10 @@ module Autoparts
             postgres_db_path.rmtree
             raise e
           end
-          postgres_conf_file = postgres_db_path + 'postgresql.conf'
-          execute 'sed', '-i', "\"s|#listen_addresses = 'localhost'|listen_addresses = '127.0.0.1'|g\"", postgres_conf_file
-          execute 'sed', '-i', "\"s|#port = 5432|port = 5432|g\"", postgres_conf_file
-          execute 'sed', '-i', "\"s|#unix_socket_directory = ''|unix_socket_directory = '/tmp'|g\"", postgres_conf_file
+          postgres_conf = postgres_db_path + 'postgresql.conf'
+          execute 'sed', '-i', "s|#listen_addresses = 'localhost'|listen_addresses = '127.0.0.1'|g", postgres_conf
+          execute 'sed', '-i', "s|#port = 5432|port = 5432|g", postgres_conf
+          execute 'sed', '-i', "s|#unix_socket_directory = ''|unix_socket_directory = '/tmp'|g", postgres_conf
           start
           print 'creating database "action"....'
           sleep 1 # even though -w option is given, sometimes we can't connect right away

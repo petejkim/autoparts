@@ -184,7 +184,7 @@ describe Autoparts::Package do
   describe '#execute' do
     context 'when command succeeds' do
       it 'does not raise any error' do
-        expect(foo_package).to receive(:system).with('echo hello world').and_return true
+        expect(foo_package).to receive(:system).with('echo', 'hello', 'world').and_return true
         expect {
           foo_package.execute 'echo', 'hello', 'world'
         }.not_to raise_error
@@ -193,7 +193,7 @@ describe Autoparts::Package do
 
     context 'when command fails' do
       it 'raises ExecutionFailedError' do
-        expect(foo_package).to receive(:system).with('echo foo').and_return false
+        expect(foo_package).to receive(:system).with('echo', 'foo').and_return false
         expect {
           foo_package.execute 'echo', 'foo'
         }.to raise_error Autoparts::ExecutionFailedError, '"echo foo" failed'
@@ -305,16 +305,16 @@ describe Autoparts::Package do
 
       context 'when downloading source code archive to tmp path completes' do
         it 'moves the downloaded file to archive path' do
-          expect(foo_package).to receive(:system).with("curl http://example.com/foo-precompiled.tar.gz -L -o #{foo_package.temporary_archive_path}").and_return true
-          expect(foo_package).to receive(:system).with("mv #{foo_package.temporary_archive_path} #{foo_package.archive_path}").and_return true
+          expect(foo_package).to receive(:system).with('curl', 'http://example.com/foo-precompiled.tar.gz', '-L', '-o', foo_package.temporary_archive_path.to_s).and_return true
+          expect(foo_package).to receive(:system).with('mv', foo_package.temporary_archive_path.to_s, foo_package.archive_path.to_s).and_return true
           foo_package.download_archive
         end
       end
 
       context 'when downloading source code archive fails' do
         it 'does not move the downloaded file to archive path' do
-          expect(foo_package).to receive(:system).with("curl http://example.com/foo-precompiled.tar.gz -L -o #{foo_package.temporary_archive_path}").and_return false
-          expect(foo_package).not_to receive(:system).with("mv #{foo_package.temporary_archive_path} #{foo_package.archive_path}")
+          expect(foo_package).to receive(:system).with('curl', 'http://example.com/foo-precompiled.tar.gz', '-L', '-o', foo_package.temporary_archive_path.to_s).and_return false
+          expect(foo_package).not_to receive(:system).with('mv', foo_package.temporary_archive_path.to_s, foo_package.archive_path.to_s)
           expect {
             foo_package.download_archive
           }.to raise_error
@@ -330,16 +330,16 @@ describe Autoparts::Package do
 
       context 'when downloading pre-compiled binary archive to tmp path completes' do
         it 'moves the downloaded file to archive path' do
-          expect(foo_package).to receive(:system).with("curl http://example.com/foo.tar.gz -L -o #{foo_package.temporary_archive_path}").and_return true
-          expect(foo_package).to receive(:system).with("mv #{foo_package.temporary_archive_path} #{foo_package.archive_path}").and_return true
+          expect(foo_package).to receive(:system).with('curl', 'http://example.com/foo.tar.gz', '-L', '-o', foo_package.temporary_archive_path.to_s).and_return true
+          expect(foo_package).to receive(:system).with('mv', foo_package.temporary_archive_path.to_s, foo_package.archive_path.to_s).and_return true
           foo_package.download_archive
         end
       end
 
       context 'when downloading pre-compiled binary fails' do
         it 'does not move the downloaded file to archive path' do
-          expect(foo_package).to receive(:system).with("curl http://example.com/foo.tar.gz -L -o #{foo_package.temporary_archive_path}").and_return false
-          expect(foo_package).not_to receive(:system).with("mv #{foo_package.temporary_archive_path} #{foo_package.archive_path}")
+          expect(foo_package).to receive(:system).with('curl', 'http://example.com/foo.tar.gz', '-L', '-o', foo_package.temporary_archive_path.to_s).and_return false
+          expect(foo_package).not_to receive(:system).with('mv', foo_package.temporary_archive_path.to_s, foo_package.archive_path.to_s)
           expect {
             foo_package.download_archive
           }.to raise_error
@@ -412,7 +412,7 @@ describe Autoparts::Package do
 
       it 'untars the precompiled binary archive' do
         expect(Dir).to receive(:chdir).with(foo_package.extracted_archive_path).and_yield
-        expect(foo_package).to receive(:system).with("tar xf #{foo_package.archive_path}").and_return true
+        expect(foo_package).to receive(:system).with('tar', 'xf', foo_package.archive_path.to_s).and_return true
         foo_package.extract_archive
       end
     end
@@ -428,7 +428,7 @@ describe Autoparts::Package do
 
           it 'untars the source code archive' do
             expect(Dir).to receive(:chdir).with(foo_package.extracted_archive_path).and_yield
-            expect(foo_package).to receive(:system).with("tar xf #{foo_package.archive_path}").and_return true
+            expect(foo_package).to receive(:system).with('tar', 'xf', foo_package.archive_path.to_s).and_return true
             foo_package.extract_archive
           end
         end
@@ -441,7 +441,7 @@ describe Autoparts::Package do
 
         it 'unzips the source code archive' do
           expect(Dir).to receive(:chdir).with(foo_package.extracted_archive_path).and_yield
-          expect(foo_package).to receive(:system).with("unzip -qq #{foo_package.archive_path}").and_return true
+          expect(foo_package).to receive(:system).with('unzip', '-qq', foo_package.archive_path.to_s).and_return true
           foo_package.extract_archive
         end
       end
@@ -459,11 +459,11 @@ describe Autoparts::Package do
     end
 
     it 'recursively creates symlinks of all files and directories under a given directory' do
-      expect(foo_package).to receive(:system).with('ln -s /tmp/from/baz /tmp/to/baz').and_return true
-      expect(foo_package).to receive(:system).with('ln -s /tmp/from/aaa /tmp/to/aaa').and_return true
-      expect(foo_package).to receive(:system).with('ln -s /tmp/from/bbb /tmp/to/bbb').and_return true
-      expect(foo_package).to receive(:system).with('ln -s /tmp/from/foo/ccc /tmp/to/foo/ccc').and_return true
-      expect(foo_package).to receive(:system).with('ln -s /tmp/from/foo/bar/ddd /tmp/to/foo/bar/ddd').and_return true
+      expect(foo_package).to receive(:system).with('ln', '-s', '/tmp/from/baz', '/tmp/to/baz').and_return true
+      expect(foo_package).to receive(:system).with('ln', '-s', '/tmp/from/aaa', '/tmp/to/aaa').and_return true
+      expect(foo_package).to receive(:system).with('ln', '-s', '/tmp/from/bbb', '/tmp/to/bbb').and_return true
+      expect(foo_package).to receive(:system).with('ln', '-s', '/tmp/from/foo/ccc', '/tmp/to/foo/ccc').and_return true
+      expect(foo_package).to receive(:system).with('ln', '-s', '/tmp/from/foo/bar/ddd', '/tmp/to/foo/bar/ddd').and_return true
 
       expect(Pathname.new('/tmp/to')).not_to exist
       foo_package.symlink_recursively Pathname.new('/tmp/from'), Pathname.new('/tmp/to')

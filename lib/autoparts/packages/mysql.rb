@@ -35,9 +35,10 @@ module Autoparts
       def install
         Dir.chdir('mysql-5.6.13') do
           execute 'make install'
-          execute "ln -s #{prefix_path}/support-files/mysql.server #{bin_path}/"
-          execute "rm -rf #{prefix_path}/data"
-          execute "rm -rf #{prefix_path}/mysql-test"
+          execute 'rm', '-rf', "#{bin_path}/mysql.server"
+          execute 'ln', '-s', "#{prefix_path}/support-files/mysql.server", "#{bin_path}/"
+          execute 'rm', '-rf', "#{prefix_path}/data"
+          execute 'rm', '-rf', "#{prefix_path}/mysql-test"
         end
       end
 

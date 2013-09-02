@@ -130,9 +130,9 @@ module Autoparts
     end
 
     def execute(*args)
-      cmd = args.join ' '
-      unless system cmd
-        raise ExecutionFailedError.new cmd
+      args = args.map(&:to_s)
+      unless system(*args)
+        raise ExecutionFailedError.new args.join(' ')
       end
     end
 

@@ -30,11 +30,11 @@ module Autoparts
           execute 'cp', 'sentinel.conf', (prefix_path + 'sentinel.example.conf')
           execute 'cp', 'redis.conf', redis_example_conf_path
 
-          execute "sed -i 's|daemonize no|daemonize yes|g' #{redis_example_conf_path}"
-          execute "sed -i 's|pidfile /var/run/redis.pid|pidfile #{redis_pid_file_path}|g' #{redis_example_conf_path}"
-          execute "sed -i 's|logfile stdout|logfile #{redis_log_path + 'redis.log'}|g' #{redis_example_conf_path}"
-          execute "sed -i 's|dir \./|dir #{redis_var_path}|g' #{redis_example_conf_path}"
-          execute "sed -i 's|# bind 127.0.0.1|bind 127.0.0.1|g' #{redis_example_conf_path}"
+          execute 'sed', '-i', "s|daemonize no|daemonize yes|g", redis_example_conf_path
+          execute 'sed', '-i', "s|pidfile /var/run/redis.pid|pidfile #{redis_pid_file_path}|g", redis_example_conf_path
+          execute 'sed', '-i', "s|logfile stdout|logfile #{redis_log_path + 'redis.log'}|g", redis_example_conf_path
+          execute 'sed', '-i', "s|dir \./|dir #{redis_var_path}|g", redis_example_conf_path
+          execute 'sed', '-i', "s|# bind 127.0.0.1|bind 127.0.0.1|g", redis_example_conf_path
         end
       end
 
