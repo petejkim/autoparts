@@ -7,7 +7,8 @@ module Autoparts
       end
 
       def root
-        Pathname.new File.expand_path('../../../..', __FILE__)
+        path = File.expand_path(ENV['AUTOPARTS_ROOT'] || '~/.parts')
+        mkpath(Pathname.new path)
       end
 
       def archives; mkpath(root + 'archives') end
