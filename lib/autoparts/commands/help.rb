@@ -16,6 +16,7 @@ module Autoparts
             parts start PACKAGE...        # Start one or many services provided by packages
             parts stop PACKAGE...         # Stop one or many services provided by packages
             parts restart PACKAGE...      # Restart one or many services provided by packages
+            parts update                  # Update Autoparts
         EOS
       end
     end
