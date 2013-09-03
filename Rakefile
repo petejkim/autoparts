@@ -4,7 +4,10 @@ require 'bundler'
 Bundler.setup
 
 lib = File.expand_path('../lib', __FILE__)
-$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+vendor = File.expand_path('../vendor', __FILE__)
+[lib, vendor].each do |d|
+  $LOAD_PATH.unshift(d) unless $LOAD_PATH.include?(d)
+end
 
 require 'rspec/core/rake_task'
 

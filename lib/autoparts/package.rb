@@ -1,4 +1,4 @@
-require 'unindent'
+require 'unindent/unindent'
 require 'etc'
 
 module Autoparts

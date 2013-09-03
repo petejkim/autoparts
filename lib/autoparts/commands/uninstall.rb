@@ -2,7 +2,12 @@ module Autoparts
   module Commands
     class Uninstall
       def initialize(args, options)
-        return command(:help).run('uninstall') if args.length == 0
+        if args.empty?
+          abort <<-EOS.unindent
+            Usage: parts uninstall PACKAGE...
+            Example: parts uninstall postgresql
+          EOS
+        end
         begin
           args.each do |package_name|
             unless Package.installed? package_name
@@ -11,7 +16,7 @@ module Autoparts
             Package.factory(package_name).perform_uninstall
           end
         rescue => e
-          abort "ERROR: #{e}\nAborting!"
+          abort "parts: ERROR: #{e}\nAborting!"
         end
       end
     end

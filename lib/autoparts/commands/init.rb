@@ -1,10 +1,10 @@
-require 'unindent'
+require 'unindent/unindent'
 
 module Autoparts
   module Commands
     class Init
       def initialize(args, options)
-        if args[0] != '-'
+        if options[0] != '-'
           profile = case ENV['SHELL']
           when /bash/
             '~/.bashrc'

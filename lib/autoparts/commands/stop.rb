@@ -2,7 +2,12 @@ module Autoparts
   module Commands
     class Stop
       def initialize(args, options)
-        return command(:help).run('stop') if args.length == 0
+        if args.empty?
+          abort <<-EOS.unindent
+            Usage: parts stop PACKAGE...
+            Example: parts stop postgresql
+          EOS
+        end
         begin
           args.each do |package_name|
             package = Package.factory(package_name)
@@ -11,7 +16,7 @@ module Autoparts
             puts "=> Stopped: #{package_name}"
           end
         rescue => e
-          abort "ERROR: #{e}\nAborting!"
+          abort "parts: ERROR: #{e}\nAborting!"
         end
       end
     end

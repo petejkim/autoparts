@@ -1,130 +1,37 @@
 #!/usr/bin/env ruby
 
 require 'pathname'
+
 EXECUTABLE_PATH = Pathname.new(__FILE__).realpath
 PROJECT_ROOT = File.expand_path('../..', EXECUTABLE_PATH)
 
-require 'rubygems'
-require 'bundler'
-
-Dir.chdir(PROJECT_ROOT) { Bundler.setup }
-
 lib = File.join(PROJECT_ROOT, 'lib')
-$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+vendor = File.join(PROJECT_ROOT, 'vendor')
+[lib, vendor].each do |d|
+  $LOAD_PATH.unshift(d) unless $LOAD_PATH.include?(d)
+end
 
 require 'autoparts'
-require 'commander/import'
 
-program :version, Autoparts::VERSION
-program :description, 'Autoparts: A Package Manager for Nitrous.IO'
+cli = Autoparts::CLIParser.new(ARGV)
 
-command :init do |c|
-  c.syntax = 'eval "$(parts init -)"'
-  c.summary = 'Setup environment variables for Autoparts.'
-  c.description = 'Setup environment variables for Autoparts.'
-  c.example 'Init', 'eval "$(parts init -)"'
-  c.action Autoparts::Commands::Init
+commands = {
+  'help'      => Autoparts::Commands::Help,
+  'init'      => Autoparts::Commands::Init,
+  'install'   => Autoparts::Commands::Install,
+  'list'      => Autoparts::Commands::List,
+  'restart'   => Autoparts::Commands::Restart,
+  'start'     => Autoparts::Commands::Start,
+  'stop'      => Autoparts::Commands::Stop,
+  'uninstall' => Autoparts::Commands::Uninstall
+}
+
+unless ENV['AUTOPARTS_DEV'].nil?
+  commands['archive'] = Autoparts::Commands::Archive
 end
 
-command :list do |c|
-  c.syntax = 'parts list'
-  c.summary = 'List installed packages.'
-  c.description = 'List installed packages.'
-  c.example 'List', 'parts list'
-  c.action Autoparts::Commands::List
+if command = commands[cli.command || 'help']
+  command.new(cli.args, cli.options)
+else
+  abort "parts: no such command \"#{cli.command}\""
 end
-
-command :install do |c|
-  c.syntax = 'parts install PACKAGE_NAME'
-  c.summary = 'Install a package.'
-  c.description = 'Install a package.'
-  c.example 'Install MySQL', 'parts install mysql'
-  c.option '--source', 'Install from source'
-  c.action Autoparts::Commands::Install
-end
-
-command :uninstall do |c|
-  c.syntax = 'parts uninstall PACKAGE_NAME'
-  c.summary = 'Uninstall an installed package.'
-  c.description = 'Uninstall an installed package.'
-  c.example 'Uninstall PostgreSQL', 'parts uninstall postgresql'
-  c.action Autoparts::Commands::Uninstall
-end
-
-if ENV['AUTOPARTS_DEV'] == '1'
-  command :archive do |c|
-    c.syntax = 'parts archive PACKAGE_NAME'
-    c.summary = 'Archives an installed package as a downloadable pre-compiled binary.'
-    c.description = 'Archives an installed package as a downloadable pre-compiled binary.'
-    c.example 'Archive MySQL', 'parts archive mysql'
-    c.action Autoparts::Commands::Archive
-  end
-end
-
-command :start do |c|
-  c.syntax = 'parts start PACKAGE_NAME'
-  c.summary = 'Start a service.'
-  c.description = 'Start a service.'
-  c.example 'Start MongoDB server', 'parts start mongodb'
-  c.action Autoparts::Commands::Start
-end
-
-command :stop do |c|
-  c.syntax = 'parts stop PACKAGE_NAME'
-  c.summary = 'Stop a service.'
-  c.description = 'Stop a service.'
-  c.example 'Stop MongoDB server', 'parts stop mongodb'
-  c.action Autoparts::Commands::Stop
-end
-
-command :restart do |c|
-  c.syntax = 'parts restart PACKAGE_NAME'
-  c.summary = 'Restart a service.'
-  c.description = 'Restart a service.'
-  c.example 'Restart MongoDB server', 'parts restart mongodb'
-  c.action Autoparts::Commands::Restart
-end
-
-#command :update do |c|
-  #c.syntax = 'parts update [options]'
-  #c.summary = ''
-  #c.description = ''
-  #c.example 'description', 'command example'
-  #c.option '--some-switch', 'Some switch that does something'
-  #c.action do |args, options|
-    ## Do something or c.when_called Autoparts::Commands::Update
-  #end
-#end
-
-#command :upgrade do |c|
-  #c.syntax = 'parts upgrade [options]'
-  #c.summary = ''
-  #c.description = ''
-  #c.example 'description', 'command example'
-  #c.option '--some-switch', 'Some switch that does something'
-  #c.action do |args, options|
-    ## Do something or c.when_called Autoparts::Commands::Upgrade
-  #end
-#end
-
-#command :search do |c|
-  #c.syntax = 'parts search [options]'
-  #c.summary = ''
-  #c.description = ''
-  #c.example 'description', 'command example'
-  #c.option '--some-switch', 'Some switch that does something'
-  #c.action do |args, options|
-    ## Do something or c.when_called Autoparts::Commands::Search
-  #end
-#end
-
-#command :info do |c|
-  #c.syntax = 'parts info [options]'
-  #c.summary = ''
-  #c.description = ''
-  #c.example 'description', 'command example'
-  #c.option '--some-switch', 'Some switch that does something'
-  #c.action do |args, options|
-    ## Do something or c.when_called Autoparts::Commands::Info
-  #end
-#end

@@ -1,6 +1,7 @@
 require 'fakefs/safe'
 
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
+$LOAD_PATH.unshift File.expand_path('../../vendor', __FILE__)
 require 'autoparts'
 
 RSpec.configure do |config|

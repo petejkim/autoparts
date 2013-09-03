@@ -11,14 +11,7 @@ Autoparts - A Package Manager for Nitrous.IO
    $ git clone https://github.com/action-io/autoparts.git ~/.parts/autoparts
    ```
 
-2. Run bundler in `~/.parts/autoparts`
-
-    ```sh
-    $ cd ~/.parts/autoparts
-    .parts/autoparts $ bundle install --path .bundle
-    ```
-
-3. Add `~/.parts/autoparts/bin` to your `$PATH` for access to the
+2. Add `~/.parts/autoparts/bin` to your `$PATH` for access to the
    `parts` command-line utility.
 
     **bash:**
@@ -31,7 +24,7 @@ Autoparts - A Package Manager for Nitrous.IO
     $ echo 'export PATH="$HOME/.parts/autoparts/bin:$PATH"' >> ~/.zshrc
     ```
 
-4. Add `parts init` to your shell to load environment variables required
+3. Add `parts init` to your shell to load environment variables required
    by Autoparts.
 
     **bash:**
@@ -44,7 +37,7 @@ Autoparts - A Package Manager for Nitrous.IO
     $ echo 'eval "$(parts init -)"' >> ~/.zshrc
     ```
 
-5. Restart your shell to load changes.
+4. Restart your shell to load changes.
     You can now begin using Autoparts.
 
     ```sh

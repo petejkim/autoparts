@@ -1,19 +1,24 @@
-require 'unindent'
+require 'unindent/unindent'
 
 module Autoparts
   module Commands
     class Archive
       def initialize(args, options)
-        return command(:help).run('archive') if args.length == 0
+        if args.empty?
+          abort <<-EOS.unindent
+            Usage: parts archive PACKAGE...
+            Example: parts archive postgresql
+          EOS
+        end
         unless Util.binary_package_compatible?
-          abort <<-STR.unindent
-            ERROR: This system is incompatible with Nitrous.IO binary packages.
+          abort <<-EOS.unindent
+            parts: ERROR: This system is incompatible with Nitrous.IO binary packages.
 
             Requirements:
             - Architecture must be x86_64
             - Username must be "action"
             - Packages must be installed into '/home/action/.parts/packages'
-          STR
+          EOS
         end
         begin
           args.each do |package_name|
@@ -23,7 +28,7 @@ module Autoparts
             Package.factory(package_name).archive_installed
           end
         rescue => e
-          abort "ERROR: #{e}\nAborting!"
+          abort "parts: ERROR: #{e}\nAborting!"
         end
       end
     end
