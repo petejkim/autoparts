@@ -44,12 +44,10 @@ Autoparts - A Package Manager for Nitrous.IO
     $ exec $SHELL -l
     ```
 
-### TODO
+### Usage
 
-* Install Script
-* Dependency Tracking (dsl: depends\_on)
-* Package mutual exclusion (dsl: conflicts\_with)
-* don't move download if sha1 verification fails
+See `parts help`.
 
+- - -
 Copyright (c) 2013 Irrational Industries Inc.
 This software is licensed under the BSD 2-Clause license.
