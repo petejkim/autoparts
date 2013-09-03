@@ -3,6 +3,7 @@ module Autoparts
     class Redis < Package
       name 'redis'
       version '2.6.16'
+      description 'Redis: An open-source, in-memory, key-value data store'
       source_url 'http://download.redis.io/releases/redis-2.6.16.tar.gz'
       source_sha1 'f94c0f623aaa8c310f9be2a88e81716de01ce0ce'
       source_filetype 'tar.gz'

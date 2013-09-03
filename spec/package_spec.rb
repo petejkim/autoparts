@@ -4,6 +4,7 @@ require 'fileutils'
 class FooPackage < Autoparts::Package
   name 'foo'
   version '1.0'
+  description "foo package"
   source_url 'http://example.com/foo.tar.gz'
   source_sha1 'f00f00f00f00f00f00f00f00f00f00f00f00f00f'
   source_filetype 'tar.gz'
@@ -14,6 +15,7 @@ end
 class BarPackage < Autoparts::Package
   name 'bar'
   version '2.0'
+  description "bar bar black sheep"
   source_url 'http://example.com/bar.zip'
   source_sha1 'babababababababababababababababababababa'
   source_filetype 'zip'
@@ -90,6 +92,13 @@ describe Autoparts::Package do
     it 'returns the version set using the DSL keyword "version"' do
       expect(foo_package.version).to eq '1.0'
       expect(bar_package.version).to eq '2.0'
+    end
+  end
+
+  describe '#description' do
+    it 'returns the description set using the DSL keyword "description"' do
+      expect(foo_package.description).to eq 'foo package'
+      expect(bar_package.description).to eq 'bar bar black sheep'
     end
   end
 

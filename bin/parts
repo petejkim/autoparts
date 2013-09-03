@@ -21,6 +21,7 @@ commands = {
   'install'   => Autoparts::Commands::Install,
   'list'      => Autoparts::Commands::List,
   'restart'   => Autoparts::Commands::Restart,
+  'search'    => Autoparts::Commands::Search,
   'start'     => Autoparts::Commands::Start,
   'stop'      => Autoparts::Commands::Stop,
   'uninstall' => Autoparts::Commands::Uninstall,

@@ -3,6 +3,7 @@ module Autoparts
     class PostgreSQL < Package
       name 'postgresql'
       version '9.2.4'
+      description "PostgreSQL: The world's most advanced open-source database system"
       source_url 'http://ftp.postgresql.org/pub/source/v9.2.4/postgresql-9.2.4.tar.gz'
       source_sha1 'bb248bd2043caf47f2b43c874bf11d775f99e991'
       source_filetype 'tar.gz'

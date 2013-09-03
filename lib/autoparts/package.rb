@@ -48,6 +48,10 @@ module Autoparts
         @version = val
       end
 
+      def description(val)
+        @description = val
+      end
+
       def source_url(val)
         @source_url = val
       end
@@ -79,6 +83,10 @@ module Autoparts
 
     def version
       self.class.instance_variable_get(:@version)
+    end
+
+    def description
+      self.class.instance_variable_get(:@description)
     end
 
     def name_with_version

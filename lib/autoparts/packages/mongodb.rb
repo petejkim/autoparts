@@ -3,6 +3,7 @@ module Autoparts
     class MongoDB < Package
       name 'mongodb'
       version '2.4.6'
+      description 'MongoDB: A cross-platform document-oriented NoSQL database system'
       source_url 'http://fastdl.mongodb.org/linux/mongodb-linux-x86_64-2.4.6.tgz'
       source_sha1 '428c67a23d7775d7972fd45509671f8662e014a3'
       source_filetype 'tar.gz'
