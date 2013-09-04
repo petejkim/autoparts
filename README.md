@@ -11,6 +11,10 @@ instructions below:
 
 * A **"bran"** box. Some packages may not work correctly in **"arya"**
   boxes. All new boxes created should now be **"bran"** boxes.
+
+  ![Bran
+  box](https://raw.github.com/action-io/action-assets/a7d29cbd686f2269ac930c01a8928accd19a0b89/support/screenshots/bran-box.png)
+
 * Some packages may require 512MB RAM or more.
 
 ### Automatic Installtion
