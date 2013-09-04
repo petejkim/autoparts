@@ -225,7 +225,7 @@ module Autoparts
     def archive_installed_package
       @source_install = false
       Dir.chdir(prefix_path) do
-        execute 'tar -c . | gzip -n >', temporary_archive_path
+        execute "tar -c . | gzip -n > #{temporary_archive_path}"
       end
       execute 'mv', temporary_archive_path, archive_path
     end
