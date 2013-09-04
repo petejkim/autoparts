@@ -15,6 +15,8 @@ module Autoparts
             package.start
             puts "=> Started: #{package_name}"
           end
+        rescue StartFailedError => e
+          abort "parts: #{e}"
         rescue => e
           abort "parts: ERROR: #{e}\nAborting!"
         end

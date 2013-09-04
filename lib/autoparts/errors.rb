@@ -25,4 +25,16 @@ module Autoparts
       super("Package \"#{name}\" not installed")
     end
   end
+
+  class StartFailedError < AutopartsError
+    def initialize(reason)
+      super("Failed to start: #{reason}")
+    end
+  end
+
+  class StopFailedError < AutopartsError
+    def initialize(reason)
+      super("Failed to stop: #{reason}")
+    end
+  end
 end

@@ -80,7 +80,7 @@ module Autoparts
             redis_pid_file_path.unlink
           end
         else
-          abort "parts: #{name} does not seem to be running."
+          raise StopFailedError.new("#{name} does not seem to be running.")
         end
       end
 

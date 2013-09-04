@@ -15,6 +15,8 @@ module Autoparts
             package.stop
             puts "=> Stopped: #{package_name}"
           end
+        rescue StopFailedError => e
+          abort "parts: #{e}"
         rescue => e
           abort "parts: ERROR: #{e}\nAborting!"
         end
