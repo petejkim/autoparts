@@ -1,9 +1,27 @@
 Autoparts - A Package Manager for Nitrous.IO
 ============================================
 
-## EXPERIMENTAL - WORK IN PROGRESS
+#### EXPERIMENTAL - WORK IN PROGRESS
 
-### Installation
+Once Autoparts is stable and throughly tested, it will come preinstalled
+on all Nitrous.IO boxes. If you want to help test Autoparts, follow the
+instructions below:
+
+### Requirements
+
+* A **"bran"** box. Some packages may not work correctly in **"arya"**
+  boxes. All new boxes created should now be **"bran"** boxes.
+* Some packages may require 512MB RAM or more.
+
+### Automatic Installtion
+
+Enter the following into your boxes' terminal:
+
+```sh
+ruby -e "$(curl -fsSL https://raw.github.com/action-io/autoparts/master/setup.rb)"
+```
+
+### Manual Installation
 
 1. Check out Autoparts into `~/.parts/autoparts`
 
