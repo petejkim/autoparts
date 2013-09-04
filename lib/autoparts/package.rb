@@ -294,6 +294,8 @@ module Autoparts
     end
 
     def perform_uninstall
+      puts '=> Stopping'
+      stop
       puts '=> Removing symlinks...'
       unsymlink_recursively(bin_path,     Path.bin)
       unsymlink_recursively(sbin_path,    Path.sbin)
