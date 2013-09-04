@@ -116,6 +116,16 @@ module Autoparts
           raise StopFailedError.new("#{name} does not seem to be running.")
         end
       end
+
+      def tips
+        <<-EOS.unindent
+          To start the server:
+            $ parts start memcached
+
+          To stop the server:
+            $ parts stop memcached
+        EOS
+      end
     end
   end
 end
