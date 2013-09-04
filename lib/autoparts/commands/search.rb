@@ -4,7 +4,7 @@ module Autoparts
       def initialize(args, options)
         begin
           Pathname.new("#{PROJECT_ROOT}/lib/autoparts/packages").children.sort.each do |f|
-            require "autoparts/packages/#{f.basename.sub_ext('')}"
+            require "autoparts/packages/#{f.basename.sub_ext('')}" if f.extname == '.rb'
           end
         rescue LoadError
         end
