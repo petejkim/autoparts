@@ -77,7 +77,10 @@ module Autoparts
           pid = File.read(redis_pid_file_path).strip
           if pid.length > 0
             execute 'kill', pid
+            redis_pid_file_path.unlink
           end
+        else
+          abort "parts: #{name} does not seem to be running."
         end
       end
 
