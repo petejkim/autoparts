@@ -37,8 +37,8 @@ See `parts help`.
   `Path.etc + name` (e.g. `~/.parts/etc/postgresql`).
 * Data files (e.g. database files) should be placed in `Path.var + name`
   (e.g. `~/.parts/var/postgresql`).
-* Log files should be placed in `Path.var + 'log' + name` (e.g.
-  `~/.parts/var/log/postgresql`).
+* Log files should be placed in `Path.var + 'log' + "#{name}.log"` (e.g.
+  `~/.parts/var/log/postgresql.log`).
 
 - - -
 Copyright (c) 2013 Irrational Industries Inc.
