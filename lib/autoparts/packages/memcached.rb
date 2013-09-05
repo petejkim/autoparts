@@ -108,13 +108,19 @@ module Autoparts
       def stop
         if memcached_pid_file_path.exist?
           pid = File.read(memcached_pid_file_path).strip
-          if pid.length > 0
+          # check if pid actually belongs to memcached process
+          if pid.length > 0 && `ps -o cmd= #{pid}`.include?(memcached_path.basename.to_s)
             execute 'kill', pid
-            memcached_pid_file_path.unlink
+            # wait until process is killed
+            sleep 0.2 while system 'kill', '-0', pid, out: '/dev/null', err: '/dev/null'
+            # the pid file isn't removed automatically, so delete it
+            memcached_pid_file_path.unlink if memcached_pid_file_path.exist?
+            return
           end
-        else
-          raise StopFailedError.new("#{name} does not seem to be running.")
+          # pid belongs to some other process. just delete pid file.
+          memcached_pid_file_path.unlink
         end
+        raise StopFailedError.new("#{name} does not seem to be running.")
       end
 
       def tips
