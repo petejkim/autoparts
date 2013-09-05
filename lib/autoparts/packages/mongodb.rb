@@ -65,12 +65,10 @@ module Autoparts
       end
 
       def start
-        raise StartFailedError.new "#{name} is already running." if running?
         execute mongod_path, '--fork', '--config', mongodb_conf_path
       end
 
       def stop
-        raise StopFailedError.new "#{name} does not seem to be running." unless running?
         execute mongod_path, '--shutdown', '--config', mongodb_conf_path
         mongod_pid_file_path.unlink if mongod_pid_file_path.exist?
       end

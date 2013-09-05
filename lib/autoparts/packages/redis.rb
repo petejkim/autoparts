@@ -77,20 +77,15 @@ module Autoparts
       end
 
       def start
-        raise StartFailedError.new "#{name} is already running." if running?
         execute redis_server_path, redis_conf_path
       end
 
       def stop
-        if running?
-          pid = read_redis_pid_file
-          execute 'kill', pid
-          # wait until process is killed
-          sleep 0.2 while system 'kill', '-0', pid, out: '/dev/null', err: '/dev/null'
-          return
-        end
+        pid = read_redis_pid_file
+        execute 'kill', pid
+        # wait until process is killed
+        sleep 0.2 while system 'kill', '-0', pid, out: '/dev/null', err: '/dev/null'
         redis_pid_file_path.unlink if redis_pid_file_path.exist?
-        raise StopFailedError.new "#{name} does not seem to be running."
       end
 
       def running?

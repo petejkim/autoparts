@@ -12,6 +12,7 @@ module Autoparts
           args.each do |package_name|
             package = Package.factory(package_name)
             puts "=> Stopping #{package_name}..."
+            raise StopFailedError.new "#{name} does not seem to be running." unless package.running?
             package.stop
             puts "=> Stopped: #{package_name}"
           end

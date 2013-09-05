@@ -12,6 +12,7 @@ module Autoparts
           args.each do |package_name|
             package = Package.factory(package_name)
             puts "=> Starting #{package_name}..."
+            raise StartFailedError.new "#{name} is already running." if package.running?
             package.start
             puts "=> Started: #{package_name}"
           end

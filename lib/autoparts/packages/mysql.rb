@@ -64,12 +64,10 @@ module Autoparts
       end
 
       def start
-        raise StartFailedError.new "#{name} is already running." if running?
         execute mysql_server_path, 'start'
       end
 
       def stop
-        raise StopFailedError.new "#{name} does not seem to be running." unless running?
         execute mysql_server_path, 'stop'
       end
 
