@@ -36,7 +36,7 @@ module Autoparts
       def install
         Dir.chdir('mysql-5.6.13') do
           execute 'make install'
-          execute 'rm', '-rf', "#{bin_path}/mysql.server"
+          execute 'rm', '-rf', mysql_server_path
           execute 'ln', '-s', "#{prefix_path}/support-files/mysql.server", "#{bin_path}/"
           execute 'rm', '-rf', "#{prefix_path}/data"
           execute 'rm', '-rf', "#{prefix_path}/mysql-test"
@@ -59,12 +59,22 @@ module Autoparts
         end
       end
 
+      def mysql_server_path
+        bin_path + 'mysql.server'
+      end
+
       def start
-        execute "#{bin_path}/mysql.server", 'start'
+        raise StartFailedError.new "#{name} is already running." if running?
+        execute mysql_server_path, 'start'
       end
 
       def stop
-        execute "#{bin_path}/mysql.server", 'stop'
+        raise StopFailedError.new "#{name} does not seem to be running." unless running?
+        execute mysql_server_path, 'stop'
+      end
+
+      def running?
+        !!system(mysql_server_path.to_s, 'status', out: '/dev/null', err: '/dev/null')
       end
 
       def tips
