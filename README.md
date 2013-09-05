@@ -29,6 +29,17 @@ exec $SHELL -l
 
 See `parts help`.
 
+### Package Guidelines
+
+* Post-installation setup tasks (e.g. creating conf file, generating
+  empty database file) should be done in `post_install` method.
+* Configuration files should be placed in `Path.etc` (e.g. `~/.parts/etc`) or
+  `Path.etc + name` (e.g. `~/.parts/etc/postgresql`).
+* Data files (e.g. database files) should be placed in `Path.var + name`
+  (e.g. `~/.parts/var/postgresql`).
+* Log files should be placed in `Path.var + 'log' + name` (e.g.
+  `~/.parts/var/log/postgresql`).
+
 - - -
 Copyright (c) 2013 Irrational Industries Inc.
 This software is licensed under the BSD 2-Clause license.
