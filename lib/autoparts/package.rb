@@ -339,6 +339,9 @@ module Autoparts
     def stop
     end
 
+    def running?
+    end
+
     def tips
       ''
     end

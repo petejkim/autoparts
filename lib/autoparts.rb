@@ -14,6 +14,7 @@ require 'autoparts/commands/archive'
 require 'autoparts/commands/start'
 require 'autoparts/commands/stop'
 require 'autoparts/commands/restart'
+require 'autoparts/commands/status'
 require 'autoparts/commands/update'
 
 module Autoparts

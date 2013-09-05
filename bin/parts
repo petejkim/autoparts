@@ -23,6 +23,7 @@ commands = {
   'restart'   => Autoparts::Commands::Restart,
   'search'    => Autoparts::Commands::Search,
   'start'     => Autoparts::Commands::Start,
+  'status'    => Autoparts::Commands::Status,
   'stop'      => Autoparts::Commands::Stop,
   'uninstall' => Autoparts::Commands::Uninstall,
   'update'    => Autoparts::Commands::Update
