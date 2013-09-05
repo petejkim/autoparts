@@ -48,6 +48,10 @@ module Autoparts
         end
       end
 
+      def redis_server_path
+        bin_path + 'redis-server'
+      end
+
       def redis_example_conf_path
         prefix_path + 'redis.example.conf'
       end
@@ -69,19 +73,32 @@ module Autoparts
       end
 
       def start
-        execute "#{bin_path}/redis-server", redis_conf_path
+        # redis-cli returns 0 even if AUTH 0 command fails as long as connection is made
+        if system "#{bin_path}/redis-cli", 'AUTH', '0', out: '/dev/null', err: '/dev/null'
+          raise StartFailedError.new "#{name} is already running."
+        end
+        execute redis_server_path, redis_conf_path
       end
 
       def stop
         if redis_pid_file_path.exist?
           pid = File.read(redis_pid_file_path).strip
-          if pid.length > 0
+          # check if pid actually belongs to redis process
+          if pid.length > 0 && `ps -o cmd= #{pid}`.include?(redis_server_path.basename.to_s)
             execute 'kill', pid
-            redis_pid_file_path.unlink
+            # wait until process is killed
+            sleep 0.2 while system 'kill', '-0', pid, out: '/dev/null', err: '/dev/null'
+            # redis should remove pid file on its own, but delete if it still exists
+            redis_pid_file_path.unlink if redis_pid_file_path.exist?
+            return
           end
-        else
-          raise StopFailedError.new("#{name} does not seem to be running.")
+          # pid belongs to some other process. just delete pid file.
+          redis_pid_file_path.unlink
         end
+        raise StopFailedError.new "#{name} does not seem to be running."
+      end
+
+      def status
       end
 
       def tips
