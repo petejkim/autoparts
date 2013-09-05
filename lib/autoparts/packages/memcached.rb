@@ -96,31 +96,42 @@ module Autoparts
           -l 127.0.0.1
           # Limit the number of simultaneous incoming connections
           -c 200
-          # Pid file
+          # Pid file - Changing this breaks Autoparts process management
           -P #{memcached_pid_file_path}
         EOF
       end
 
+      def read_memcached_pid_file
+        @memcached_pid ||= File.read(memcached_pid_file_path).strip
+      end
+
       def start
+        raise StartFailedError.new "#{name} is already running." if running?
         execute start_memcached_path
       end
 
       def stop
-        if memcached_pid_file_path.exist?
-          pid = File.read(memcached_pid_file_path).strip
-          # check if pid actually belongs to memcached process
-          if pid.length > 0 && `ps -o cmd= #{pid}`.include?(memcached_path.basename.to_s)
-            execute 'kill', pid
-            # wait until process is killed
-            sleep 0.2 while system 'kill', '-0', pid, out: '/dev/null', err: '/dev/null'
-            # the pid file isn't removed automatically, so delete it
-            memcached_pid_file_path.unlink if memcached_pid_file_path.exist?
-            return
-          end
-          # pid belongs to some other process. just delete pid file.
+        if running?
+          pid = read_memcached_pid_file
+          execute 'kill', pid
+          # wait until process is killed
+          sleep 0.2 while system 'kill', '-0', pid, out: '/dev/null', err: '/dev/null'
+          # the pid file isn't removed automatically, so delete it
           memcached_pid_file_path.unlink
+          return
         end
-        raise StopFailedError.new("#{name} does not seem to be running.")
+        memcached_pid_file_path.unlink if memcached_pid_file_path.exist?
+        raise StopFailedError.new "#{name} does not seem to be running."
+      end
+
+      def running?
+        if memcached_pid_file_path.exist?
+          pid = read_memcached_pid_file
+          if pid.length > 0 && `ps -o cmd= #{pid}`.include?(memcached_path.basename.to_s)
+            return true
+          end
+        end
+        false
       end
 
       def tips
