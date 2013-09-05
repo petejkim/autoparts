@@ -71,20 +71,30 @@ module Autoparts
         end
       end
 
-      def start
-        execute "#{bin_path}/pg_ctl", '-D', postgres_db_path, '-l', "#{postgres_log_path}/postgresql.log", '-w', 'start'
-      end
-
-      def stop
-        execute "#{bin_path}/pg_ctl", '-D', postgres_db_path, 'stop'
-      end
-
       def postgres_db_path
         Path.var + 'postgresql'
       end
 
       def postgres_log_path
         Path.var + 'log' + 'postgresql'
+      end
+
+      def pg_ctl_path
+        Path.bin + 'pg_ctl'
+      end
+
+      def start
+        raise StartFailedError.new "#{name} is already running." if running?
+        execute pg_ctl_path, '-D', postgres_db_path, '-l', "#{postgres_log_path}/postgresql.log", '-w', 'start'
+      end
+
+      def stop
+        raise StopFailedError.new "#{name} does not seem to be running." unless running?
+        execute pg_ctl_path, '-D', postgres_db_path, 'stop'
+      end
+
+      def running?
+        !!system(pg_ctl_path.to_s, '-D', postgres_db_path.to_s, 'status', out: '/dev/null', err: '/dev/null')
       end
 
       def tips
