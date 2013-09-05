@@ -48,10 +48,15 @@ module Autoparts
         Path.var + 'log' + 'mongodb'
       end
 
+      def mongod_pid_file_path
+        mongodb_var_path + 'mongod.pid'
+      end
+
       def mongodb_conf_file
         <<-EOF.unindent
+          # Changing the following settings may break Autoparts process management
           dbpath = #{mongodb_var_path}
-          pidfilepath = #{mongodb_var_path}/mongod.pid
+          pidfilepath = #{mongod_pid_file_path}
           logpath = #{mongodb_log_path}/mongod.log
           logappend = true
           bind_ip = 127.0.0.1
@@ -60,11 +65,24 @@ module Autoparts
       end
 
       def start
+        raise StartFailedError.new "#{name} is already running." if running?
         execute mongod_path, '--fork', '--config', mongodb_conf_path
       end
 
       def stop
+        raise StopFailedError.new "#{name} does not seem to be running." unless running?
         execute mongod_path, '--shutdown', '--config', mongodb_conf_path
+        mongod_pid_file_path.unlink if mongod_pid_file_path.exist?
+      end
+
+      def running?
+        if mongod_pid_file_path.exist?
+          pid = File.read(mongod_pid_file_path).strip
+          if pid.length > 0 && `ps -o cmd= #{pid}`.include?(mongod_path.basename.to_s)
+            return true
+          end
+        end
+        false
       end
 
       def tips
