@@ -7,7 +7,7 @@ module Autoparts
       source_url 'http://memcached.googlecode.com/files/memcached-1.4.15.tar.gz'
       source_sha1 '12ec84011f408846250a462ab9e8e967a2e8cbbc'
       source_filetype 'tar.gz'
-      binary_url 'http://nitrousio-autoparts-use1.s3.amazonaws.com/memcached-1.4.15-binary.tar.gz'
+      binary_url 'https://nitrousio-autoparts-use1.s3.amazonaws.com/memcached-1.4.15-binary.tar.gz'
       binary_sha1 '3a25110d518e697af0bdc9953b725705e438f8b7'
 
       def compile

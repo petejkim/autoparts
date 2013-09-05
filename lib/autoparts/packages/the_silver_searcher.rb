@@ -7,7 +7,7 @@ module Autoparts
       source_url 'https://github.com/ggreer/the_silver_searcher/archive/0.15.tar.gz'
       source_sha1 '578adf5276a9bf39deb7dbaf86abca96c312a388'
       source_filetype 'tar.gz'
-      binary_url 'http://nitrousio-autoparts-use1.s3.amazonaws.com/the_silver_searcher-0.15-binary.tar.gz'
+      binary_url 'https://nitrousio-autoparts-use1.s3.amazonaws.com/the_silver_searcher-0.15-binary.tar.gz'
       binary_sha1 'f266c3b935f56778248be0a8e20fd88f4f2a8f2b'
 
       def install
