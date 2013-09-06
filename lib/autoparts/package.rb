@@ -295,7 +295,7 @@ module Autoparts
 
     def perform_uninstall
       begin
-        if respond_to? :stop
+        if respond_to?(:stop) && respond_to?(:running?) && running?
           puts "=> Stopping #{name}..."
           stop
         end
