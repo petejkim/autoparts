@@ -18,11 +18,13 @@ module Autoparts
             package = package_class.new
             list["#{name} (#{package.version})"] = package.description
           end
-          ljust_length = list.keys.map(&:length).max + 1
-          list.each_pair do |name, description|
-            print name.ljust(ljust_length)
-            print description if description
-            puts
+          unless list.empty?
+            ljust_length = list.keys.map(&:length).max + 1
+            list.each_pair do |name, description|
+              print name.ljust(ljust_length)
+              print description if description
+              puts
+            end
           end
         else
           abort "parts: no package found for \"#{args[0]}\""

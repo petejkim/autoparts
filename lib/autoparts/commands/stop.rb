@@ -10,6 +10,9 @@ module Autoparts
         end
         begin
           args.each do |package_name|
+            unless Package.installed? package_name
+              raise PackageNotInstalledError.new package_name
+            end
             package = Package.factory(package_name)
             puts "=> Stopping #{package_name}..."
             raise StopFailedError.new "#{package_name} does not seem to be running." unless package.running?

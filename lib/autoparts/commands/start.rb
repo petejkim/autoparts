@@ -10,6 +10,9 @@ module Autoparts
         end
         begin
           args.each do |package_name|
+            unless Package.installed? package_name
+              raise PackageNotInstalledError.new package_name
+            end
             package = Package.factory(package_name)
             puts "=> Starting #{package_name}..."
             raise StartFailedError.new "#{package_name} is already running." if package.running?
