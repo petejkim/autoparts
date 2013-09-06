@@ -35,7 +35,7 @@ module Autoparts
       def purge
         mongodb_var_path.rmtree if mongodb_var_path.exist?
         mongodb_log_path.rmtree if mongodb_log_path.exist?
-        mongodb_conf_file.unlink if mongodb_conf_file.exist?
+        mongodb_conf_path.unlink if mongodb_conf_path.exist?
       end
 
       def mongod_path
