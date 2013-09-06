@@ -10,8 +10,9 @@ module Autoparts
               raise PackageNotInstalledError.new package_name
             end
             package = Package.factory(package_name)
-            running = package.running?
-            list[package_name] = running unless running.nil?
+            if package.respond_to? :running?
+              list[package_name] = package.running?
+            end
           end
           if list.empty?
             puts "parts: no installed package found"

@@ -14,10 +14,14 @@ module Autoparts
               raise PackageNotInstalledError.new package_name
             end
             package = Package.factory(package_name)
-            puts "=> Starting #{package_name}..."
-            raise StartFailedError.new "#{package_name} is already running." if package.running?
-            package.start
-            puts "=> Started: #{package_name}"
+            if package.respond_to? :start
+              puts "=> Starting #{package_name}..."
+              raise StartFailedError.new "#{package_name} is already running." if package.running?
+              package.start
+              puts "=> Started: #{package_name}"
+            else
+              abort "parts: #{package_name} does not support this operation."
+            end
           end
         rescue StartFailedError => e
           abort "parts: #{e}"

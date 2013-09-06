@@ -323,7 +323,7 @@ module Autoparts
       puts "SHA1: #{Util.sha1 archive_path}"
     end
 
-    # -- override these methods --
+    # -- implement these methods --
     def compile # compile source code - runs in source directory
     end
 
@@ -333,14 +333,14 @@ module Autoparts
     def post_install # run post install commands - runs in installed package directory
     end
 
-    def start
-    end
+    #def start
+    #end
 
-    def stop
-    end
+    #def stop
+    #end
 
-    def running?
-    end
+    #def running?
+    #end
 
     def tips
       ''
