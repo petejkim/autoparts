@@ -295,8 +295,10 @@ module Autoparts
 
     def perform_uninstall
       begin
-        puts "=> Stopping #{name}..."
-        stop
+        if respond_to? :stop
+          puts "=> Stopping #{name}..."
+          stop
+        end
       rescue
       end
       puts '=> Removing symlinks...'
