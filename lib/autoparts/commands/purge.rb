@@ -10,11 +10,8 @@ module Autoparts
         end
         begin
           args.each do |package_name|
-            unless Package.installed? package_name
-              raise PackageNotInstalledError.new package_name
-            end
             package = Package.factory(package_name)
-            package.perform_uninstall
+            package.perform_uninstall if Package.installed?(package_name)
             package.purge
             puts "=> Purged #{package.name} #{package.version}\n"
           end
