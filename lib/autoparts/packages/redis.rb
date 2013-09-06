@@ -48,6 +48,12 @@ module Autoparts
         end
       end
 
+      def purge
+        redis_var_path.rmtree if redis_var_path.exist?
+        redis_log_path.rmtree if redis_log_path.exist?
+        redis_conf_path.unlink if redis_conf_path.exist?
+      end
+
       def redis_server_path
         bin_path + 'redis-server'
       end

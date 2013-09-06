@@ -20,6 +20,7 @@ commands = {
   'init'      => Autoparts::Commands::Init,
   'install'   => Autoparts::Commands::Install,
   'list'      => Autoparts::Commands::List,
+  'purge'     => Autoparts::Commands::Purge,
   'restart'   => Autoparts::Commands::Restart,
   'search'    => Autoparts::Commands::Search,
   'start'     => Autoparts::Commands::Start,

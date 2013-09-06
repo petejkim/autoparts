@@ -335,6 +335,9 @@ module Autoparts
     def post_install # run post install commands - runs in installed package directory
     end
 
+    def purge # remove leftover config/data files
+    end
+
     #def start
     #end
 

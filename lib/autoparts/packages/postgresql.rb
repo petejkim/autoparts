@@ -44,15 +44,15 @@ module Autoparts
 
       def post_install
         postgres_log_path.mkpath
-        unless postgres_db_path.exist?
-          postgres_db_path.mkpath
+        unless postgres_var_path.exist?
+          postgres_var_path.mkpath
           begin
-            execute "#{bin_path}/initdb", postgres_db_path
+            execute "#{bin_path}/initdb", postgres_var_path
           rescue => e
-            postgres_db_path.rmtree
+            postgres_var_path.rmtree if postgres_var_path.exist?
             raise e
           end
-          postgres_conf = postgres_db_path + 'postgresql.conf'
+          postgres_conf = postgres_var_path + 'postgresql.conf'
           execute 'sed', '-i', "s|#listen_addresses = 'localhost'|listen_addresses = '127.0.0.1'|g", postgres_conf
           execute 'sed', '-i', "s|#port = 5432|port = 5432|g", postgres_conf
           execute 'sed', '-i', "s|#unix_socket_directory = ''|unix_socket_directory = '/tmp'|g", postgres_conf
@@ -63,7 +63,7 @@ module Autoparts
             execute "#{bin_path}/createdb", '-h', '/tmp'
             puts " done"
           rescue => e
-            postgres_db_path.rmtree
+            postgres_var_path.rmtree if postgres_var_path.exist?
             stop
             raise e
           end
@@ -71,7 +71,12 @@ module Autoparts
         end
       end
 
-      def postgres_db_path
+      def purge
+        postgres_var_path.rmtree if postgres_var_path.exist?
+        postgres_log_path.rmtree if postgres_log_path.exist?
+      end
+
+      def postgres_var_path
         Path.var + 'postgresql'
       end
 
@@ -84,15 +89,15 @@ module Autoparts
       end
 
       def start
-        execute pg_ctl_path, '-D', postgres_db_path, '-l', "#{postgres_log_path}/postgresql.log", '-w', 'start'
+        execute pg_ctl_path, '-D', postgres_var_path, '-l', "#{postgres_log_path}/postgresql.log", '-w', 'start'
       end
 
       def stop
-        execute pg_ctl_path, '-D', postgres_db_path, 'stop'
+        execute pg_ctl_path, '-D', postgres_var_path, 'stop'
       end
 
       def running?
-        !!system(pg_ctl_path.to_s, '-D', postgres_db_path.to_s, 'status', out: '/dev/null', err: '/dev/null')
+        !!system(pg_ctl_path.to_s, '-D', postgres_var_path.to_s, 'status', out: '/dev/null', err: '/dev/null')
       end
 
       def tips

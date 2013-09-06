@@ -44,13 +44,12 @@ module Autoparts
       end
 
       def post_install
-        unless (Path.var + 'mysql' + 'mysql' + 'user.frm').exist?
-          var_mysql = Path.var + 'mysql'
-          var_mysql.rmtree if var_mysql.exist?
+        unless (mysql_var_path + 'mysql' + 'user.frm').exist?
+          mysql_var_path.rmtree if mysql_var_path.exist?
           ENV['TMPDIR'] = nil
           args = [
             "--basedir=#{prefix_path}",
-            "--datadir=#{var_mysql}",
+            "--datadir=#{mysql_var_path}",
             "--tmpdir=/tmp",
             "--user=#{user}",
             '--verbose'
@@ -59,8 +58,16 @@ module Autoparts
         end
       end
 
+      def purge
+        mysql_var_path.rmtree if mysql_var_path.exist?
+      end
+
       def mysql_server_path
         bin_path + 'mysql.server'
+      end
+
+      def mysql_var_path
+        Path.var + 'mysql'
       end
 
       def start

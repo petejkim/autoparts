@@ -59,6 +59,12 @@ module Autoparts
         end
       end
 
+      def purge
+        memcached_var_path.rmtree if memcached_var_path.exist?
+        memcached_log_path.rmtree if memcached_log_path.exist?
+        memcached_conf_path.unlink if memcached_conf_path.exist?
+      end
+
       def memcached_path
         bin_path + 'memcached'
       end
