@@ -14,9 +14,7 @@ module Autoparts
               list[package_name] = package.running?
             end
           end
-          if list.empty?
-            puts "parts: no installed package found"
-          else
+          unless list.empty?
             ljust_length = list.keys.map(&:length).max + 1
             list.each_pair do |name, running|
               print name.ljust(ljust_length)
