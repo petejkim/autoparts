@@ -85,7 +85,7 @@ module Autoparts
       end
 
       def pg_ctl_path
-        Path.bin + 'pg_ctl'
+        bin_path + 'pg_ctl'
       end
 
       def start
