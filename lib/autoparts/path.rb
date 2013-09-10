@@ -11,6 +11,10 @@ module Autoparts
         mkpath(Pathname.new path)
       end
 
+      def home
+        Pathname.new(Dir.home)
+      end
+
       def archives; mkpath(root + 'archives') end
       def bin;      mkpath(root + 'bin')      end
       def etc;      mkpath(root + 'etc')      end
