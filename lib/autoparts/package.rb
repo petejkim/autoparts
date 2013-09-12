@@ -71,6 +71,11 @@ module Autoparts
       def binary_sha1(val)
         @binary_sha1 = val
       end
+
+      def depends_on(val)
+        @depends_on ||= []
+        @depends_on.push val
+      end
     end
 
     def initialize
@@ -111,6 +116,10 @@ module Autoparts
 
     def binary_sha1
       self.class.instance_variable_get(:@binary_sha1)
+    end
+
+    def depends_on
+      self.class.instance_variable_get(:@depends_on)
     end
 
     def user
@@ -241,6 +250,8 @@ module Autoparts
         ENV['LDFLAGS'] = '-Wl,-O1,--sort-common,--as-needed,-z,relro'
         ENV['MAKEFLAGS'] = '-j2'
 
+       install_dependencies
+
         if !source_install && !Util.binary_package_compatible?
           puts "Warning: This system is incompatible with Nitrous.IO binary packages; installing from source."
           source_install = true
@@ -317,6 +328,15 @@ module Autoparts
       post_uninstall
 
       puts "=> Uninstalled #{name} #{version}\n"
+    end
+
+    def install_dependencies
+      unless depends_on.nil? || depends_on.empty?
+        puts "=> Installing dependencies..."
+        depends_on.each do |package_name|
+          Package.factory(package_name).perform_install(@source_install)
+        end
+      end
     end
 
     def archive_installed
