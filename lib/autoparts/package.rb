@@ -314,6 +314,7 @@ module Autoparts
       prefix_path.rmtree if prefix_path.exist?
       parent = prefix_path.parent
       parent.rmtree if parent.children.empty?
+      post_uninstall
 
       puts "=> Uninstalled #{name} #{version}\n"
     end
@@ -335,6 +336,9 @@ module Autoparts
     end
 
     def post_install # run post install commands - runs in installed package directory
+    end
+
+    def post_uninstall # run post uninstall commands
     end
 
     def purge # remove leftover config/data files
