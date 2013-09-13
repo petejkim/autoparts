@@ -8,11 +8,13 @@ module Autoparts
       source_sha1 'af0867027f0907631c1f85ecf668f74c08f5d5e9'
       source_filetype 'tar.gz'
       binary_url 'https://nitrousio-autoparts-use1.s3.amazonaws.com/maven-3.1.0-binary.tar.gz'
-      binary_sha1 '724044e8d20d5eccc2c5fd57afb0a4f046c8060c'
+      binary_sha1 '8e0192415470ddfa419c1581a4d5884fbecceeba'
 
       def install
         Dir.chdir('apache-maven-3.1.0') do
           prefix_path.mkpath
+          execute 'rm', 'bin/mvn.bat'
+          execute 'rm', 'bin/mvnDebug.bat'
           execute 'cp', '-R', '.', prefix_path
         end
       end
