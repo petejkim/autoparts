@@ -478,6 +478,12 @@ describe Autoparts::Package do
 
       FileUtils.mkdir_p '/tmp/to'
       FileUtils.touch '/tmp/to/bbb'  # pre-existing file
+
+      Pathname.new('/tmp/from/aaa').chmod 0755
+      Pathname.new('/tmp/from/bbb').chmod 0644
+      Pathname.new('/tmp/from/foo/ccc').chmod 0644
+      Pathname.new('/tmp/from/foo/bar/ddd').chmod 0755
+      Pathname.new('/tmp/from/boo/eee').chmod 0755
     end
 
     describe '#symlink_recursively' do
@@ -489,6 +495,30 @@ describe Autoparts::Package do
         expect(Pathname.new('/tmp/to/foo/bar/ddd').realpath.to_s).to eq '/tmp/from/foo/bar/ddd'
         expect(Pathname.new('/tmp/to/boo/eee').realpath.to_s).to eq '/tmp/from/boo/eee'
         expect(Pathname.new('/tmp/to/baz').realpath.to_s).to eq '/tmp/from/baz'
+      end
+
+      context 'when only_executables option is false' do
+        it 'recursively creates symlinks of all files and directories under a given directory' do
+          foo_package.symlink_recursively Pathname.new('/tmp/from'), Pathname.new('/tmp/to'), only_executables: false
+          expect(Pathname.new('/tmp/to/aaa').realpath.to_s).to eq '/tmp/from/aaa'
+          expect(Pathname.new('/tmp/to/bbb').realpath.to_s).to eq '/tmp/from/bbb'
+          expect(Pathname.new('/tmp/to/foo/ccc').realpath.to_s).to eq '/tmp/from/foo/ccc'
+          expect(Pathname.new('/tmp/to/foo/bar/ddd').realpath.to_s).to eq '/tmp/from/foo/bar/ddd'
+          expect(Pathname.new('/tmp/to/boo/eee').realpath.to_s).to eq '/tmp/from/boo/eee'
+          expect(Pathname.new('/tmp/to/baz').realpath.to_s).to eq '/tmp/from/baz'
+        end
+      end
+
+      context 'when only_executables option is true' do
+        it 'recursively creates symlinks of all executable files and directories under a given directory' do
+          foo_package.symlink_recursively Pathname.new('/tmp/from'), Pathname.new('/tmp/to'), only_executables: true
+          expect(Pathname.new('/tmp/to/aaa').realpath.to_s).to eq '/tmp/from/aaa'
+          expect(Pathname.new('/tmp/to/bbb')).not_to be_symlink
+          expect(Pathname.new('/tmp/to/foo/ccc')).not_to exist
+          expect(Pathname.new('/tmp/to/foo/bar/ddd').realpath.to_s).to eq '/tmp/from/foo/bar/ddd'
+          expect(Pathname.new('/tmp/to/boo/eee').realpath.to_s).to eq '/tmp/from/boo/eee'
+          expect(Pathname.new('/tmp/to/baz').realpath.to_s).to eq '/tmp/from/baz'
+        end
       end
     end
 

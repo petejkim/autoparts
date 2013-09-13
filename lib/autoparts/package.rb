@@ -197,15 +197,18 @@ module Autoparts
       end
     end
 
-    def symlink_recursively(from, to) # Pathname, Pathname
+    def symlink_recursively(from, to, options={}) # Pathname, Pathname
+      only_executables = !!options[:only_executables]
       to.mkpath unless to.exist?
       from.each_child do |f|
         t = to + f.basename
         if f.directory? && !f.symlink?
-          symlink_recursively f, t
+          symlink_recursively f, t, options
         else
-          t.rmtree if t.exist?
-          t.make_symlink(f)
+          if !only_executables || (only_executables && (f.executable? || f.symlink?))
+            t.rmtree if t.exist?
+            t.make_symlink(f)
+          end
         end
       end if from.directory? && from.executable?
     end
@@ -279,8 +282,8 @@ module Autoparts
         Dir.chdir(prefix_path) do
           post_install
           puts '=> Symlinking...'
-          symlink_recursively(bin_path,     Path.bin)
-          symlink_recursively(sbin_path,    Path.sbin)
+          symlink_recursively(bin_path,     Path.bin,  only_executables: true)
+          symlink_recursively(sbin_path,    Path.sbin, only_executables: true)
           symlink_recursively(lib_path,     Path.lib)
           symlink_recursively(include_path, Path.include)
           symlink_recursively(share_path,   Path.share)
