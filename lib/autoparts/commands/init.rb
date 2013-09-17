@@ -8,16 +8,12 @@ module Autoparts
         if options.first == '-'
           no_autoupdate_env = ENV['AUTOPARTS_NO_AUTOUPDATE']
           if autoupdate_due? && !(no_autoupdate_env && ['1', 'true'].include?(no_autoupdate_env.downcase))
-            print 'autoparts: updating...'
             if Update.update(true)
               File.open(Path.partsinfo, 'w') do |f|
                 f.write JSON.generate({
                   'last_update' => Time.now.to_i
                 })
               end
-              puts 'done'
-            else
-              puts 'failed'
             end
           end
           print_exports
