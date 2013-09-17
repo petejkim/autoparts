@@ -9,7 +9,6 @@ module Autoparts
               'last_update' => Time.now.to_i
             })
           end
-          puts "=> Updated: #{Help.version}"
         end
       end
 
