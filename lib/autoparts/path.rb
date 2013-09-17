@@ -25,6 +25,10 @@ module Autoparts
       def share;    mkpath(root + 'share')    end
       def tmp;      mkpath(root + 'tmp')      end
       def var;      mkpath(root + 'var')      end
+
+      def partsinfo
+        root + '.partsinfo'
+      end
     end
   end
 end

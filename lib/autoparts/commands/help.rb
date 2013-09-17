@@ -5,9 +5,7 @@ module Autoparts
     class Help
       def initialize(args, options)
         Dir.chdir(PROJECT_ROOT) do
-          git_hash = `git describe --always`.strip
-          version = "Autoparts #{Autoparts::VERSION}-#{git_hash}"
-
+          version = self.class.version
           if options.include?('-v') || options.include?('--version')
             puts version
           else
@@ -30,6 +28,11 @@ module Autoparts
             EOS
           end
         end
+      end
+
+      def self.version
+        git_hash = `git describe --always`.strip
+        "Autoparts #{Autoparts::VERSION}-#{git_hash}"
       end
     end
   end
