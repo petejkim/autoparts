@@ -12,28 +12,16 @@ module Autoparts
         prefix_path.mkpath
         execute 'mv', archive_filename, prefix_path
 
-        setup_lein_script
-      end
-
-      def post_install
-        if @source_install
-          execute 'sed', '-i', "s|^LEIN_JAR=.*\.jar|LEIN_JAR=#{prefix_path}/leiningen-#{version}.jar|g", lein_executable_path
-        end
-      end
-
-      def setup_lein_script
-        download_lein_script
+        puts "=> Downloading the lein script..."
+        download 'https://raw.github.com/technomancy/leiningen/2.3.2/bin/lein-pkg', tmp_lein_script_path, '4a23609f085add58bc28fb0669a175fe2b26f26f'
 
         bin_path.mkpath
         execute 'mv', tmp_lein_script_path, lein_executable_path
         execute 'chmod', '0755', lein_executable_path
       end
 
-      def download_lein_script
-        # sha1 need to be checked?
-        puts "=> Downloading the lein script..."
-        url = "https://raw.github.com/technomancy/leiningen/2.3.2/bin/lein-pkg"
-        execute 'curl', url, '-L', '-o', tmp_lein_script_path
+      def post_install
+        execute 'sed', '-i', "s|^LEIN_JAR=.*\.jar|LEIN_JAR=#{prefix_path}/leiningen-#{version}.jar|g", lein_executable_path
       end
 
       def tmp_lein_script_path
