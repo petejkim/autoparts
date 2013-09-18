@@ -169,13 +169,10 @@ module Autoparts
     end
 
     def download_archive
-      url = @source_install ? source_url : binary_url
-      execute 'curl', url, '-L', '-o', temporary_archive_path
-      execute 'mv', temporary_archive_path, archive_path
-    end
+      url  = @source_install ? source_url  : binary_url
+      sha1 = @source_install ? source_sha1 : binary_sha1
 
-    def verify_archive
-      raise VerificationFailedError if Util.sha1(archive_path) != (@source_install ? source_sha1 : binary_sha1)
+      download url, archive_path, sha1
     end
 
     def extract_archive
@@ -255,8 +252,6 @@ module Autoparts
           puts "=> Downloading #{@source_install ? source_url : binary_url}..."
           download_archive
         end
-        puts "=> Verifying archive..."
-        verify_archive
         puts "=> Extracting archive..."
         extract_archive
 
@@ -329,6 +324,15 @@ module Autoparts
       puts "=> Archived: #{archive_path}"
       puts "Size: #{archive_path.size} bytes (#{sprintf "%.2f MiB", file_size / 1024.0 / 1024.0})"
       puts "SHA1: #{Util.sha1 archive_path}"
+    end
+
+    def download(url, to, sha1=nil)
+      tmp_download_path = Path.tmp + ("#{to.basename}.partsdownload")
+      execute 'curl', url, '-L', '-o', tmp_download_path
+      if sha1 && sha1 != Util.sha1(tmp_download_path)
+        raise VerificationFailedError
+      end
+      execute 'mv', tmp_download_path, to
     end
 
     # -- implement these methods --

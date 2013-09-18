@@ -313,112 +313,88 @@ describe Autoparts::Package do
     end
   end
 
-  describe '#download_archive' do
-    context 'when @source_install is false' do
+  describe '#download' do
+    let(:tmp_path) { (Path.tmp + 'foo.tar.gz.partsdownload') }
+
+    before do
+      @curl = receive(:system).with('curl', 'http://example.com/foo.tar.gz', '-L', '-o', tmp_path.to_s)
+    end
+
+    def do_action(sha1=nil)
+      foo_package.download 'http://example.com/foo.tar.gz', Pathname.new('/a/b/foo.tar.gz'), sha1
+    end
+
+    context 'when download succeeds' do
       before do
-        foo_package.instance_variable_set :@source_install, false
-        bar_package.instance_variable_set :@source_install, false
+        expect(foo_package).to @curl.and_return true
       end
 
-      context 'when downloading source code archive to tmp path completes' do
-        it 'moves the downloaded file to archive path' do
-          expect(foo_package).to receive(:system).with('curl', 'http://example.com/foo-precompiled.tar.gz', '-L', '-o', foo_package.temporary_archive_path.to_s).and_return true
-          expect(foo_package).to receive(:system).with('mv', foo_package.temporary_archive_path.to_s, foo_package.archive_path.to_s).and_return true
-          foo_package.download_archive
+      context 'when sha1 is not given' do
+        it 'moves the downloaded file to the "to" path' do
+          expect(foo_package).to receive(:system).with('mv', tmp_path.to_s, '/a/b/foo.tar.gz').and_return true
+          do_action
         end
       end
 
-      context 'when downloading source code archive fails' do
-        it 'does not move the downloaded file to archive path' do
-          expect(foo_package).to receive(:system).with('curl', 'http://example.com/foo-precompiled.tar.gz', '-L', '-o', foo_package.temporary_archive_path.to_s).and_return false
-          expect(foo_package).not_to receive(:system).with('mv', foo_package.temporary_archive_path.to_s, foo_package.archive_path.to_s)
-          expect {
-            foo_package.download_archive
-          }.to raise_error
+      context 'when sha1 is given' do
+        context 'when sha1 verification succeeds' do
+          before { Autoparts::Util.stub(:sha1).with(tmp_path).and_return 'dadadadadadadadadadadadadadadadadadadada' }
+
+          it 'moves the downloaded file to the "to" path' do
+            expect(foo_package).to receive(:system).with('mv', tmp_path.to_s, '/a/b/foo.tar.gz').and_return true
+            do_action 'dadadadadadadadadadadadadadadadadadadada'
+          end
+        end
+
+        context 'when sha1 verification fails' do
+          before { Autoparts::Util.stub(:sha1).with(tmp_path).and_return 'babababababababababababababababababababa' }
+
+          it 'raises error and does not move the downloaded file to the "to" path' do
+            expect(foo_package).not_to receive(:system).with('mv', tmp_path, '/a/b/foo.tar.gz')
+            expect {
+              do_action 'dadadadadadadadadadadadadadadadadadadada'
+            }.to raise_error Autoparts::VerificationFailedError
+          end
         end
       end
     end
 
+    context 'when download fails' do
+      before do
+        expect(foo_package).to @curl.and_return false
+      end
+
+      it 'raises error and does not move the downloaded file to the "to" path' do
+        expect(foo_package).not_to receive(:system).with('mv', tmp_path, '/a/b/foo.tar.gz')
+        expect {
+          do_action
+        }.to raise_error Autoparts::ExecutionFailedError
+      end
+    end
+  end
+
+  describe '#download_archive' do
     context 'when @source_install is true' do
       before do
         foo_package.instance_variable_set :@source_install, true
         bar_package.instance_variable_set :@source_install, true
       end
 
-      context 'when downloading pre-compiled binary archive to tmp path completes' do
-        it 'moves the downloaded file to archive path' do
-          expect(foo_package).to receive(:system).with('curl', 'http://example.com/foo.tar.gz', '-L', '-o', foo_package.temporary_archive_path.to_s).and_return true
-          expect(foo_package).to receive(:system).with('mv', foo_package.temporary_archive_path.to_s, foo_package.archive_path.to_s).and_return true
-          foo_package.download_archive
-        end
-      end
-
-      context 'when downloading pre-compiled binary fails' do
-        it 'does not move the downloaded file to archive path' do
-          expect(foo_package).to receive(:system).with('curl', 'http://example.com/foo.tar.gz', '-L', '-o', foo_package.temporary_archive_path.to_s).and_return false
-          expect(foo_package).not_to receive(:system).with('mv', foo_package.temporary_archive_path.to_s, foo_package.archive_path.to_s)
-          expect {
-            foo_package.download_archive
-          }.to raise_error
-        end
+      it 'downloads source_url, with source_sha1 onto archive_url' do
+        expect(foo_package).to receive(:download).with(foo_package.source_url, foo_package.archive_path, foo_package.source_sha1)
+        foo_package.download_archive
       end
     end
-  end
 
-  describe '#verify_archive' do
     context 'when @source_install is false' do
-      before { foo_package.instance_variable_set :@source_install, false }
-
-      context 'when sha1 of the archive is the same as binary_sha1' do
-        before do
-          Autoparts::Util.stub(:sha1).with(foo_package.archive_path).and_return "dadadadadadadadadadadadadadadadadadadada"
-        end
-
-        it 'does not raise any error' do
-          expect {
-            foo_package.verify_archive
-          }.not_to raise_error
-        end
+      before do
+        foo_package.instance_variable_set :@source_install, false
+        bar_package.instance_variable_set :@source_install, false
       end
 
-      context 'when sha1 of the archive is different from binary_sha1' do
-        before do
-          Autoparts::Util.stub(:sha1).with(foo_package.archive_path).and_return "aaaaaaaaaaaaf00f00f00f00f00f00f00f00f00f"
-        end
-
-        it 'raises VerificationFailedError' do
-          expect {
-            foo_package.verify_archive
-          }.to raise_error Autoparts::VerificationFailedError
-        end
-      end
-    end
-
-    context 'when @source_install is true' do
-      before { foo_package.instance_variable_set :@source_install, true }
-
-      context 'when sha1 of the archive is the same as source_sha1' do
-        before do
-          Autoparts::Util.stub(:sha1).with(foo_package.archive_path).and_return "f00f00f00f00f00f00f00f00f00f00f00f00f00f"
-        end
-
-        it 'does not raise any error' do
-          expect {
-            foo_package.verify_archive
-          }.not_to raise_error
-        end
-      end
-
-      context 'when sha1 of the archive is different from source_sha1' do
-        before do
-          Autoparts::Util.stub(:sha1).with(foo_package.archive_path).and_return "aaaaaaaaaaaaf00f00f00f00f00f00f00f00f00f"
-        end
-
-        it 'raises VerificationFailedError' do
-          expect {
-            foo_package.verify_archive
-          }.to raise_error Autoparts::VerificationFailedError
-        end
+      it 'downloads binary_url, with binary_sha1 onto archive_url' do
+        expect(foo_package).to receive(:download).with(foo_package.binary_url, foo_package.archive_path, foo_package.binary_sha1)
+        foo_package.download_archive
       end
     end
   end
