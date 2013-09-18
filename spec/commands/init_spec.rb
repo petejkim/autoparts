@@ -12,13 +12,13 @@ describe Autoparts::Commands::Init do
 
   describe '#autoupdate_due?' do
     context 'when update has never been performed before' do
-      it 'should return true' do
+      it 'returns true' do
         expect(subject.autoupdate_due?).to be_true
       end
     end
 
     context 'when the last update was performed less than a day ago' do
-      it 'should return true' do
+      it 'returns false' do
         Timecop.freeze do
           File.open(Path.partsinfo, 'w') do |f|
             f.write JSON.generate({
@@ -31,7 +31,7 @@ describe Autoparts::Commands::Init do
     end
 
     context 'when the last update was performed greater than or equal to a day ago' do
-      it 'should return false' do
+      it 'returns true' do
         Timecop.freeze do
           File.open(Path.partsinfo, 'w') do |f|
             f.write JSON.generate({
