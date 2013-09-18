@@ -13,7 +13,7 @@ module Autoparts
       def install
         Dir.chdir('.meteor') do
           prefix_path.mkpath
-          execute 'cp', '-R', '.', prefix_path
+          execute "mv * #{prefix_path}"
         end
       end
 

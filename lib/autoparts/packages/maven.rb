@@ -15,7 +15,7 @@ module Autoparts
           prefix_path.mkpath
           execute 'rm', 'bin/mvn.bat'
           execute 'rm', 'bin/mvnDebug.bat'
-          execute 'cp', '-R', '.', prefix_path
+          execute "mv * #{prefix_path}"
         end
       end
     end

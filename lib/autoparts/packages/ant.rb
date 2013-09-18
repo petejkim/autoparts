@@ -14,7 +14,7 @@ module Autoparts
         Dir.chdir('apache-ant-1.9.2') do
           prefix_path.mkpath
           execute 'rm', '-rf', 'manual', 'INSTALL'
-          execute 'cp', '-R', '.', prefix_path
+          execute "mv * #{prefix_path}"
         end
       end
     end

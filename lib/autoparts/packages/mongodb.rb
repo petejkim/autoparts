@@ -17,7 +17,7 @@ module Autoparts
       def install
         Dir.chdir('mongodb-linux-x86_64-2.4.6') do
           prefix_path.mkpath
-          execute 'cp', '-R', '.', prefix_path
+          execute "mv * #{prefix_path}"
         end
       end
 
