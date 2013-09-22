@@ -313,6 +313,7 @@ module Autoparts
       parent = prefix_path.parent
       parent.rmtree if parent.children.empty?
       post_uninstall
+      purge
 
       puts "=> Uninstalled #{name} #{version}\n"
     end
