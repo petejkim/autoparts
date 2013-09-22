@@ -18,9 +18,9 @@ module Autoparts
       end
 
       def purge
-        execute 'rm', '/home/action/.fpc.cfg'
-        execute 'rm', '/home/action/.config/fppkg.cfg'
-        execute 'rm', '/home/action/.fppkg/config/default'
+        execute 'rm', "#{Path.home}/.fpc.cfg"
+        execute 'rm', "#{Path.home}/.config/fppkg.cfg"
+        execute 'rm', "#{Path.home}/.fppkg/config/default"
       end
 
       def answers_file
