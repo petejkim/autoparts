@@ -9,9 +9,7 @@ Autopartsのヘルプテストを行いたい場合は以下の説明をお読�
 
 ### 必要な条件
 
-* **「bran」**ボックス
-  ※いくつかのパッケージは、**「arya」**ボックスでは正しく動作しない場合があります。
-   作成される全ての新規ボックスは**「bran」**ボックスである必要があります。
+* **「bran」**ボックス: いくつかのパッケージは、「arya」ボックスでは正しく動作しない場合があります。作成される全ての新規ボックスは「bran」ボックスである必要があります。
 
   ![Bran
   box](https://raw.github.com/action-io/action-assets/a7d29cbd686f2269ac930c01a8928accd19a0b89/support/screenshots/bran-box.png)
@@ -20,7 +18,7 @@ Autopartsのヘルプテストを行いたい場合は以下の説明をお読�
 
 ### インストール
 
-以下のコマンドをあなたのボックスのターミナル上で入力してください。
+以下のコマンドをあなたのボックスのターミナルで入力してください。
 
 ```sh
 ruby -e "$(curl -fsSL https://raw.github.com/action-io/autoparts/master/setup.rb)"
