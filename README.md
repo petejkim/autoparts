@@ -1,45 +1,44 @@
 Autoparts - A Package Manager for Nitrous.IO
 ============================================
 
-#### 試験運用中
+#### EXPERIMENTAL - WORK IN PROGRESS
 
-Autopartsが徹底的なテストを終えた後に安定して稼働すれば、Autopartsは全てのNitrous.IOのボックスに
-プリインストールされるでしょう。
-Autopartsのヘルプテストを行いたい場合は以下の説明をお読みください。
+Once Autoparts is stable and throughly tested, it will come preinstalled
+on all Nitrous.IO boxes. If you want to help test Autoparts, follow the
+instructions below:
 
-### 必要な条件
+### Requirements
 
-* **「bran」**ボックス
-  ※いくつかのパッケージは、**「arya」**ボックスでは正しく動作しない場合があります。
-   作成される全ての新規ボックスは**「bran」**ボックスである必要があります。
+* A **"bran"** box. Some packages may not work correctly in **"arya"**
+  boxes. All new boxes created should now be **"bran"** boxes.
 
   ![Bran
   box](https://raw.github.com/action-io/action-assets/a7d29cbd686f2269ac930c01a8928accd19a0b89/support/screenshots/bran-box.png)
 
-* いくつかのパッケージはメインメモリに512MB以上の空き容量を必要とする可能性があります。
+* Some packages may require 512MB RAM or more.
 
-### インストール
+### Installation
 
-以下のコマンドをあなたのボックスのターミナル上で入力してください。
+Enter the following into your boxes' terminal:
 
 ```sh
 ruby -e "$(curl -fsSL https://raw.github.com/action-io/autoparts/master/setup.rb)"
 exec $SHELL -l
 ```
-### 使用方法
+### Usage
 
-`parts help`を参照してください。
+See `parts help`.
 
-### パッケージ・ガイドライン
+### Package Guidelines
 
-* インストール後のセットアップ作業(例: confファイルを作成する/空のデータベースファイルを生成する)は、
-  `post_install`によって行なってください。
-* 設定ファイルは、`Path.etc` (例: `~/.parts/etc`)、または`Path.etc + name` (例: `~/.parts/etc/postgresql`)
-  に配置してください。
-* データファイル(例: データベースファイル)は、`Path.var + name` (例: `~/.parts/var/postgresql`)
-  に配置してください。
-* ログファイルは、`Path.var + 'log' + "#{name}.log"` (例:`~/.parts/var/log/postgresql.log`)
-  に配置してください。
+* Post-installation setup tasks (e.g. creating conf file, generating
+  empty database file) should be done in `post_install` method.
+* Configuration files should be placed in `Path.etc` (e.g. `~/.parts/etc`) or
+  `Path.etc + name` (e.g. `~/.parts/etc/postgresql`).
+* Data files (e.g. database files) should be placed in `Path.var + name`
+  (e.g. `~/.parts/var/postgresql`).
+* Log files should be placed in `Path.var + 'log' + "#{name}.log"` (e.g.
+  `~/.parts/var/log/postgresql.log`).
 
 - - -
 Copyright (c) 2013 Irrational Industries Inc.
