@@ -1,6 +1,8 @@
 Autoparts - A Package Manager for Nitrous.IO
 ============================================
 
+[日本語](https://github.com/action-io/autoparts/blob/master/README.ja.md)
+
 ### Requirements
 
 * A **"bran"** box. Some packages may not work correctly in **"arya"**
