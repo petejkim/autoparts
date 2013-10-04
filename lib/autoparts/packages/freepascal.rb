@@ -3,7 +3,7 @@ module Autoparts
     class FreePascal < Package
       name 'freepascal'
       version '2.6.2'
-      description 'Free Pascal: Open source Pascal compiler for Pascal and Object Pascal' 
+      description 'Free Pascal: An open source Pascal compiler for Pascal and Object Pascal' 
       source_url 'https://downloads.sourceforge.net/project/freepascal/Linux/2.6.2/fpc-2.6.2.x86_64-linux.tar'
       source_sha1 'f31c09545b727396f6f2858d12dcebdd25c5c16f'
       source_filetype 'tar'
