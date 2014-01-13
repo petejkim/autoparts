@@ -32,6 +32,31 @@ describe Autoparts::Package do
     bar_package.stub(:system)
   end
 
+  describe '.depends_on' do
+    it 'buils dependencies for the current package' do
+      foobar = Class.new(Autoparts::Package) do
+        name 'foobar'
+        depends_on 'foo'
+        depends_on 'bar'
+      end
+
+      expect(foobar.dependencies).to include(FooPackage)
+      expect(foobar.dependencies).to include(BarPackage)
+    end
+
+    it 'resolves nested dependencies' do
+      foo_depends_on_bar = Class.new(Autoparts::Package) do
+        name 'foo_depends_on_bar'
+        depends_on 'bar'
+      end
+
+      depends_on_foo = Class.new(Autoparts::Package) do
+        name 'depends_on_foo'
+        depends_on 'foo'
+      end
+    end
+  end
+
   describe '.installed' do
     before do
       FileUtils.mkdir_p (Autoparts::Path.packages + 'mysql' + '5.6.13').to_s
@@ -78,6 +103,47 @@ describe Autoparts::Package do
       expect {
         described_class.factory('lol')
       }.to raise_error Autoparts::PackageNotFoundError, 'Package "lol" not found'
+    end
+
+    it 'loads all dependencies of the package' do
+      foobar = Class.new(Autoparts::Package) do
+        name 'foobar'
+        depends_on 'foo'
+        depends_on 'bar'
+      end
+
+      expect(described_class.factory('foobar').dependencies).to include(FooPackage.new)
+      expect(described_class.factory('foobar').dependencies).to include(BarPackage.new)
+    end
+  end
+
+  describe '#dependencies' do
+    it 'resolves all dependencies of the current package' do
+      foobar_pkg = Class.new(Autoparts::Package) do
+        name 'foobar'
+        depends_on 'foo'
+        depends_on 'bar'
+      end
+
+      foobar = foobar_pkg.new
+      expect(foobar.dependencies).to include(FooPackage.new)
+      expect(foobar.dependencies).to include(BarPackage.new)
+    end
+  end
+
+  describe '#install_with_dependencies' do
+    it 'installs the dependencies of the current package first' do
+      foobar_pkg = Class.new(Autoparts::Package) do
+        name 'foobar'
+        depends_on 'foo'
+        depends_on 'bar'
+      end
+      foobar = foobar_pkg.new
+      foobar.dependencies.each do |d|
+        expect(d).to receive(:install_with_dependencies)
+      end
+      expect(foobar).to receive(:install)
+      foobar.install_with_dependencies
     end
   end
 
