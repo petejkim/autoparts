@@ -101,7 +101,8 @@ module Autoparts
       end
 
       def tips
-        <<-EOS.unindent
+        <depends_on 'apache2'
+      depends_on 'mysql'<-EOS.unindent
           To start the server:
             $ parts start postgresql
 
