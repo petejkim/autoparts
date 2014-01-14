@@ -20,14 +20,15 @@ module Autoparts
 
     def install_order
       tree = build_tree self
+      p tree
       tree.sort { |a, b| b[1] <=> a[1] }.map { |d| d[0] }
     end
 
-    def build_tree(root, tree={})
+    def build_tree(root, parent_score=0, tree={})
       tree[name] ||= 0
-      tree[name] += 1 unless self == root
+      tree[name] += 1 + parent_score unless self == root
       @children.each do |c|
-        c.build_tree(root, tree)
+        c.build_tree(root, tree[name], tree)
       end
       tree
     end
