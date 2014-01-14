@@ -9,7 +9,7 @@ module Autoparts
       source_filetype 'tar.gz'
 
       depends_on 'apache2'
-      depends_on 'mysql'
+      depends_on 'libmcrypt'
 
       def compile
         Dir.chdir('php-5.5.8') do
@@ -27,8 +27,11 @@ module Autoparts
             "--mandir=#{man_path}",
             "--docdir=#{doc_path}",
             # features
-            "--with-mysql",
             "--enable-opcache",
+            "--with-mcrypt=#{get_dependency("libmcrypt").prefix_path}",
+            "--with-mysql",
+            "--with-openssl",
+            "--with-pgsql",
             "--with-readline",
           ]
           execute './configure', *args
