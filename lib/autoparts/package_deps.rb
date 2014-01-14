@@ -34,7 +34,9 @@ module Autoparts
 
     def perform_install_with_dependencies(*args)
       dependencies_tree.install_order.each do |pkg|
-        Package.factory(pkg).perform_install
+        unless Package.installed?(pkg)
+          Package.factory(pkg).perform_install
+        end
       end
     end
 
