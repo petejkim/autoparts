@@ -22,9 +22,13 @@ module Autoparts
 
     # get the installation order of the dependency tree. Package that should be
     # installed first will be placed higher in the list
+    #
+    # This will not include the current dependency
     def install_order
-      tree = build_tree self
-      tree.sort { |a, b| b[1] <=> a[1] }.map { |d| d[0] }
+      build_tree(self).
+        sort { |a, b| b[1] <=> a[1] }.
+        select { |d| d[0] != name }.
+        map { |d| d[0] }
     end
 
     # build the reference tree of the current dependency node

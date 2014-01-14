@@ -44,11 +44,11 @@ describe Autoparts::Dependency do
       pkg3.add_child pkg5
       pkg4.add_child pkg5
 
-      expect(pkg1.install_order).to eql(["apr", "apr-util", "apache2", "php5", "composer"])
-      expect(pkg2.install_order).to eql(["apr", "apr-util", "apache2", "php5"])
-      expect(pkg3.install_order).to eql(["apr", "apr-util", "apache2"])
-      expect(pkg4.install_order).to eql(["apr", "apr-util"])
-      expect(pkg5.install_order).to eql(["apr"])
+      expect(pkg1.install_order).to eql(["apr", "apr-util", "apache2", "php5"])
+      expect(pkg2.install_order).to eql(["apr", "apr-util", "apache2"])
+      expect(pkg3.install_order).to eql(["apr", "apr-util"])
+      expect(pkg4.install_order).to eql(["apr"])
+      expect(pkg5.install_order).to eql([])
     end
   end
 end

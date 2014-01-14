@@ -17,39 +17,33 @@ module Autoparts
       base.extend ClassMethods
     end
 
-    def dependencies
-      @dependencies ||= []
-      if self.class.dependencies
-        self.class.dependencies.each do |d|
-          @dependencies << d.new
-        end
-      end
-      @dependencies
-    end
-
     def ==(other)
       instance_of?(other.class) && name == other.name
     end
     alias_method :eql?, :==
 
     def perform_install_with_dependencies(*args)
-      dependencies_tree.install_order.each do |pkg|
+      dependencies.install_order.each do |pkg|
         unless Package.installed?(pkg)
-          Package.factory(pkg).perform_install
+          Package.factory(pkg).perform_install(*args)
         end
       end
+      perform_install
     end
 
     def get_dependency(name)
       dependencies.find { |d| d.name == name }
     end
 
-    def dependencies_tree
-      dep = Dependency.new(self)
-      dependencies.each do |d|
-        dep.add_child d.dependencies_tree
+    def dependencies
+      @dep ||= Dependency.new(self)
+      unless self.class.dependencies.empty?
+        self.class.dependencies.each do |d|
+          d = Dependency.new(d.new)
+          @dep.add_child d unless @dep.children.include?(d)
+        end
       end
-      dep
+      @dep
     end
   end
 end

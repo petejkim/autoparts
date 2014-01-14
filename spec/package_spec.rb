@@ -104,17 +104,6 @@ describe Autoparts::Package do
         described_class.factory('lol')
       }.to raise_error Autoparts::PackageNotFoundError, 'Package "lol" not found'
     end
-
-    it 'loads all dependencies of the package' do
-      Class.new(Autoparts::Package) do
-        name 'foobar'
-        depends_on 'foo'
-        depends_on 'bar'
-      end
-
-      expect(described_class.factory('foobar').dependencies).to include(FooPackage.new)
-      expect(described_class.factory('foobar').dependencies).to include(BarPackage.new)
-    end
   end
 
   describe '#dependencies' do
@@ -126,8 +115,8 @@ describe Autoparts::Package do
       end
 
       foobar = foobar_pkg.new
-      expect(foobar.dependencies).to include(FooPackage.new)
-      expect(foobar.dependencies).to include(BarPackage.new)
+      expect(foobar.dependencies.children).to include(Autoparts::Dependency.new(FooPackage.new))
+      expect(foobar.dependencies.children).to include(Autoparts::Dependency.new(BarPackage.new))
     end
   end
 
@@ -139,10 +128,9 @@ describe Autoparts::Package do
         depends_on 'bar'
       end
       foobar = foobar_pkg.new
-      foobar.dependencies.each do |d|
-        expect(d).to receive(:perform_install_with_dependencies)
-      end
-      expect(foobar).to receive(:perform_install).with(true)
+      expect_any_instance_of(FooPackage).to receive(:perform_install).with(true)
+      expect_any_instance_of(BarPackage).to receive(:perform_install).with(true)
+      expect(foobar).to receive(:perform_install)
       foobar.perform_install_with_dependencies true
     end
   end

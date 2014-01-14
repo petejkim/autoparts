@@ -149,7 +149,6 @@ module Autoparts
 
     def execute(*args)
       args = args.map(&:to_s)
-      p "executing #{args}"
       unless system(*args)
         raise ExecutionFailedError.new args.join(' ')
       end
