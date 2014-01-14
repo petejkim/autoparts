@@ -23,7 +23,6 @@ module Autoparts
       tree.sort { |a, b| b[1] <=> a[1] }.map { |d| d[0] }
     end
 
-    private
     def build_tree(root, tree={})
       tree[name] ||= 0
       tree[name] += 1 unless self == root
