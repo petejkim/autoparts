@@ -106,7 +106,7 @@ describe Autoparts::Package do
     end
 
     it 'loads all dependencies of the package' do
-      foobar = Class.new(Autoparts::Package) do
+      Class.new(Autoparts::Package) do
         name 'foobar'
         depends_on 'foo'
         depends_on 'bar'
@@ -131,8 +131,8 @@ describe Autoparts::Package do
     end
   end
 
-  describe '#install_with_dependencies' do
-    it 'installs the dependencies of the current package first' do
+  describe '#perform_install_with_dependencies' do
+    it 'installs the dependencies of the current package' do
       foobar_pkg = Class.new(Autoparts::Package) do
         name 'foobar'
         depends_on 'foo'
@@ -140,10 +140,10 @@ describe Autoparts::Package do
       end
       foobar = foobar_pkg.new
       foobar.dependencies.each do |d|
-        expect(d).to receive(:install_with_dependencies)
+        expect(d).to receive(:perform_install_with_dependencies)
       end
-      expect(foobar).to receive(:install)
-      foobar.install_with_dependencies
+      expect(foobar).to receive(:perform_install).with(true)
+      foobar.perform_install_with_dependencies true
     end
   end
 

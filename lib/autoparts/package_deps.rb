@@ -4,7 +4,7 @@ module Autoparts
       attr_accessor :dependencies
 
       def depends_on(pkg)
-        @dependencies ||= Dependencies.new
+        @dependencies ||= []
         begin
           require "autoparts/packages/#{pkg}"
         rescue LoadError
@@ -18,7 +18,7 @@ module Autoparts
     end
 
     def dependencies
-      @dependencies ||= Dependencies.new
+      @dependencies ||= []
       if self.class.dependencies
         self.class.dependencies.each do |d|
           @dependencies << d.new
@@ -32,11 +32,22 @@ module Autoparts
     end
     alias_method :eql?, :==
 
-    def install_with_dependencies
-      dependencies.each do |d|
-        d.install_with_dependencies
+    def perform_install_with_dependencies(*args)
+      dependencies_tree.install_order.each do |pkg|
+        Package.factory(pkg).perform_install
       end
-      install
+    end
+
+    def get_dependency(name)
+      dependencies.find { |d| d.name == name }
+    end
+
+    def dependencies_tree
+      dep = Dependency.new(self)
+      dependencies.each do |d|
+        dep.add_child d.dependencies_tree
+      end
+      dep
     end
   end
 end
