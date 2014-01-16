@@ -104,14 +104,21 @@ describe Autoparts::Package do
 
   describe '#dependencies' do
     it 'resolves all dependencies of the current package' do
+      newfoo_pkg = Class.new(Autoparts::Package) do
+        name 'newfoo'
+        depends_on 'foo'
+      end
+
       foobar_pkg = Class.new(Autoparts::Package) do
         name 'foobar'
-        depends_on 'foo'
+        depends_on 'newfoo'
         depends_on 'bar'
       end
 
       foobar = foobar_pkg.new
-      expect(foobar.dependencies.children).to include(Autoparts::Dependency.new(FooPackage.new))
+      newfoo = foobar.dependencies.children.find { |d| d.name == "newfoo" }
+      expect(newfoo.children).to include(Autoparts::Dependency.new(FooPackage.new))
+      expect(foobar.dependencies.children).to include(Autoparts::Dependency.new(newfoo_pkg.new))
       expect(foobar.dependencies.children).to include(Autoparts::Dependency.new(BarPackage.new))
     end
   end
