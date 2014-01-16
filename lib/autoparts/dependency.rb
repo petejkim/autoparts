@@ -1,6 +1,6 @@
 module Autoparts
   class Dependency
-    attr_accessor :children
+    attr_accessor :children, :obj
 
     def initialize(obj)
       @obj = obj

@@ -37,9 +37,9 @@ module Autoparts
 
     def dependencies
       @dep ||= Dependency.new(self)
-      unless self.class.dependencies.empty?
-        self.class.dependencies.each do |d|
-          d = Dependency.new(d.new)
+      if self.class.dependencies && !self.class.dependencies.empty?
+        self.class.dependencies.each do |klass|
+          d = klass.new.dependencies
           @dep.add_child d unless @dep.children.include?(d)
         end
       end
