@@ -45,7 +45,7 @@ module Autoparts
         if apache_conf_path.exist?
           FileUtils.cp apache_conf_path, apache_conf_path.to_s + "." + Time.now.to_s
         end
-        File.open(apache_conf_path, "w") { |f| f.write apache_config }
+        rewrite_config
         unless user_config_path.exist?
           user_config_path.mkpath
         end
@@ -75,6 +75,10 @@ module Autoparts
           Apache config is located at:
             $ #{apache_conf_path}
         EOS
+      end
+
+      def rewrite_config
+        File.open(apache_conf_path, "w") { |f| f.write apache_config }
       end
 
       def apache_conf_path
