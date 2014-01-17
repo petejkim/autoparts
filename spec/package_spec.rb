@@ -387,7 +387,7 @@ describe Autoparts::Package do
   end
 
   describe '#download' do
-    let(:tmp_path) { (Path.tmp + 'foo.tar.gz.partsdownload') }
+    let(:tmp_path) { (Autoparts::Path.tmp + 'foo.tar.gz.partsdownload') }
 
     before do
       @curl = receive(:system).with('curl', 'http://example.com/foo.tar.gz', '-L', '-o', tmp_path.to_s)
