@@ -5,8 +5,8 @@ Autoparts - A Package Manager for Nitrous.IO
 
 ### Requirements
 
-* A **"bran"** box. Some packages may not work correctly in **"arya"**
-  boxes. All new boxes created should now be **"bran"** boxes.
+* A **"bran"**, **cersei** or **drogo** box. Some packages may not work correctly in **"arya"**
+  boxes.
 
   ![Bran
   box](https://raw.github.com/action-io/action-assets/a7d29cbd686f2269ac930c01a8928accd19a0b89/support/screenshots/bran-box.png)
