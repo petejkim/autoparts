@@ -7,8 +7,6 @@ module Autoparts
       source_url 'http://fastdl.mongodb.org/linux/mongodb-linux-x86_64-2.4.6.tgz'
       source_sha1 '428c67a23d7775d7972fd45509671f8662e014a3'
       source_filetype 'tar.gz'
-      binary_url 'https://nitrousio-autoparts-use1.s3.amazonaws.com/mongodb-2.4.6-binary.tar.gz'
-      binary_sha1 '5044427b1df22bb297dadcc68ca1bea94f2b5517'
 
       def compile
         # mongodb is distributed precompiled
