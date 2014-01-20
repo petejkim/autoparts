@@ -37,4 +37,10 @@ module Autoparts
       super("Failed to stop: #{reason}")
     end
   end
+
+  class BinaryNotPresentError < AutopartsError
+    def initialize(name)
+      super("Package \"#{name}\" does not have an associated binary")
+    end
+  end
 end

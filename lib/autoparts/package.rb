@@ -3,6 +3,8 @@ require 'etc'
 
 module Autoparts
   class Package
+    BINARY_HOST = 'http://parts.nitrous.io'.freeze
+
     class << self
       def installed
         hash = {}
@@ -63,14 +65,6 @@ module Autoparts
       def source_filetype(val)
         @source_filetype = val
       end
-
-      def binary_url(val)
-        @binary_url = val
-      end
-
-      def binary_sha1(val)
-        @binary_sha1 = val
-      end
     end
 
     def initialize
@@ -105,12 +99,26 @@ module Autoparts
       self.class.instance_variable_get(:@source_filetype)
     end
 
+    def binary_present?
+      @binary_present = (remote_file_exists?(binary_url) && remote_file_exists?(binary_sha1_url)) if @binary_present.nil?
+      @binary_present
+    end
+
     def binary_url
-      self.class.instance_variable_get(:@binary_url)
+      "#{BINARY_HOST}/#{name_with_version}-binary.tar.gz"
+    end
+
+    def binary_sha1_url
+      "#{BINARY_HOST}/#{binary_sha1_filename}"
     end
 
     def binary_sha1
-      self.class.instance_variable_get(:@binary_sha1)
+      if binary_present?
+        download binary_sha1_url, binary_sha1_path
+        File.read(binary_sha1_path.to_s).strip
+      else
+        raise BinaryNotPresentError.new(name)
+      end
     end
 
     def user
@@ -156,8 +164,16 @@ module Autoparts
       name_with_version + (@source_install ? ".#{source_filetype}" : '-binary.tar.gz')
     end
 
+    def binary_sha1_filename
+      name_with_version + '-binary.sha1'
+    end
+
     def temporary_archive_path
       Path.tmp + archive_filename
+    end
+
+    def binary_sha1_path
+      Path.tmp + binary_sha1_filename
     end
 
     def archive_path
@@ -246,7 +262,7 @@ module Autoparts
           source_install = true
         end
 
-        @source_install = source_install ||= binary_url.nil?
+        @source_install = source_install ||= binary_present?
 
         unless File.exist? archive_path
           puts "=> Downloading #{@source_install ? source_url : binary_url}..."
@@ -333,6 +349,10 @@ module Autoparts
         raise VerificationFailedError
       end
       execute 'mv', tmp_download_path, to
+    end
+
+    def remote_file_exists?(url)
+      `curl -sL -w \"%{http_code}\" '#{url}' -o /dev/null 2> /dev/null`.strip == '200'
     end
 
     # -- implement these methods --
