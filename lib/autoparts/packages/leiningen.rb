@@ -7,8 +7,6 @@ module Autoparts
       source_url 'https://leiningen.s3.amazonaws.com/downloads/leiningen-2.3.2-standalone.jar'
       source_sha1 'ed6f93be75c796408544042cfd26699d45b49725'
       source_filetype 'jar'
-      binary_url 'https://nitrousio-autoparts-use1.s3.amazonaws.com/leiningen-2.3.2-binary.tar.gz'
-      binary_sha1 '61204033e6bedda4514e7372d9101fa14e9b0e1a'
 
       def install
         prefix_path.mkpath

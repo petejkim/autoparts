@@ -7,8 +7,6 @@ module Autoparts
       source_url 'https://downloads.sourceforge.net/project/freepascal/Linux/2.6.2/fpc-2.6.2.x86_64-linux.tar'
       source_sha1 'f31c09545b727396f6f2858d12dcebdd25c5c16f'
       source_filetype 'tar'
-      binary_url 'https://nitrousio-autoparts-use1.s3.amazonaws.com/freepascal-2.6.2-binary.tar.gz'
-      binary_sha1 '1f3eb18f40deb2af7423798acb3fa7c2d55a44ed'
 
       def install
         Dir.chdir('fpc-2.6.2.x86_64-linux') do

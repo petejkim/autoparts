@@ -7,8 +7,6 @@ module Autoparts
       source_url 'http://download.redis.io/releases/redis-2.6.16.tar.gz'
       source_sha1 'f94c0f623aaa8c310f9be2a88e81716de01ce0ce'
       source_filetype 'tar.gz'
-      binary_url 'https://nitrousio-autoparts-use1.s3.amazonaws.com/redis-2.6.16-binary.tar.gz'
-      binary_sha1 '8e56a18baf076955dac87b8c6b6b2d57155c0c2e'
 
       def compile
         Dir.chdir('redis-2.6.16') do

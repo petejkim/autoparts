@@ -7,8 +7,6 @@ module Autoparts
       source_url 'https://github.com/ggreer/the_silver_searcher/archive/0.18.1.tar.gz'
       source_sha1 'efffa28a7e15261dfc027cf94653459a4db0dd92'
       source_filetype 'tar.gz'
-      binary_url 'https://nitrousio-autoparts-use1.s3.amazonaws.com/the_silver_searcher-0.18.1-binary.tar.gz'
-      binary_sha1 'bfd67a7139004cc049c168ad947e0ae9cdee4ed3'
 
       def install
         Dir.chdir('the_silver_searcher-0.18.1') do
