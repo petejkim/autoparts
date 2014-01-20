@@ -13,7 +13,7 @@ module Autoparts
         end
         begin
           args.each do |package_name|
-            Package.factory(package_name).perform_install(options.include? '--source')
+            Package.factory(package_name).perform_install_with_dependencies(options.include? '--source')
           end
         rescue => e
           abort "parts: ERROR: #{e}\nAborting!"

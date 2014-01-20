@@ -3,6 +3,8 @@ require 'etc'
 
 module Autoparts
   class Package
+    include PackageDeps
+
     class << self
       def installed
         hash = {}

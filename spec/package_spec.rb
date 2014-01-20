@@ -32,6 +32,19 @@ describe Autoparts::Package do
     bar_package.stub(:system)
   end
 
+  describe '.depends_on' do
+    it 'buils dependencies for the current package' do
+      foobar = Class.new(Autoparts::Package) do
+        name 'foobar'
+        depends_on 'foo'
+        depends_on 'bar'
+      end
+
+      expect(foobar.dependencies).to include(FooPackage)
+      expect(foobar.dependencies).to include(BarPackage)
+    end
+  end
+
   describe '.installed' do
     before do
       FileUtils.mkdir_p (Autoparts::Path.packages + 'mysql' + '5.6.13').to_s
@@ -78,6 +91,80 @@ describe Autoparts::Package do
       expect {
         described_class.factory('lol')
       }.to raise_error Autoparts::PackageNotFoundError, 'Package "lol" not found'
+    end
+  end
+
+  describe '#dependencies' do
+    it 'resolves all dependencies of the current package' do
+      newfoo_pkg = Class.new(Autoparts::Package) do
+        name 'newfoo'
+        depends_on 'foo'
+      end
+
+      foobar_pkg = Class.new(Autoparts::Package) do
+        name 'foobar'
+        depends_on 'newfoo'
+        depends_on 'bar'
+      end
+
+      foobar = foobar_pkg.new
+      newfoo = foobar.dependencies.children.find { |d| d.name == "newfoo" }
+      expect(newfoo.children).to include(Autoparts::Dependency.new(FooPackage.new))
+      expect(foobar.dependencies.children).to include(Autoparts::Dependency.new(newfoo_pkg.new))
+      expect(foobar.dependencies.children).to include(Autoparts::Dependency.new(BarPackage.new))
+    end
+  end
+
+  describe '#perform_install_with_dependencies' do
+    context 'one level of dependencies' do
+      it 'installs the dependencies of the current package' do
+        foobar_pkg = Class.new(Autoparts::Package) do
+          name 'foobar'
+          depends_on 'foo'
+          depends_on 'bar'
+        end
+        foobar = foobar_pkg.new
+        expect_any_instance_of(FooPackage).to receive(:perform_install).with(true)
+        expect_any_instance_of(BarPackage).to receive(:perform_install).with(true)
+        expect(foobar).to receive(:perform_install)
+        foobar.perform_install_with_dependencies true
+      end
+    end
+
+    context 'two levels of dependencies' do
+      it 'installs the all dependencies of the current package (including nested ones)' do
+        foobaz_pkg = Class.new(Autoparts::Package) do
+          name        'foobaz'
+          depends_on  'foo'
+        end
+
+        foobar_pkg = Class.new(Autoparts::Package) do
+          name        'foobar'
+          depends_on  'foobaz'
+          depends_on  'bar'
+        end
+
+        foobar = foobar_pkg.new
+
+        expect_any_instance_of(FooPackage).to receive(:perform_install).with(true)
+        expect_any_instance_of(foobaz_pkg).to receive(:perform_install).with(true)
+        expect_any_instance_of(BarPackage).to receive(:perform_install).with(true)
+
+        expect(foobar).to receive(:perform_install)
+        foobar.perform_install_with_dependencies true
+      end
+    end
+  end
+
+  describe '#get_dependency' do
+    it 'retrieves the specified dependency instance' do
+      foobar_pkg = Class.new(Autoparts::Package) do
+        name 'foobar'
+        depends_on 'foo'
+        depends_on 'bar'
+      end
+      foobar = foobar_pkg.new
+      expect(foobar.get_dependency('foo')).to be_kind_of(FooPackage)
     end
   end
 
