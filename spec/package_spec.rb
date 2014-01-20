@@ -43,18 +43,6 @@ describe Autoparts::Package do
       expect(foobar.dependencies).to include(FooPackage)
       expect(foobar.dependencies).to include(BarPackage)
     end
-
-    it 'resolves nested dependencies' do
-      foo_depends_on_bar = Class.new(Autoparts::Package) do
-        name 'foo_depends_on_bar'
-        depends_on 'bar'
-      end
-
-      depends_on_foo = Class.new(Autoparts::Package) do
-        name 'depends_on_foo'
-        depends_on 'foo'
-      end
-    end
   end
 
   describe '.installed' do
