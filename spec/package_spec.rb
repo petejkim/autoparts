@@ -8,8 +8,6 @@ class FooPackage < Autoparts::Package
   source_url 'http://example.com/foo.tar.gz'
   source_sha1 'f00f00f00f00f00f00f00f00f00f00f00f00f00f'
   source_filetype 'tar.gz'
-  binary_url 'http://example.com/foo-precompiled.tar.gz'
-  binary_sha1 'dadadadadadadadadadadadadadadadadadadada'
 end
 
 class BarPackage < Autoparts::Package
@@ -19,8 +17,6 @@ class BarPackage < Autoparts::Package
   source_url 'http://example.com/bar.zip'
   source_sha1 'babababababababababababababababababababa'
   source_filetype 'zip'
-  binary_url 'http://example.com/bar-precompiled.tar.gz'
-  binary_sha1 'd00d00d00d00d00d00d00d00d00d00d00d00d00d'
 end
 
 describe Autoparts::Package do
@@ -132,15 +128,15 @@ describe Autoparts::Package do
 
   describe '#binary_url' do
     it 'returns the url for the precompiled binary archive set using the DSL keyword "binary_url"' do
-      expect(foo_package.binary_url).to eq 'http://example.com/foo-precompiled.tar.gz'
-      expect(bar_package.binary_url).to eq 'http://example.com/bar-precompiled.tar.gz'
+      expect(foo_package.binary_url).to eq "http://parts.nitrous.io/foo-1.0-binary.tar.gz"
+      expect(bar_package.binary_url).to eq "http://parts.nitrous.io/bar-2.0-binary.tar.gz"
     end
   end
 
-  describe '#binary_sha1' do
+  describe '#binary_sha1_url' do
     it 'returns the url for the precompiled binary archive set using the DSL keyword "binary_sha1"' do
-      expect(foo_package.binary_sha1).to eq 'dadadadadadadadadadadadadadadadadadadada'
-      expect(bar_package.binary_sha1).to eq 'd00d00d00d00d00d00d00d00d00d00d00d00d00d'
+      expect(foo_package.binary_sha1_url).to eq "http://parts.nitrous.io/foo-1.0-binary.sha1"
+      expect(bar_package.binary_sha1_url).to eq "http://parts.nitrous.io/bar-2.0-binary.sha1"
     end
   end
 
@@ -244,6 +240,13 @@ describe Autoparts::Package do
     end
   end
 
+  describe '#binary_sha1_filename' do
+    it 'generates a filename for the precompiled binary SHA1 in the following format: <name>-<version>-binary.sha1' do
+      expect(foo_package.binary_sha1_filename).to eq 'foo-1.0-binary.sha1'
+      expect(bar_package.binary_sha1_filename).to eq 'bar-2.0-binary.sha1'
+    end
+  end
+
   describe '#temporary_archive_path' do
     context 'when @source_install is false' do
       before do
@@ -301,6 +304,16 @@ describe Autoparts::Package do
         expect(foo_package.archive_path.to_s).to eq "#{Autoparts::Path.archives}/foo-1.0.tar.gz"
         expect(bar_package.archive_path.to_s).to eq "#{Autoparts::Path.archives}/bar-2.0.zip"
       end
+    end
+  end
+
+  describe 'binary_sha1_path' do
+    it 'generates a temp path for the binary SHA1 in the following format: <tmp path>/<name>-<version>-binary.sha1' do
+      expect(foo_package.binary_sha1_path).to be_a Pathname
+      expect(bar_package.binary_sha1_path).to be_a Pathname
+
+      expect(foo_package.binary_sha1_path.to_s).to eq "#{Autoparts::Path.tmp}/foo-1.0-binary.sha1"
+      expect(bar_package.binary_sha1_path.to_s).to eq "#{Autoparts::Path.tmp}/bar-2.0-binary.sha1"
     end
   end
 
@@ -373,6 +386,86 @@ describe Autoparts::Package do
     end
   end
 
+  describe '#binary_sha1' do
+    context 'binary is not present' do
+      before do
+        foo_package.stub(:binary_present?) { false }
+      end
+
+      it 'should raise error' do
+        expect {
+          foo_package.binary_sha1
+        }.to raise_error Autoparts::BinaryNotPresentError
+      end
+    end
+
+    context 'binary is present' do
+      before do
+        foo_package.stub(:binary_present?) { true }
+        File.open(foo_package.binary_sha1_path.to_s, 'w') { |f| f.puts('dadadadadada') }
+      end
+
+      it 'should download the SHA1' do
+        expect(foo_package).to receive(:download).with(foo_package.binary_sha1_url, foo_package.binary_sha1_path)
+        expect(foo_package.binary_sha1).to eq 'dadadadadada'
+      end
+    end
+  end
+
+  describe '#binary_present?' do
+    context 'one of the binary URLs is present and the other is not' do
+      before do
+        foo_package.should_receive(:remote_file_exists?).exactly(2).times.and_return(true, false)
+      end
+
+      it 'should return false' do
+        expect(foo_package.binary_present?).to be_false
+        # since the call is memoized, calling it again will not break the spec
+        # since remote_file_exists? will only be called twice
+        expect(foo_package.binary_present?).to be_false
+      end
+    end
+
+    context 'both the binary URLs are present' do
+      before do
+        foo_package.should_receive(:remote_file_exists?).exactly(2).times.and_return(true, true)
+      end
+
+      it 'should return false' do
+        expect(foo_package.binary_present?).to be_true
+        # since the call is memoized, calling it again will not break the spec
+        # since remote_file_exists? will only be called twice
+        expect(foo_package.binary_present?).to be_true
+      end
+    end
+  end
+
+  describe '#remote_file_exists?' do
+    before do
+      @curl = receive(:`).with('curl -IsL -w "%{http_code}" \'http://example.com/foo.tar.gz\' -o /dev/null 2> /dev/null')
+    end
+
+    context 'file exists' do
+      before do
+        expect(foo_package).to @curl.and_return '200'
+      end
+
+      it 'should return true' do
+        expect(foo_package.remote_file_exists?('http://example.com/foo.tar.gz')).to be_true
+      end
+    end
+
+    context 'file does not exist' do
+      before do
+        expect(foo_package).to @curl.and_return '403'
+      end
+
+      it 'should return false' do
+        expect(foo_package.remote_file_exists?('http://example.com/foo.tar.gz')).to be_false
+      end
+    end
+  end
+
   describe '#download_archive' do
     context 'when @source_install is true' do
       before do
@@ -390,6 +483,8 @@ describe Autoparts::Package do
       before do
         foo_package.instance_variable_set :@source_install, false
         bar_package.instance_variable_set :@source_install, false
+
+        foo_package.stub(:binary_sha1) { 'dadadadadada' }
       end
 
       it 'downloads binary_url, with binary_sha1 onto archive_url' do
