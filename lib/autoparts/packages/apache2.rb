@@ -4,7 +4,7 @@ module Autoparts
       name 'apache2'
       version '2.4.7'
       description 'Apache HTTP Web Server'
-      source_url 'http://mirror.nus.edu.sg/apache//httpd/httpd-2.4.7.tar.gz'
+      source_url 'http://mirror.metrocast.net/apache//httpd/httpd-2.4.7.tar.gz'
       source_sha1 '9a73783b0f75226fb2afdcadd30ccba77ba05149'
       source_filetype 'tar.gz'
 
