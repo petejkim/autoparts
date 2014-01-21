@@ -339,7 +339,10 @@ module Autoparts
       file_size = archive_path.size
       puts "=> Archived: #{archive_path}"
       puts "Size: #{archive_path.size} bytes (#{sprintf "%.2f MiB", file_size / 1024.0 / 1024.0})"
-      puts "SHA1: #{Util.sha1 archive_path}"
+      sha1 = Util.sha1 archive_path
+      # Write the SHA1 to the archive_path too
+      File.open(File.join(Path.archives, "#{name_with_version}-binary.sha1"), 'w') { |f| f.puts (sha1) }
+      puts "SHA1: #{sha1}"
     end
 
     def download(url, to, sha1=nil)
