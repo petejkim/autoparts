@@ -442,7 +442,7 @@ describe Autoparts::Package do
 
   describe '#remote_file_exists?' do
     before do
-      @curl = receive(:`).with('curl -sL -w "%{http_code}" \'http://example.com/foo.tar.gz\' -o /dev/null 2> /dev/null')
+      @curl = receive(:`).with('curl -IsL -w "%{http_code}" \'http://example.com/foo.tar.gz\' -o /dev/null 2> /dev/null')
     end
 
     context 'file exists' do

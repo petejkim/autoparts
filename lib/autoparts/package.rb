@@ -352,7 +352,7 @@ module Autoparts
     end
 
     def remote_file_exists?(url)
-      `curl -sL -w \"%{http_code}\" '#{url}' -o /dev/null 2> /dev/null`.strip == '200'
+      `curl -IsL -w \"%{http_code}\" '#{url}' -o /dev/null 2> /dev/null`.strip == '200'
     end
 
     # -- implement these methods --
