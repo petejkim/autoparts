@@ -262,7 +262,7 @@ module Autoparts
           source_install = true
         end
 
-        @source_install = source_install ||= binary_present?
+        @source_install = source_install ||= (binary_present? == false)
 
         unless File.exist? archive_path
           puts "=> Downloading #{@source_install ? source_url : binary_url}..."
