@@ -3,7 +3,7 @@ module Autoparts
     class AprUtil < Package
       name 'apr_util'
       version '1.5.3'
-      description 'Apache Portable Runtime Project'
+      description 'Apache Portable Runtime Utilities: Utilities that provide a predictable and consistent interface to underlying platform-specific implementations'
       source_url 'http://mirrors.gigenet.com/apache//apr/apr-util-1.5.3.tar.gz'
       source_sha1 'bfee2277603c8136e12db5c7be7e9cbbd8794596'
       source_filetype 'tar.gz'
