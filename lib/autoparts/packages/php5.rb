@@ -4,7 +4,7 @@ module Autoparts
       name 'php5'
       version '5.5.8'
       description 'PHP 5.5: A popular general-purpose scripting language that is especially suited to web development.'
-      source_url "http://us1.php.net/get/php-5.5.8.tar.gz/from/this/mirror"
+      source_url 'http://us1.php.net/get/php-5.5.8.tar.gz/from/this/mirror'
       source_sha1 '19af9180c664c4b8f6c46fc10fbad9f935e07b52'
       source_filetype 'tar.gz'
 
@@ -46,7 +46,7 @@ module Autoparts
           # force apache2 to rewrite its config to get a pristine config
           # because php will rewrite it
           apache2_dependency.rewrite_config
-          # copy libphp5.so over to the package so its will be distributed with
+          # copy libphp5.so over to the package so it will be distributed with
           # the binary
           execute 'mv', "#{apache2_libphp5_path}", "#{lib_path + "libphp5.so"}"
         end
@@ -61,8 +61,16 @@ module Autoparts
         end
         # copy php.ini over
         unless php5_ini_path.exist?
+          FileUtils.mkdir_p(File.dirname(php5_ini_path))
           execute 'cp', "#{lib_path}/php.ini", "#{php5_ini_path}"
         end
+      end
+
+      def tips
+        <<-EOS.unindent
+          PHP config file is located at:
+            $ #{php5_ini_path}
+        EOS
       end
 
       def php5_ini_path
