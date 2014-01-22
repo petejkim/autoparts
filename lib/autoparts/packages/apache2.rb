@@ -42,6 +42,7 @@ module Autoparts
       def post_install
         execute 'mkdir', '-p', Path.var + 'apache2' + 'run'
         execute 'mkdir', '-p', Path.var + 'apache2' + 'log'
+        execute 'mkdir', '-p', Path.etc + name
         if apache_conf_path.exist?
           FileUtils.cp apache_conf_path, apache_conf_path.to_s + "." + Time.now.to_s
         end
