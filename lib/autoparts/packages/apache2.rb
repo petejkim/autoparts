@@ -93,7 +93,7 @@ module Autoparts
             $ #{apache_conf_path}
 
           Default document root is located at:
-            $ #{default_document_root}
+            $ #{htdocs_path}
         EOS
       end
 
@@ -110,7 +110,14 @@ module Autoparts
       end
 
       def htdocs_path
-        Path.share + name + 'htdocs'
+        return @htdocs_path if @htdocs_path
+        if home_workspace_path.directory?
+          home_workspace_htdocs_path.mkpath unless home_workspace_htdocs_path.exist?
+          @htdocs_path = home_workspace_htdocs_path
+        else
+          @htdocs_path = Path.share + name + 'htdocs'
+        end
+        @htdocs_path
       end
 
       def user_config_path
@@ -123,11 +130,6 @@ module Autoparts
 
       def home_workspace_htdocs_path
         home_workspace_path + 'www'
-      end
-
-      def default_document_root
-        return home_workspace_htdocs_path if home_workspace_htdocs_path.symlink?
-        htdocs_path
       end
 
       def config_layout_file
