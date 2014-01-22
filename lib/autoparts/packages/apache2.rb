@@ -83,10 +83,10 @@ module Autoparts
 
       def tips
         <<-EOS.unindent
-          To start the server:
+          To start the Apache server:
             $ parts start apache2
 
-          To stop the server:
+          To stop the Apache server:
             $ parts stop apache2
 
           Apache config is located at:
