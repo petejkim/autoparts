@@ -32,6 +32,7 @@ commands = {
 
 unless ENV['AUTOPARTS_DEV'].nil?
   commands['archive'] = Autoparts::Commands::Archive
+  commands['upload']  = Autoparts::Commands::Upload
 end
 
 if command = commands[cli.command || 'help']

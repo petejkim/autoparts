@@ -17,6 +17,7 @@ require 'autoparts/commands/stop'
 require 'autoparts/commands/restart'
 require 'autoparts/commands/status'
 require 'autoparts/commands/update'
+require 'autoparts/commands/upload'
 
 module Autoparts
 end

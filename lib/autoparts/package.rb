@@ -333,6 +333,25 @@ module Autoparts
       puts "=> Uninstalled #{name} #{version}\n"
     end
 
+    def upload_archive
+      binary_file_name = "#{name_with_version}-binary.tar.gz"
+      binary_sha1_file_name = "#{name_with_version}-binary.sha1"
+
+      binary_path = Path.archives + binary_file_name
+      binary_sha1_path = Path.archives + binary_sha1_file_name
+
+      if File.exists?(binary_path) && File.exists?(binary_sha1_path)
+        puts "=> Uploading #{name} #{version}..."
+        [binary_file_name, binary_sha1_file_name].each do |f|
+          local_path = Path.archives + f
+          `s3cmd put --acl-public --guess-mime-type #{local_path} s3://nitrousio-autoparts-use1/#{f}`
+        end
+        puts "=> Done"
+      else
+        puts "=> Error: Can't find package, archive it by running AUTOPARTS_DEV=1 parts archive #{name}"
+      end
+    end
+
     def archive_installed
       puts "=> Archiving #{name} #{version}..."
       archive_installed_package
