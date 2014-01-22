@@ -4,7 +4,7 @@ module Autoparts
       name 'apache2'
       version '2.4.7'
       description 'Apache Web Server: A cross-platform open-source HTTP server for modern operating systems'
-      source_url 'http://mirror.metrocast.net/apache//httpd/httpd-2.4.7.tar.gz'
+      source_url 'http://mirror.metrocast.net/apache/httpd/httpd-2.4.7.tar.gz'
       source_sha1 '9a73783b0f75226fb2afdcadd30ccba77ba05149'
       source_filetype 'tar.gz'
 
@@ -54,6 +54,9 @@ module Autoparts
           user_config_path.mkpath
         end
 
+        # Setup mime.types.
+        FileUtils.cp '/etc/mime.types', mime_types_path
+
         # Setup document root.
         execute 'mkdir', '-p', htdocs_path
         if home_workspace_path.directory?
@@ -100,6 +103,10 @@ module Autoparts
 
       def apache_conf_path
         Path.etc + name + 'httpd.conf'
+      end
+
+      def mime_types_path
+        Path.etc + name + 'mime.types'
       end
 
       def htdocs_path
@@ -209,7 +216,7 @@ module Autoparts
           LogLevel warn
 
           <IfModule mime_module>
-              TypesConfig #{Path.etc + name + "mime.types"}
+              TypesConfig #{mime_types_path}
               AddType application/x-compress .Z
               AddType application/x-gzip .gz .tgz
           </IfModule>
