@@ -4,6 +4,7 @@ require 'etc'
 module Autoparts
   class Package
     BINARY_HOST = 'http://parts.nitrous.io'.freeze
+    include PackageDeps
 
     class << self
       def installed
