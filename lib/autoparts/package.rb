@@ -385,6 +385,7 @@ module Autoparts
 
     # notify the web IDE when a package is installed / uninstalled
     def call_web_hook(action)
+      return unless File.exist?(BOX_ID_PATH)
       begin
         box_id = File.read(BOX_ID_PATH).strip
         autoparts_version = Autoparts::Commands::Help.version
