@@ -711,8 +711,9 @@ describe Autoparts::Package do
 
   describe '#call_web_hook' do
     before do
-      File.stub(:exist?).with(Autoparts::Package::BOX_ID_PATH) { true }
-      File.stub(:read).with(Autoparts::Package::BOX_ID_PATH) { '42 ' }
+      FileUtils.mkdir_p(Pathname.new(Autoparts::Package::BOX_ID_PATH).dirname.to_s)
+      File.open(Autoparts::Package::BOX_ID_PATH, 'w') { |f| f.puts('42') }
+
       Autoparts::Commands::Help.stub(:version) { 'Autoparts 1.0.0-abcd' }
     end
 
