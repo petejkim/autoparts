@@ -3,7 +3,7 @@ Autoparts - A Package Manager for Nitrous.IO
 
 ### 必要な条件
 
-* **「bran」**ボックス: いくつかのパッケージは、「arya」ボックスでは正しく動作しない場合があります。作成される全ての新規ボックスは「bran」ボックスである必要があります。
+* **「bran」**ボックス: いくつかのパッケージは、「arya」ボックスでは正しく動作しない場合があります。今後新しく作成されるボックスはすべて「bran」ボックスになります。
 
   ![Bran
   box](https://raw.github.com/action-io/action-assets/a7d29cbd686f2269ac930c01a8928accd19a0b89/support/screenshots/bran-box.png)
