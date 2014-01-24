@@ -37,7 +37,7 @@ end
 begin
   AUTOPARTS_ROOT_PATH.mkpath
   puts "=> Downloading Autoparts..."
-  execute 'git', 'clone', 'https://github.com/action-io/autoparts.git', AUTOPARTS_APP_PATH
+  execute 'git', 'clone', 'https://github.com/codio/autoparts.git', AUTOPARTS_APP_PATH
 
   bash_profile_path = HOME_PATH + '.bash_profile'
   bashrc_path = HOME_PATH + '.bashrc'
