@@ -20,6 +20,7 @@ module Autoparts
             "--prefix=#{prefix_path}",
             "--bindir=#{bin_path}",
             "--sbindir=#{bin_path}",
+            "--with-config-file-path=#{php5_ini_path}",
             "--sysconfdir=#{Path.etc + name}",
             "--libdir=#{lib_path}",
             "--includedir=#{include_path}",
