@@ -97,6 +97,7 @@ If Apache2 httpd is already running, you will need to restart it:
 
       def php5_apache_config
         <<-EOF.unindent
+        PHPIniDir #{php5_ini_path}
         LoadModule php5_module modules/libphp5.so
         AddHandler php5-script .php
         DirectoryIndex index.php
