@@ -19,6 +19,22 @@ describe Autoparts::Dependency do
     end
   end
 
+  describe '#count' do
+    it 'returns the number of children' do
+      apache2 = described_class.new Pkg.new('apache2')
+      apr_util = described_class.new Pkg.new('apr-util')
+      apr = described_class.new Pkg.new('apr')
+
+      apache2.add_child apr_util
+      apache2.add_child apr
+      apr_util.add_child apr
+
+      expect(apache2.count).to eql(2)
+      expect(apr_util.count).to eql(1)
+      expect(apr.count).to eql(0)
+    end
+  end
+
   describe '#add_child' do
     it 'adds children to the dependency' do
       d1 = described_class.new Pkg.new("mysql")
@@ -49,6 +65,24 @@ describe Autoparts::Dependency do
       expect(pkg3.install_order).to eql(["apr", "apr-util"])
       expect(pkg4.install_order).to eql(["apr"])
       expect(pkg5.install_order).to eql([])
+    end
+  end
+
+  describe '#to_s' do
+    it 'returns a comma-separated string containing the install order of the dependency' do
+      php5 = described_class.new Pkg.new('php5')
+      apache2 = described_class.new Pkg.new('apache2')
+      apr_util = described_class.new Pkg.new('apr-util')
+      apr = described_class.new Pkg.new('apr')
+
+      php5.add_child apache2
+      apache2.add_child apr_util; apache2.add_child apr
+      apr_util.add_child apr
+
+      expect(php5.to_s).to eql('apr, apr-util, apache2')
+      expect(apache2.to_s).to eql('apr, apr-util')
+      expect(apr_util.to_s).to eql('apr')
+      expect(apr.to_s).to eql('')
     end
   end
 end

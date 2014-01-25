@@ -18,6 +18,7 @@ cli = Autoparts::CLIParser.new(ARGV)
 commands = {
   'help'      => Autoparts::Commands::Help,
   'init'      => Autoparts::Commands::Init,
+  'info'      => Autoparts::Commands::Info,
   'install'   => Autoparts::Commands::Install,
   'list'      => Autoparts::Commands::List,
   'purge'     => Autoparts::Commands::Purge,
