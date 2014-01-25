@@ -304,7 +304,7 @@ module Autoparts
           symlink_recursively(share_path,   Path.share)
         end
       rescue => e
-        archive_path.unlink if e.kind_of? VerificationFailedError
+        archive_path.unlink if e.kind_of?(VerificationFailedError) && archive_path.exist?
         prefix_path.rmtree if prefix_path.exist?
         raise e
       else

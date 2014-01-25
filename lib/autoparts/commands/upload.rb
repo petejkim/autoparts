@@ -15,11 +15,6 @@ module Autoparts
             unless Package.installed? package_name
               raise PackageNotInstalledError.new package_name
             end
-
-            package = Package.factory(package_name)
-            binary_file_name = "#{package.name_with_version}-binary.tar.gz"
-            binary_sha1_file_name = "#{package.name_with_version}-binary.sha1"
-
             Package.factory(package_name).upload_archive
           end
         rescue => e
