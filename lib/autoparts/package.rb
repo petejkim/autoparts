@@ -262,7 +262,7 @@ module Autoparts
         ENV['MAKEFLAGS'] = '-j2'
 
         if !source_install && !Util.binary_package_compatible?
-          puts "Warning: This system is incompatible with Nitrous.IO binary packages; installing from source."
+          puts "Warning: This system is incompatible with binary packages; installing from source."
           source_install = true
         end
 
