@@ -9,7 +9,7 @@ module Autoparts
           puts version
         else
           puts <<-EOS.unindent
-            #{version} - A Package Manager for Nitrous.IO
+            #{version} - A Package Manager for Codio
 
             Usage: parts COMMAND [ARGS...]
 
@@ -23,7 +23,7 @@ module Autoparts
               parts stop PACKAGE...      # Stop one or many services provided by packages
               parts restart PACKAGE...   # Restart one or many services provided by packages
               parts status [PACKAGE...]  # Show status of one or many services provided by packages
-              parts update               # Update Autoparts
+              parts update               # Update Box Parts
           EOS
         end
       end
@@ -31,7 +31,7 @@ module Autoparts
       def self.version
         Dir.chdir(PROJECT_ROOT) do
           git_hash = `git describe --always`.strip
-          "Autoparts #{Autoparts::VERSION}-#{git_hash}"
+          "Box #{Autoparts::VERSION}-#{git_hash}"
         end
       end
     end
