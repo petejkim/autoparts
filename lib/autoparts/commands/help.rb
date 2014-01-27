@@ -23,6 +23,7 @@ module Autoparts
               parts stop PACKAGE...      # Stop one or many services provided by packages
               parts restart PACKAGE...   # Restart one or many services provided by packages
               parts status [PACKAGE...]  # Show status of one or many services provided by packages
+              parts info PACKAGE...      # Prints dependencies and tips of one or many packages
               parts update               # Update Autoparts
           EOS
         end
