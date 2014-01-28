@@ -77,8 +77,14 @@ module Autoparts
       end
 
       def running?
-        pid = Path.var + name + "run" + "httpd.pid"
-        pid.exist?
+        pidFile = Path.var + name + "run" + "httpd.pid"
+        if pidFile.exist?
+          pid = File.read(mongod_pid_file_path).strip
+          if pid.length > 0 && `ps -o cmd= #{pid}`.include?('httpd')
+            return true
+          end
+        end
+        false
       end
 
       def tips
