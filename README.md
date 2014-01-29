@@ -1,30 +1,20 @@
-Autoparts - A Package Manager for Nitrous.IO
-============================================
+Box Parts - A Simple Package Manager
+====================================
 
-[日本語](https://github.com/action-io/autoparts/blob/master/README.ja.md)
+Box Parts is a simple package manager. It provides a simple command line for installing a selection of curated binaries. This means installing a package is extremely fast.
 
-### Requirements
+Box Parts is used by [Codio](https://codio.com) to provide user-installed binary packages for every Codio project.
 
-* A **"bran"**, **cersei** or **drogo** box. Some packages may not work correctly in **"arya"**
-  boxes.
-
-  ![Bran
-  box](https://raw.github.com/action-io/action-assets/a7d29cbd686f2269ac930c01a8928accd19a0b89/support/screenshots/bran-box.png)
-
-* Some packages may require 512MB RAM or more.
 
 ### Installation
 
-Enter the following into your boxes' terminal:
+Every Codio Box comes pre-installed with Box Parts. Just open up the terminal and access it via the `parts` command.
 
-```sh
-ruby -e "$(curl -fsSL https://raw.github.com/action-io/autoparts/master/setup.rb)"
-exec $SHELL -l
-```
 
 ### Usage
 
 See `parts help`.
+
 
 ### Package Guidelines
 
