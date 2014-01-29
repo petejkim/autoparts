@@ -1,7 +1,9 @@
-Box Parts - A Package Manager for Codio
-=======================================
+Box Parts - A Simple Package Manager
+====================================
 
-Box Parts is a simple package manager for Codio Boxes. It provides a simple command line for installing a selection of curated binaries. This means installing a package is extremely fast.
+Box Parts is a simple package manager. It provides a simple command line for installing a selection of curated binaries. This means installing a package is extremely fast.
+
+Box Parts is used by [Codio](https://codio.com) to provide user-installed binary packages for every Codio project.
 
 
 ### Installation
