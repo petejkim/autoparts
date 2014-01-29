@@ -4,9 +4,12 @@ require 'etc'
 
 module Autoparts
   class Package
-    BINARY_HOST = 'http://parts.nitrous.io'.freeze
-    WEB_HOOK_URL = 'https://www.nitrous.io/autoparts/webhook'.freeze
-    BOX_ID_PATH = '/etc/action/box_id'.freeze
+    BOX_ID_FILE = '/etc/box'.freeze
+    BOX_ID = File.read(BOX_ID_FILE).strip
+    BINARY_HOST = 'http://parts.codio.com'.freeze
+#    WEB_HOOK_URL = 'https://www.nitrous.io/autoparts/webhook'.freeze
+#    BOX_ID_PATH = '/etc/action/box_id'.freeze
+    UPLOAD_PATH = "s3://parts.codio.com/#{BOX_ID}".freeze
     include PackageDeps
 
     class << self
@@ -109,11 +112,11 @@ module Autoparts
     end
 
     def binary_url
-      "#{BINARY_HOST}/#{name_with_version}-binary.tar.gz"
+      "#{BINARY_HOST}/#{BOX_ID}/#{name_with_version}-binary.tar.gz"
     end
 
     def binary_sha1_url
-      "#{BINARY_HOST}/#{binary_sha1_filename}"
+      "#{BINARY_HOST}/#{BOX_ID}/#{binary_sha1_filename}"
     end
 
     def binary_sha1
@@ -350,7 +353,7 @@ module Autoparts
         puts "=> Uploading #{name} #{version}..."
         [binary_file_name, binary_sha1_file_name].each do |f|
           local_path = Path.archives + f
-          `s3cmd put --acl-public --guess-mime-type #{local_path} s3://nitrousio-autoparts-use1/#{f}`
+          `s3cmd put --acl-public --guess-mime-type #{local_path} #{UPLOAD_PATH}/#{f}`
         end
         puts "=> Done"
       else
@@ -385,6 +388,7 @@ module Autoparts
 
     # notify the web IDE when a package is installed / uninstalled
     def call_web_hook(action)
+      return
       return unless File.exist?(BOX_ID_PATH)
       begin
         box_id = File.read(BOX_ID_PATH).strip

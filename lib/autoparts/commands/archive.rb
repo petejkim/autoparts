@@ -12,12 +12,10 @@ module Autoparts
         end
         unless Util.binary_package_compatible?
           abort <<-EOS.unindent
-            parts: ERROR: This system is incompatible with Nitrous.IO binary packages.
+            parts: ERROR: This system is incompatible with binary packages.
 
             Requirements:
             - Architecture must be x86_64
-            - Username must be "action"
-            - Packages must be installed into '/home/action/.parts/packages'
           EOS
         end
         begin

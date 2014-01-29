@@ -8,7 +8,7 @@ module Autoparts
       end
 
       def binary_package_compatible?
-        `uname -m`.include?('x86_64') && Etc.getlogin == 'action' && Path.root.to_s == '/home/action/.parts'
+        `uname -m`.include?('x86_64') && File.exists?('/etc/box')
       end
     end
   end
