@@ -135,7 +135,7 @@ module Autoparts
       end
 
       def home_workspace_htdocs_path
-        home_workspace_path + 'www'
+        home_workspace_path
       end
 
       def config_layout_file
