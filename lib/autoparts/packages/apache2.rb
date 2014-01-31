@@ -78,7 +78,7 @@ module Autoparts
 
       def running?
         pidFile = Path.var + name + "run" + "httpd.pid"
-        if pidFile.exist?
+        if File.exists?(pidFile)
           pid = File.read(pidFile).strip
           if pid.length > 0 && `ps -o cmd= #{pid}`.include?('httpd')
             return true
