@@ -2,20 +2,20 @@ module Autoparts
   module Packages
     class Rust < Package
       name 'rust'
-      version '0.8'
+      version '0.9'
       description 'Rust: A safe, concurrent, practical language'
-      source_url 'http://static.rust-lang.org/dist/rust-0.8.tar.gz'
-      source_sha1 '4ba016ed09fa66c80974eea18a4c5036e2c10817'
+      source_url 'http://static.rust-lang.org/dist/rust-0.9.tar.gz'
+      source_sha1 '6c5ef4c3c87a1b424510e41ad95dd17981b707b3'
       source_filetype 'tar.gz'
 
       def install
-        Dir.chdir('rust-0.8') do
+        Dir.chdir('rust-0.9') do
           execute 'make', 'install'
         end
       end
 
       def compile
-        Dir.chdir('rust-0.8') do
+        Dir.chdir('rust-0.9') do
           args = [
             "--prefix=#{prefix_path}"
           ]
