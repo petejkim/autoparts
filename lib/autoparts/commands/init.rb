@@ -34,6 +34,11 @@ module Autoparts
           export OBJC_INCLUDE_PATH="$AUTOPARTS_ROOT/include"
           export MAN_PATH="$AUTOPARTS_ROOT/share/man:/usr/local/share/man:/usr/share/man:$MAN_PATH"
         STR
+        Dir.foreach("#{Path.env}") do |item|
+          next if item == '.' or item == '..'
+          puts File.read(Path.env + item)
+          puts "\n"
+        end
       end
 
       def show_help
