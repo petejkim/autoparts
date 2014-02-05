@@ -6,7 +6,7 @@ Autoparts - A Package Manager for Nitrous.IO
 * **「bran」**ボックス: いくつかのパッケージは、「arya」ボックスでは正しく動作しない場合があります。今後新しく作成されるボックスはすべて「bran」ボックスになります。
 
   ![Bran
-  box](https://raw.github.com/action-io/action-assets/a7d29cbd686f2269ac930c01a8928accd19a0b89/support/screenshots/bran-box.png)
+  box](https://raw.github.com/nitrous-io/action-assets/a7d29cbd686f2269ac930c01a8928accd19a0b89/support/screenshots/bran-box.png)
 
 * いくつかのパッケージはメインメモリに512MB以上の空き容量を必要とする可能性があります。
 
@@ -15,7 +15,7 @@ Autoparts - A Package Manager for Nitrous.IO
 以下のコマンドをあなたのボックスのターミナルで入力してください。
 
 ```sh
-ruby -e "$(curl -fsSL https://raw.github.com/action-io/autoparts/master/setup.rb)"
+ruby -e "$(curl -fsSL https://raw.github.com/nitrous-io/autoparts/master/setup.rb)"
 exec $SHELL -l
 ```
 ### 使用方法
