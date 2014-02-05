@@ -9,7 +9,7 @@ Autoparts - A Package Manager for Nitrous.IO
   boxes.
 
   ![Bran
-  box](https://raw.github.com/action-io/action-assets/a7d29cbd686f2269ac930c01a8928accd19a0b89/support/screenshots/bran-box.png)
+  box](https://raw.github.com/nitrous-io/action-assets/a7d29cbd686f2269ac930c01a8928accd19a0b89/support/screenshots/bran-box.png)
 
 * Some packages may require 512MB RAM or more.
 
@@ -18,7 +18,7 @@ Autoparts - A Package Manager for Nitrous.IO
 Enter the following into your boxes' terminal:
 
 ```sh
-ruby -e "$(curl -fsSL https://raw.github.com/action-io/autoparts/master/setup.rb)"
+ruby -e "$(curl -fsSL https://raw.github.com/nitrous-io/autoparts/master/setup.rb)"
 exec $SHELL -l
 ```
 
