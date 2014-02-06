@@ -136,7 +136,7 @@ module Autoparts
       Path.packages + name + version
     end
 
-    %w(bin sbin include lib libexec share).each do |d|
+    %w(etc bin sbin include lib libexec share).each do |d|
       define_method :"#{d}_path" do
         prefix_path + d
       end
