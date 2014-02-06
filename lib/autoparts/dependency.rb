@@ -48,5 +48,9 @@ module Autoparts
       end
       tree
     end
+
+    def to_s
+      install_order.join(', ').to_s
+    end
   end
 end

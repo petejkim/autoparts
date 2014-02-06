@@ -18,6 +18,7 @@ require 'autoparts/commands/start'
 require 'autoparts/commands/stop'
 require 'autoparts/commands/restart'
 require 'autoparts/commands/status'
+require 'autoparts/commands/info'
 require 'autoparts/commands/update'
 require 'autoparts/commands/upload'
 

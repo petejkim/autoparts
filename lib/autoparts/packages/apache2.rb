@@ -208,7 +208,7 @@ module Autoparts
           DocumentRoot "#{htdocs_path}"
           <Directory "#{htdocs_path}">
               Options Indexes FollowSymLinks
-              AllowOverride None
+              AllowOverride All
               Require all granted
           </Directory>
 
