@@ -1,6 +1,6 @@
 module Autoparts
   module Packages
-    class Ack < Package
+    class S3Cmd < Package
       name 's3cmd'
       version '1.0.1'
       description 's3cmd: Command line tool for managing Amazon S3 and CloudFront services'
