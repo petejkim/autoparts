@@ -28,7 +28,7 @@ module Autoparts
           Package.factory(pkg).perform_install(*args)
         end
       end
-      perform_install
+      perform_install(*args)
     end
 
     # returns the package for specified dependency

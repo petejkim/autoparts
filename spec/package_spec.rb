@@ -122,7 +122,7 @@ describe Autoparts::Package do
         foobar = foobar_pkg.new
         expect_any_instance_of(FooPackage).to receive(:perform_install).with(true)
         expect_any_instance_of(BarPackage).to receive(:perform_install).with(true)
-        expect(foobar).to receive(:perform_install)
+        expect(foobar).to receive(:perform_install).with(true)
         foobar.perform_install_with_dependencies true
       end
     end
@@ -146,7 +146,7 @@ describe Autoparts::Package do
         expect_any_instance_of(foobaz_pkg).to receive(:perform_install).with(true)
         expect_any_instance_of(BarPackage).to receive(:perform_install).with(true)
 
-        expect(foobar).to receive(:perform_install)
+        expect(foobar).to receive(:perform_install).with(true)
         foobar.perform_install_with_dependencies true
       end
     end

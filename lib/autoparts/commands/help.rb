@@ -24,6 +24,7 @@ module Autoparts
               parts restart PACKAGE...   # Restart one or many services provided by packages
               parts status [PACKAGE...]  # Show status of one or many services provided by packages
               parts update               # Update Box Parts
+              parts info PACKAGE...      # Prints dependencies and tips of one or many packages
           EOS
         end
       end

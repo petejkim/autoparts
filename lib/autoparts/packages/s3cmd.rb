@@ -1,0 +1,29 @@
+module Autoparts
+  module Packages
+    class Ack < Package
+      name 's3cmd'
+      version '1.0.1'
+      description 's3cmd: Command line tool for managing Amazon S3 and CloudFront services'
+      source_url 'https://github.com/s3tools/s3cmd/archive/v1.0.1.zip'
+      source_sha1 '4a6f7bfb9300b728ca466967b91aa07521ef6f80'
+      source_filetype 'zip'
+
+      def install
+        prefix_path.mkpath
+        Dir.chdir(extracted_archive_path + name_with_version) do
+          execute 'cp', '-r', '.', prefix_path
+        end
+      end
+
+      def post_install
+        bin_path.mkpath
+        execute 'ln', '-s', prefix_path + s3cmd_executable, bin_path + s3cmd_executable
+      end
+
+      def s3cmd_executable
+        's3cmd'
+      end
+    end
+  end
+end
+
