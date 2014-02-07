@@ -2,7 +2,7 @@ module Autoparts
   module Packages
     class Php5 < Package
       name 'php5'
-      version '5.5.8-1'
+      version '5.5.8-2'
       description 'PHP 5.5: A popular general-purpose scripting language that is especially suited to web development.'
       source_url 'http://us1.php.net/get/php-5.5.8.tar.gz/from/this/mirror'
       source_sha1 '19af9180c664c4b8f6c46fc10fbad9f935e07b52'
@@ -26,6 +26,8 @@ module Autoparts
             "--includedir=#{include_path}",
             "--datarootdir=#{share_path}/#{name}",
             "--datadir=#{share_path}/#{name}",
+            "--with-pdo-mysql",
+            "--with-mysql-sock=/tmp/mysql.sock",
             "--mandir=#{man_path}",
             "--docdir=#{doc_path}",
             # features
@@ -33,6 +35,7 @@ module Autoparts
             "--with-mysql",
             "--with-openssl",
             "--with-pgsql",
+            "--with-pdo-pgsql",
             "--with-readline",
             "--enable-zip",
           ]
