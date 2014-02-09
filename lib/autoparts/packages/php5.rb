@@ -31,8 +31,11 @@ module Autoparts
             # features
             "--enable-opcache",
             "--with-mysql",
+            "--with-pdo-mysql",                                                                                                                                                                                                                                                   
+            "--with-mysql-sock=/tmp/mysql.sock",
             "--with-openssl",
             "--with-pgsql",
+            "--with-pdo-pgsql",
             "--with-readline",
           ]
           execute './configure', *args
