@@ -50,6 +50,22 @@ module Autoparts
         packages[val] = self
       end
 
+      def start_all(silent=false)
+        r = nil
+
+        installed.each_pair do |package_name, versions|
+          package = factory package_name
+          if File.exists?(Path.init + "#{package_name}.conf") && package.respond_to?(:start)
+            unless package.running?
+              cmd = "parts start #{package_name}"
+              r = system(cmd, silent ? { out: '/dev/null', err: '/dev/null' } : {})
+            end
+          end
+        end
+
+        r
+      end
+
       def version(val)
         @version = val
       end

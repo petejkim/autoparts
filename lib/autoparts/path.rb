@@ -19,6 +19,7 @@ module Autoparts
       def bin;      mkpath(root + 'bin')      end
       def etc;      mkpath(root + 'etc')      end
       def include;  mkpath(root + 'include')  end
+      def init;     mkpath(root + 'init')     end
       def lib;      mkpath(root + 'lib')      end
       def packages; mkpath(root + 'packages') end
       def sbin;     mkpath(root + 'sbin')     end

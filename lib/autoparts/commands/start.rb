@@ -15,6 +15,7 @@ module Autoparts
             end
             package = Package.factory(package_name)
             if package.respond_to? :start
+              FileUtils.touch Path.init + "#{package_name}.conf"
               puts "=> Starting #{package_name}..."
               raise StartFailedError.new "#{package_name} is already running." if package.running?
               package.start
