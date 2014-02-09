@@ -164,6 +164,11 @@ module Autoparts
       end
     end
 
+    def execute_with_result(*args)
+      args = args.map(&:to_s)
+      system(*args)
+    end
+
     def archive_filename
       name_with_version + (@source_install ? ".#{source_filetype}" : '-binary.tar.gz')
     end
