@@ -31,12 +31,15 @@ module Autoparts
             # features
             "--enable-opcache",
             "--with-mysql",
-            "--with-pdo-mysql",                                                                                                                                                                                                                                                   
+            "--with-pdo-mysql",
             "--with-mysql-sock=/tmp/mysql.sock",
             "--with-openssl",
             "--with-pgsql",
             "--with-pdo-pgsql",
             "--with-readline",
+            "--with-gd",
+            "--with-jpeg",
+            "--enable-zip"
           ]
           execute './configure', *args
           execute 'make'
