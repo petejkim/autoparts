@@ -14,7 +14,8 @@ module Autoparts
       def install
         Dir.chdir(extracted_archive_path) do
           prefix_path.mkpath
-          execute "mv #{wordpress_folder} #{htdocs_path}"
+          execute "cp", "wordpress/wp-config-sample.php", prefix_path
+          execute "mv", wordpress_folder, htdocs_path
         end
       end
 
