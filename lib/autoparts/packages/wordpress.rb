@@ -23,7 +23,7 @@ module Autoparts
         apache2_dependency.start unless apache2_dependency.running?
 
         Dir.chdir(wordpress_path) do
-          success = execute_with_result "mysql", "-u", "root", "-e", "CREATE DATABASE wordpress"
+          success = execute_with_result "mysql", "-u", "root", "-e", "CREATE DATABASE IF NOT EXISTS wordpress"
 
           if success
             execute "cp", "wp-config-sample.php", "wp-config.php"
