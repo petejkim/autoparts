@@ -8,6 +8,10 @@ class FooPackage < Autoparts::Package
   source_url 'http://example.com/foo.tar.gz'
   source_sha1 'f00f00f00f00f00f00f00f00f00f00f00f00f00f'
   source_filetype 'tar.gz'
+
+  def start
+
+  end
 end
 
 class BarPackage < Autoparts::Package
@@ -17,6 +21,23 @@ class BarPackage < Autoparts::Package
   source_url 'http://example.com/bar.zip'
   source_sha1 'babababababababababababababababababababa'
   source_filetype 'zip'
+
+  def start
+
+  end
+end
+
+class BazPackage < Autoparts::Package
+  name 'baz'
+  version '2.1'
+  description "baz baz black sheep"
+  source_url 'http://example.com/baz.zip'
+  source_sha1 'babababababababababababababababababababa'
+  source_filetype 'zip'
+
+  def start
+
+  end
 end
 
 describe Autoparts::Package do
@@ -72,6 +93,63 @@ describe Autoparts::Package do
     it 'returns a boolean value of whether a package of a given name is installed' do
       expect(described_class.installed? 'mysql').to be_true
       expect(described_class.installed? 'nodejs').to be_false
+    end
+  end
+
+  describe '.start_all' do
+    before do
+      FileUtils.mkdir_p (Autoparts::Path.packages + 'foo' + '1.0').to_s
+      FileUtils.mkdir_p (Autoparts::Path.packages + 'bar' + '2.0').to_s
+      FileUtils.mkdir_p (Autoparts::Path.packages + 'baz' + '2.1').to_s
+
+      FileUtils.touch (Autoparts::Path.packages + 'foo' + '1.0' + '.keep').to_s
+      FileUtils.touch (Autoparts::Path.packages + 'bar' + '2.0' + '.keep').to_s
+      FileUtils.touch (Autoparts::Path.packages + 'baz' + '2.1' + '.keep').to_s
+
+      FileUtils.touch (Autoparts::Path.init + 'foo.conf').to_s
+      FileUtils.touch (Autoparts::Path.init + 'baz.conf').to_s
+
+      FooPackage.any_instance.stub(:start) { 'foo' }
+      BazPackage.any_instance.stub(:start) { 'baz' }
+    end
+
+    before do
+      Autoparts::Package.stub(:system) { true }
+    end
+
+    context 'none of the packages are running' do
+      before do
+        Autoparts::Package.any_instance.stub(:running?) { false }
+      end
+
+      it 'should start packages which are meant to be auto-started' do
+        expect(Autoparts::Package).to receive(:system).ordered.with "parts start foo", {}
+        expect(Autoparts::Package).to receive(:system).ordered.with "parts start baz", {}
+        Autoparts::Package.start_all
+      end
+    end
+
+    context 'all the packages are running' do
+      before do
+        Autoparts::Package.any_instance.stub(:running?) { true }
+      end
+
+      it 'should start packages which are meant to be auto-started' do
+        expect(Autoparts::Package).to_not receive(:system)
+        Autoparts::Package.start_all
+      end
+    end
+
+    context 'with silent=true' do
+      before do
+        Autoparts::Package.any_instance.stub(:running?) { false }
+      end
+
+      it 'should start packages which are meant to be auto-started' do
+        expect(Autoparts::Package).to receive(:system).ordered.with "parts start foo", { out: '/dev/null', err: '/dev/null' }
+        expect(Autoparts::Package).to receive(:system).ordered.with "parts start baz", { out: '/dev/null', err: '/dev/null' }
+        Autoparts::Package.start_all(true)
+      end
     end
   end
 

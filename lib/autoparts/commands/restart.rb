@@ -6,6 +6,9 @@ module Autoparts
           abort <<-EOS.unindent
             Usage: parts restart PACKAGE...
             Example: parts restart postgresql
+
+            Options:
+              --auto: Start service when box starts
           EOS
         end
         begin
