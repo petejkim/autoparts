@@ -16,8 +16,7 @@ module Autoparts
             package = Package.factory(package_name)
             if package.respond_to?(:start) && package.respond_to?(:stop)
               puts "=> Stopping #{package_name}..."
-              raise StopFailedError.new "#{package_name} does not seem to be running." unless package.running?
-              package.stop
+              package.stop if package.running?
               puts "=> Starting #{package_name}..."
               package.start
               puts "=> Restarted: #{package_name}"
