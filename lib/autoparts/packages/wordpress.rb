@@ -3,7 +3,7 @@ module Autoparts
     class Wordpress < Package
       name 'wordpress'
       version '3.8.1'
-      description 'Wordpress: Web software you can use to create a beautiful website or blog'
+      description 'WordPress: Web software you can use to create a beautiful website or blog'
       source_url 'http://wordpress.org/wordpress-3.8.1.tar.gz'
       source_sha1 '904487e0d70a2d2b6a018aaf99e21608d8f2db88'
       source_filetype 'tar.gz'
@@ -14,21 +14,24 @@ module Autoparts
       def install
         Dir.chdir(extracted_archive_path) do
           prefix_path.mkpath
-          execute "mv wordpress #{htdocs_path}"
+          execute "mv #{wordpress_folder} #{htdocs_path}"
         end
       end
 
       def post_install
         mysql_dependency.start unless mysql_dependency.running?
+        apache2_dependency.start unless apache2_dependency.running?
 
-        Dir.chdir(htdocs_path + 'wordpress') do
-          execute "mysql", "-u", "root", "-e", "CREATE DATABASE IF NOT EXISTS wordpress"
+        Dir.chdir(wordpress_path) do
+          success = execute_with_result "mysql", "-u", "root", "-e", "CREATE DATABASE wordpress"
 
-          execute "cp", "wp-config-sample.php", "wp-config.php"
+          if success
+            execute "cp", "wp-config-sample.php", "wp-config.php"
 
-          execute "sed", "-i", "s|database_name_here|wordpress|g", "wp-config.php"
-          execute "sed", "-i", "s|username_here|root|g", "wp-config.php"
-          execute "sed", "-i", "s|password_here||g", "wp-config.php"
+            execute "sed", "-i", "s|database_name_here|wordpress|g", "wp-config.php"
+            execute "sed", "-i", "s|username_here|root|g", "wp-config.php"
+            execute "sed", "-i", "s|password_here||g", "wp-config.php"
+          end
         end
       end
 
@@ -47,6 +50,26 @@ module Autoparts
 
       def htdocs_path
         @htdocs_path ||= apache2_dependency.htdocs_path
+      end
+
+      def wordpress_path
+        htdocs_path + wordpress_folder
+      end
+
+      def wordpress_folder
+        'wordpress'
+      end
+
+      def tips
+        <<-EOS.unindent
+          WordPress has been installed at #{wordpress_path}.
+
+          WordPress requires MySQL and Apache2 to be running (we've started them for you this time):
+            parts start mysql
+            parts start apache2
+
+          Preview your box on port 3000 and go to /#{wordpress_folder} to setup your WordPress blog.
+        EOS
       end
     end
   end
