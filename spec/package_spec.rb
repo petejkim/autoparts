@@ -301,6 +301,24 @@ describe Autoparts::Package do
     end
   end
 
+  describe '#execute_with_result' do
+    context 'when command succeeds' do
+      it 'returns true' do
+        expect(foo_package).to receive(:system).with('echo', 'lol', 'wut').and_return true
+        expect(foo_package.execute_with_result 'echo', 'lol', 'wut').to be_true
+      end
+    end
+
+    context 'when command fails' do
+      it 'returns the return value of the underlying system call' do
+        expect(foo_package).to receive(:system).with('echo', 'orly').and_return false
+        expect(foo_package.execute_with_result 'echo', 'orly').to be_false
+        expect(foo_package).to receive(:system).with('echo', 'failed').and_return nil
+        expect(foo_package.execute_with_result 'echo', 'failed').to be_nil
+      end
+    end
+  end
+
   describe '#archive_filename' do
     context 'when @source_install is false' do
       before do
