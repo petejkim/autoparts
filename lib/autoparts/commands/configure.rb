@@ -4,8 +4,8 @@ module Autoparts
       def initialize(args, options)
         if args.empty? || options.empty?
           abort <<-EOS.unindent
-            Usage: parts configure PACKAGE...
-            Example: parts configure postgresql
+            Usage: parts configure PACKAGE... OPTIONS
+            Example: parts configure postgresql --enable-auto-start
 
             Options:
               --enable-auto-start: Start service when box starts
