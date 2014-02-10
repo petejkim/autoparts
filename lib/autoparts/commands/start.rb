@@ -6,9 +6,6 @@ module Autoparts
           abort <<-EOS.unindent
             Usage: parts start PACKAGE...
             Example: parts start postgresql
-
-            Options:
-              --auto: Start service automatically when box boots up
           EOS
         end
         begin
@@ -18,18 +15,11 @@ module Autoparts
             end
             package = Package.factory(package_name)
             if package.respond_to? :start
-              unless package.running?
-                puts "=> Starting #{package_name}..."
-                package.start
-                puts "=> Started: #{package_name}"
-              else
-                puts "#{package_name} is already running."
-              end
-
-              if options.include?('--auto')
-                FileUtils.touch Path.init + "#{package_name}.conf"
-                puts "=> Enabled Auto Start: #{package_name}"
-              end
+              FileUtils.touch Path.init + "#{package_name}.conf"
+              puts "=> Starting #{package_name}..."
+              raise StartFailedError.new "#{package_name} is already running." if package.running?
+              package.start
+              puts "=> Started: #{package_name}"
             else
               abort "parts: #{package_name} does not support this operation."
             end
