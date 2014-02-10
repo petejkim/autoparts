@@ -16,7 +16,6 @@ require 'autoparts'
 cli = Autoparts::CLIParser.new(ARGV)
 
 commands = {
-  'configure' => Autoparts::Commands::Configure,
   'help'      => Autoparts::Commands::Help,
   'init'      => Autoparts::Commands::Init,
   'info'      => Autoparts::Commands::Info,
