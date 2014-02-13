@@ -3,7 +3,7 @@ module Autoparts
     class Php5 < Package
       name 'php5'
       version '5.5.8-2'
-      description 'PHP 5.5: A popular general-purpose scripting language that is especially suited to web development.'
+      description 'PHP 5.5: A popular general-purpose scripting language that is especially suited to web development. Prebuild extensions default + mysql, pdo_mysql, pgsql, pdo_pgsql, readline, curl, iconv, gd, soap, mbstring, zip, zlib'
       source_url 'http://us1.php.net/get/php-5.5.8.tar.gz/from/this/mirror'
       source_sha1 '19af9180c664c4b8f6c46fc10fbad9f935e07b52'
       source_filetype 'tar.gz'
@@ -26,18 +26,28 @@ module Autoparts
             "--includedir=#{include_path}",
             "--datarootdir=#{share_path}/#{name}",
             "--datadir=#{share_path}/#{name}",
-            "--with-pdo-mysql",
             "--with-mysql-sock=/tmp/mysql.sock",
             "--mandir=#{man_path}",
             "--docdir=#{doc_path}",
             # features
             "--enable-opcache",
             "--with-mysql",
+            "--with-pdo-mysql",
             "--with-openssl",
             "--with-pgsql",
             "--with-pdo-pgsql",
             "--with-readline",
             "--enable-zip",
+            "--with-zlib",
+            "--with-curl",
+            "--with-iconv",
+            "--with-gd",
+            "--with-jpeg",
+            "--with-png",
+            "--with-xpm",
+            "--with-freetype",
+            "--enable-mbstring",
+            "--enable-soap",
           ]
           execute './configure', *args
           execute 'make'
