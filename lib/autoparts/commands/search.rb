@@ -1,3 +1,5 @@
+require "autoparts/string"
+
 module Autoparts
   module Commands
     class Search
@@ -16,7 +18,7 @@ module Autoparts
           list = {}
           packages.each_pair do |name, package_class|
             package = package_class.new
-            list["#{name} (#{package.version})"] = package.description
+            list["#{name}".bold.red + "(#{package.version})".green] = package.description
           end
           unless list.empty?
             ljust_length = list.keys.map(&:length).max + 1
