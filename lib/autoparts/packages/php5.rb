@@ -40,7 +40,11 @@ module Autoparts
             "--with-gd",
             "--with-jpeg",
             "--with-curl",
-            "--enable-zip"
+            "--enable-zip",
+            "--with-zlib",
+            "--with-iconv",
+            "--enable-mbstring",
+            "--enable-soap"
           ]
           execute './configure', *args
           execute 'make'
