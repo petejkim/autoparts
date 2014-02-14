@@ -1,0 +1,41 @@
+#!/bin/bash
+# Enter the build environment
+# Requires .s3cfg to be setup in host
+
+[ -n "$DEBUG" ] && set -o xtrace
+set -o errexit
+shopt -s nullglob
+
+NO_COLOR="\x1b[0m"
+OK_COLOR="\x1b[32;01m"
+ERROR_COLOR="\x1b[31;01m"
+WARN_COLOR="\x1b[33;01m"
+
+BASE=nitrousio/autoparts-builder
+now=$(date -u +"%s")
+name="autoparts-buildenv-${now}"
+
+export $(cat .env)
+
+if [ -e $AWS_ACCESS_KEY ] || [ -e $AWS_SECRET_KEY ] || [ -e $AUTOPARTS_HOST ] || [ -e $AUTOPARTS_BUCKET ]; then
+  echo -e "${WARN_COLOR}\
+Missing required env variables:
+  - AWS_ACCESS_KEY
+  - AWS_SECRET_KEY
+  - AUTOPARTS_HOST
+  - AUTOPARTS_BUCKET
+You will not be able to upload packages${NO_COLOR}"
+fi
+
+docker run \
+  -dns 8.8.8.8 \
+  -v $(pwd):/home/action/.parts/autoparts \
+  -name=$name \
+  -e AWS_SECRET_KEY=$AWS_SECRET_KEY \
+  -e AWS_ACCESS_KEY=$AWS_ACCESS_KEY \
+  -e AUTOPARTS_HOST=$AUTOPARTS_HOST \
+  -e AUTOPARTS_BUCKET=$AUTOPARTS_BUCKET \
+  -e USER=action \
+  -u action \
+  -i -t \
+  $BASE /home/action/.parts/autoparts/script/setup_buildenv
