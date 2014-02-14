@@ -30,8 +30,8 @@ module Autoparts
                 printf format, name, description
               else
                 descriptions = split_description description, columns - ljust_length + colors_length - 4
-                descriptions.each do |description|
-                  printf format, name, description
+                descriptions.each do |val|
+                  printf format, name, val
                   name = ' '.bold.magenta.green
                 end
               end
