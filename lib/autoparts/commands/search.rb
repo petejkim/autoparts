@@ -5,7 +5,7 @@ module Autoparts
     class Search
       def initialize(args, options)
         begin
-          Pathname.new("#{PROJECT_ROOT}/lib/autoparts/packages").children.sort.each do |f|
+          Pathname.new("#{PROJECT_ROOT}/lib/autoparts/packages").children.each do |f|
             require "autoparts/packages/#{f.basename.sub_ext('')}" if f.extname == '.rb'
           end
         rescue LoadError
@@ -25,7 +25,7 @@ module Autoparts
             ljust_length = list.keys.map(&:length).max + 1
             columns = `tput cols`.to_i
             format = "%-#{ljust_length}s %s\n"
-            list.each_pair do |name, description|
+            list.sort.map do |name, description|
               if (description.length + ljust_length < columns)
                 printf format, name, description
               else
