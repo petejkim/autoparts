@@ -21,6 +21,7 @@ module Autoparts
             "--bindir=#{bin_path}",
             "--sbindir=#{bin_path}",
             "--with-config-file-path=#{php5_ini_path}",
+            "--with-config-file-scan-dir=#{php5_ini_path_additional}",
             "--sysconfdir=#{Path.etc + name}",
             "--libdir=#{lib_path}",
             "--includedir=#{include_path}",
@@ -79,6 +80,9 @@ module Autoparts
           FileUtils.mkdir_p(File.dirname(php5_ini_path))
           execute 'cp', "#{lib_path}/php.ini", "#{php5_ini_path}"
         end
+        unless php5_ini_path_additional.exist?
+          FileUtils.mkdir_p(php5_ini_path_additional)
+        end
       end
 
       def tips
@@ -96,6 +100,10 @@ If Apache2 httpd is already running, you will need to restart it:
 
       def php5_ini_path
         Path.etc + "php5" + "php.ini"
+      end
+
+      def php5_ini_path_additional
+        Path.etc + "php5" + "conf.d"
       end
 
       def apache2_dependency
