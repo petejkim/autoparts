@@ -39,6 +39,7 @@ module Autoparts
             "--with-readline",
             "--with-gd",
             "--with-jpeg",
+            "--with-curl",
             "--enable-zip"
           ]
           execute './configure', *args
