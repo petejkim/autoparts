@@ -68,6 +68,10 @@ module Autoparts
         Path.var + 'mysql'
       end
 
+      def mysql_executable_path
+        Path.bin + 'mysql'
+      end
+
       def start
         execute mysql_server_path, 'start'
       end
