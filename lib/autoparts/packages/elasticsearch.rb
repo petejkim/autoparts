@@ -28,7 +28,7 @@ module Autoparts
       end
 
       def start
-        execute es_executable, '-d', '-p', es_pid_file_path
+        execute es_executable_path, '-d', '-p', es_pid_file_path
       end
 
       def stop
@@ -75,6 +75,10 @@ module Autoparts
 
       def es_executable
         'elasticsearch'
+      end
+
+      def es_executable_path
+        bin_path + 'elasticsearch'
       end
 
       def tips
