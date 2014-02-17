@@ -411,13 +411,19 @@ module Autoparts
         box_id = File.read(BOX_ID_PATH).strip
         autoparts_version = Autoparts::Commands::Help.version
 
-        Net::HTTP.post_form URI(WEB_HOOK_URL), {
-          'type' => action.to_s,
-          'part_name' => self.name,
-          'part_version' => self.version,
-          'box_id' => box_id,
-          'autoparts_version' => autoparts_version
+        url = URI.parse(WEB_HOOK_URL)
+        http = Net::HTTP.new(parsed_url.host, parsed_url.port)
+        http.use_ssl = true
+
+        req = Net::HTTP::Post.new(url.path)
+        req.form_data = {
+          type: action.to_s,
+          part_name: self.name,
+          part_version: self.version,
+          box_id: box_id,
+          autoparts_version: autoparts_version
         }
+        http.request(req)
       rescue => e
         # We gulp the webhook exceptions,
         # so command would finish with a successful exit status.
