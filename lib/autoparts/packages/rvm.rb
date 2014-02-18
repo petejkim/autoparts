@@ -12,9 +12,8 @@ module Autoparts
         Dir.chdir(extracted_archive_path) do
           prefix_path.mkpath
           # use single quotes to have shell expansion support
-          execute 'mv wayne* rvm'
- 	  execute "bash", "-c", "install", "--auto-dotfiles", "--path #{prefix_path}"
-	  execute "source" "#{prefix_path}/rvm"
+          execute 'mv wayne*/* ./'
+ 	  execute "./install --auto-dotfiles --path #{prefix_path}"
         end
       end
 
