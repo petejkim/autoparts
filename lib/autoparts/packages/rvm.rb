@@ -14,8 +14,13 @@ module Autoparts
           # use single quotes to have shell expansion support
           execute 'mv wayne*/* ./'
  	  execute "./install --auto-dotfiles --path #{prefix_path}"
+          symlink_stable
         end
       end
+
+     def symlink_stable
+       File.symlink(prefix_path, Path.packages + name + "stable")
+     end 
 
     end
   end
