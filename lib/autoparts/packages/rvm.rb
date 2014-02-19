@@ -19,7 +19,8 @@ module Autoparts
       end
 
       def post_uninstall
-        execute "rm", "-r", "#{Path.packages + name}"
+        execute "rm", "#{Path.packages + name + "stable"}"
+        execute "rmdir", "#{Path.packages + name}"
         remove_rvm_from_bash
       end
 
