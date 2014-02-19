@@ -18,9 +18,21 @@ module Autoparts
         end
       end
 
-     def symlink_stable
-       File.symlink(prefix_path, Path.packages + name + "stable")
-     end
+      def post_uninstall
+        execute "rm", "-r", "#{Path.packages + name}"
+        remove_rvm_from_bash
+      end
+
+      def symlink_stable
+        File.symlink(prefix_path, Path.packages + name + "stable")
+      end
+
+      def remove_rvm_from_bash
+        execute "sed -i '/rvm/ d' /home/action/.profile"
+        execute "sed -i '/rvm/ d' /home/action/.bash_profile"
+        execute "sed -i '/rvm/ d' /home/action/.bashrc"
+      end
+
     end
   end
 end
