@@ -12,6 +12,7 @@ module Autoparts
         prefix_path.mkpath
         execute 'touch', prefix_path + 'INSTALLED_BY_AUTOPARTS' # So that Autoparts thinks the package is installed.
         execute "/bin/bash -c 'source #{rvm_shims} && rvm install #{version} && rvm use --default #{version}'"
+        execute "/bin/bash -c 'source $HOME/.bash_profile'"
       end
 
       def post_uninstall
