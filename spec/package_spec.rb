@@ -40,6 +40,13 @@ class BazPackage < Autoparts::Package
   end
 end
 
+class CommandPackage < Autoparts::Package
+  name 'wingcommander'
+  version '2.2'
+  description 'Installed by running arbitrary commands'
+  source_filetype 'command'
+end
+
 describe Autoparts::Package do
   let(:foo_package) { FooPackage.new }
   let(:bar_package) { BarPackage.new }
@@ -226,6 +233,52 @@ describe Autoparts::Package do
 
         expect(foobar).to receive(:perform_install).with(true)
         foobar.perform_install_with_dependencies true
+      end
+    end
+  end
+
+  describe '#perform_install' do
+    context 'when package is a command package' do
+      let(:command_package) { CommandPackage.new }
+
+      it 'hands off to run_commands' do
+        expect(command_package).to receive(:run_commands)
+        command_package.perform_install
+      end
+    end
+  end
+
+  describe '#run_commands' do
+    before do
+       # Stub post_install_succeeded so it doesn't print to stdout.
+      allow(foo_package).to receive(:post_install_succeeded)
+    end
+
+    it 'calls install' do
+      expect(foo_package).to receive(:install)
+      foo_package.run_commands
+    end
+
+    it 'calls the post_install hook' do
+      expect(foo_package).to receive(:post_install)
+      foo_package.run_commands
+    end
+
+    it 'calls the post_install_succeeded hook' do
+      expect(foo_package).to receive(:post_install_succeeded)
+      foo_package.run_commands
+    end
+
+    context 'when an error is raised' do
+      before do
+        allow(foo_package).to receive(:install).and_raise 'an error'
+      end
+
+      it 'does not call the post_install_succeeded hook' do
+        expect(foo_package).not_to receive(:post_install_succeeded)
+        expect {
+          foo_package.run_commands
+        }.to raise_error 'an error'
       end
     end
   end
