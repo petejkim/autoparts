@@ -22,7 +22,7 @@ module Autoparts
         Path.packages + "rvm" + "stable" + "scripts" + "rvm"
       end
 
-      def tip
+      def tips
         <<-EOS.unindent
           * To use and activate the newly installed ruby-#{version} version...
 
