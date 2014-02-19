@@ -11,17 +11,16 @@ module Autoparts
       def install
         Dir.chdir(extracted_archive_path) do
           prefix_path.mkpath
-          # use single quotes to have shell expansion support
+          # Use a single arg for shell expansion of command parameters.
           execute 'mv wayne*/* ./'
- 	  execute "./install --auto-dotfiles --path #{prefix_path}"
+          execute "./install --auto-dotfiles --path #{prefix_path}"
           symlink_stable
         end
       end
 
      def symlink_stable
        File.symlink(prefix_path, Path.packages + name + "stable")
-     end 
-
+     end
     end
   end
 end
