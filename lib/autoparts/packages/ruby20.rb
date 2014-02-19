@@ -4,12 +4,13 @@ module Autoparts
       name 'ruby20'
       version '2.0.0-p353'
       description 'Ruby is a dynamic, open source programming language with a focus on simplicity and productivity.'
+      source_filetype 'command'
 
       depends_on 'rvm'
 
       def install
         prefix_path.mkpath
-        execute 'mkdir', prefix_path + name # So that Autoparts thinks the package is installed.
+        execute 'touch', prefix_path + 'INSTALLED_BY_AUTOPARTS' # So that Autoparts thinks the package is installed.
         execute "/bin/bash -c 'source #{rvm_stable}'"
         execute "/bin/bash -c 'rvm install #{version}'"
       end
