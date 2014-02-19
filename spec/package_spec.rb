@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'fileutils'
+require 'webmock/rspec'
 
 class FooPackage < Autoparts::Package
   name 'foo'
@@ -814,19 +815,25 @@ describe Autoparts::Package do
     end
 
     it 'calls the endpoint with the action, name, version, box id and autoparts version' do
-      expect(Net::HTTP).to receive(:post_form).with URI('https://www.nitrous.io/autoparts/webhook'), {
-        'type' => 'installed',
-        'part_name' => 'foo',
-        'part_version' => '1.0',
-        'box_id' => '42',
-        'autoparts_version' => 'Autoparts 1.0.0-abcd'
-      }
+      uri = URI.parse(Autoparts::Package::WEB_HOOK_URL)
+      stub_request(:post, uri.host)
+
       foo_package.call_web_hook :installed
+
+      expect(a_request(:post, Autoparts::Package::WEB_HOOK_URL).with(
+        query: {
+          'type' => 'installed',
+          'part_name' => 'foo',
+          'part_version' => '1.0',
+          'box_id' => '42',
+          'autoparts_version' => 'Autoparts 1.0.0-abcd'
+        }
+      ))
     end
 
     context 'when calling the endpoint raises an exception' do
       it 'fails silently, allowing the command to exit without an error status' do
-        expect(Net::HTTP).to receive(:post_form).and_raise('an error')
+        allow_any_instance_of(Net::HTTP::Post).to receive(:new).and_raise('an error')
         expect(foo_package.call_web_hook(:installed)).to be_nil
       end
     end
@@ -838,7 +845,7 @@ describe Autoparts::Package do
       end
 
       it 'should not call the endpoint' do
-        expect(Net::HTTP).to_not receive(:post_form)
+        expect_any_instance_of(Net::HTTP).to_not receive(:request)
         foo_package.call_web_hook :installed
       end
     end
