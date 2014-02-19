@@ -15,7 +15,7 @@ module Autoparts
       end
 
       def post_uninstall
-        execute "/bin/bash -c 'source #{rvm_shims} && rvm uninstall #{version} && rvm reload'"
+        execute "/bin/bash -c 'source #{rvm_shims} && rvm uninstall #{version}'"
       end
 
       def rvm_shims
