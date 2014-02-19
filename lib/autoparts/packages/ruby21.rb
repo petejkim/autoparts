@@ -22,6 +22,22 @@ module Autoparts
         Path.packages + "rvm" + "stable" + "scripts" + "rvm"
       end
 
+      def tip
+        <<-EOS.unindent
+          * To use and activate the newly installed ruby-#{version} version...
+
+          Run this command:
+          $ rvm reload
+
+          Alternatively you can:
+          On the Web IDE:
+          - Create a new console session.
+
+          On SSH terminal
+          - Log in to a new session.
+        EOS
+      end
+
     end
   end
 end
