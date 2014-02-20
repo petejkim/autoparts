@@ -31,11 +31,8 @@ module Autoparts
             $ source ~/.bash_profile
 
           Alternatively you can:
-            On the Web IDE:
-              - Create a new console session.
-
-            On SSH terminal
-              - Log in to a new SSH session.
+            On the web IDE, create a new console window.
+            For terminal based SSH sessions, disconnect and create a new session.
         EOS
       end
 
