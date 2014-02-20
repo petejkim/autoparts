@@ -26,13 +26,9 @@ module Autoparts
       def tips
         <<-EOS.unindent
           * To activate the newly installed ruby-#{version} version:
-
-          Run this command:
-            $ source ~/.bash_profile
-
-          Alternatively you can:
-            On the web IDE, create a new console window.
-            For terminal based SSH sessions, disconnect and create a new session.
+    
+            ** On the web IDE, create a new console window.
+            ** For terminal based SSH sessions, disconnect and create a new session.
         EOS
       end
 
