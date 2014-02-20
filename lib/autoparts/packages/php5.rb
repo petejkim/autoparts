@@ -44,7 +44,8 @@ module Autoparts
             "--with-zlib",
             "--with-iconv",
             "--enable-mbstring",
-            "--enable-soap"
+            "--enable-soap",
+            "--enable-bcmath"
           ]
           execute './configure', *args
           execute 'make'
