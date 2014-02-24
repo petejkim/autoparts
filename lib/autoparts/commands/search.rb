@@ -12,7 +12,11 @@ module Autoparts
         end
         packages = Package.packages
         if args.length > 0
-          packages = packages.select { |name, _| name.include? args[0] }
+          searchString = args[0].downcase
+          packages = packages.select do |name, package_class|
+            package = package_class.new
+            (name.downcase.include?(searchString) || package.description.downcase.include?(searchString))
+          end
         end
         if packages.length > 0
           list = {}
