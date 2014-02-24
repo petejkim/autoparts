@@ -22,7 +22,8 @@ module Autoparts
 
       def env_content
         <<-EOS.unindent
-          export GOROOT=~/.parts/packages/go-lang/1.2/
+          export GOROOT=#{prefix_path}
+          export GOPATH=/home/codio/workspace
         EOS
       end
 
