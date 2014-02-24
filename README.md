@@ -16,7 +16,6 @@ exec $SHELL -l
 ### Requirements
 
 * Some packages may require 512MB RAM or more.
-### Getting Started
 
 ### Usage
 
