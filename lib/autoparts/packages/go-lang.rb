@@ -11,6 +11,7 @@ module Autoparts
       def install
         Dir.chdir('go') do
           prefix_path.mkpath
+          go_packages.mkpath
           execute 'rm', '-rf', 'manual', 'INSTALL'
           execute "mv * #{prefix_path}"
         end
@@ -23,8 +24,12 @@ module Autoparts
       def env_content
         <<-EOS.unindent
           export GOROOT=#{prefix_path}
-          export GOPATH=/home/codio/workspace
+          export GOPATH=#{go_packages}
         EOS
+      end
+
+      def go_packages
+        prefix_path + 'gopath'
       end
 
       def post_install
