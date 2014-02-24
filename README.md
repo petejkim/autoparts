@@ -1,41 +1,55 @@
-Autoparts - A Package Manager for Nitrous.IO
-============================================
-
-[日本語](https://github.com/action-io/autoparts/blob/master/README.ja.md)
-
-### Requirements
-
-* A **"bran"**, **cersei** or **drogo** box. Some packages may not work correctly in **"arya"**
-  boxes.
-
-  ![Bran
-  box](https://raw.github.com/nitrous-io/action-assets/a7d29cbd686f2269ac930c01a8928accd19a0b89/support/screenshots/bran-box.png)
-
-* Some packages may require 512MB RAM or more.
+# Autoparts
+*A Package Manager for Nitrous.IO*
 
 ### Installation
 
-Enter the following into your boxes' terminal:
+Autoparts can be found in all Nitrous boxes within the directory `~/.parts/Autoparts`, 
+and can be utilized with the `parts` command.
+
+If it is not installed (or has been removed), run the following commands into the console:
 
 ```sh
 ruby -e "$(curl -fsSL https://raw.github.com/nitrous-io/autoparts/master/setup.rb)"
 exec $SHELL -l
 ```
 
+### Requirements
+
+* Some packages may require 512MB RAM or more.
+### Getting Started
+
 ### Usage
 
-See `parts help`.
+In this doc we will refer to installable packages as "parts". You can view all the parts 
+which Autoparts supports by running the following command:
 
-### Package Guidelines
+    $ parts search
 
-* Post-installation setup tasks (e.g. creating conf file, generating
-  empty database file) should be done in `post_install` method.
-* Configuration files should be placed in `Path.etc` (e.g. `~/.parts/etc`) or
-  `Path.etc + name` (e.g. `~/.parts/etc/postgresql`).
-* Data files (e.g. database files) should be placed in `Path.var + name`
-  (e.g. `~/.parts/var/postgresql`).
-* Log files should be placed in `Path.var + 'log' + "#{name}.log"` (e.g.
-  `~/.parts/var/log/postgresql.log`).
+Autoparts will automatically update upon boot, but if needed you can manually update the repo 
+if you are not seeing the latest updates:
+
+    $ parts update
+
+To install a part (or update an existing part), utilize the install command. For example, to 
+install PostgresQL you will need to run the following command:
+
+    $ parts install postgresql
+
+Certain parts such as databases will need to be started in order to utilize. Some box templates will 
+start a database upon boot, but if not you can start/stop it manually.
+
+    $ parts start postgresql 
+    $ parts stop postgresql
+
+For a full list of commands, run `parts help`.
+
+### Contributing
+
+View [contributing.md](https://github.com/nitrous-io/autoparts/tree/master/docs/contributing.md) for documentation on this.
+
+### Additional Languages
+
+[日本語](https://github.com/action-io/autoparts/blob/master/README.ja.md)
 
 - - -
 Copyright (c) 2013-2014 Irrational Industries Inc. d.b.a. Nitrous.IO
