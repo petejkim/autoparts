@@ -31,6 +31,7 @@ module Autoparts
             # features
             "--enable-opcache",
             "--with-mysql",
+            "--with-mysqli",
             "--with-pdo-mysql",
             "--with-mysql-sock=/tmp/mysql.sock",
             "--with-openssl",
