@@ -274,6 +274,11 @@ module Autoparts
     end
 
     def perform_install(source_install=false)
+      if source_filetype == 'command'
+        run_commands
+        return
+      end
+
       begin
         ENV['CPPFLAGS'] = '-D_FORTIFY_SOURCE=2'
         ENV['CHOST'] = 'x86_64-pc-linux-gnu'
@@ -329,10 +334,24 @@ module Autoparts
         prefix_path.rmtree if prefix_path.exist?
         raise e
       else
-        puts "=> Installed #{name} #{version}\n"
-        puts tips
-        call_web_hook :installed
+        post_install_succeeded
       end
+    end
+
+    def run_commands
+      install
+      post_install
+    rescue => e
+      prefix_path.rmtree if prefix_path.exist?
+      raise e
+    else
+      post_install_succeeded
+    end
+
+    def post_install_succeeded
+      puts "=> Installed #{name} #{version}\n"
+      puts tips
+      call_web_hook :installed
     end
 
     def perform_uninstall
