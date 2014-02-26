@@ -38,7 +38,7 @@ module Autoparts
             "--with-pdo-pgsql",
             "--with-readline",
             "--with-gd",
-            "--with-jpeg",
+            "--with-jpeg-dir=/usr/lib/x86_64-linux-gnu",
             "--with-curl",
             "--enable-zip",
             "--with-zlib",
