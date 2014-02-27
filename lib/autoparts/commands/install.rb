@@ -12,8 +12,13 @@ module Autoparts
           EOS
         end
         begin
+          tips = []
           args.each do |package_name|
-            Package.factory(package_name).perform_install_with_dependencies(options.include? '--source')
+            tips.concat(Package.factory(package_name).perform_install_with_dependencies(options.include? '--source'))
+          end
+
+          tips.each do | message |
+            puts message
           end
         rescue => e
           abort "parts: ERROR: #{e}\nAborting!"

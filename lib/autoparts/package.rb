@@ -312,8 +312,10 @@ module Autoparts
         raise e
       else
         puts "=> Installed #{name} #{version}\n"
-        puts tips
-        call_web_hook :installed
+        #call_web_hook :installed
+        unless tips.empty?
+          "============ #{name} ============".bold.red + "\n" + tips
+        end
       end
     end
 
@@ -339,7 +341,7 @@ module Autoparts
       post_uninstall
 
       puts "=> Uninstalled #{name} #{version}\n"
-      call_web_hook :uninstalled
+      #call_web_hook :uninstalled
     end
 
     def upload_archive

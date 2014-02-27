@@ -23,12 +23,13 @@ module Autoparts
     alias_method :eql?, :==
 
     def perform_install_with_dependencies(*args)
+      tips = []
       dependencies.install_order.each do |pkg|
         unless Package.installed?(pkg)
-          Package.factory(pkg).perform_install(*args)
+          tips.push(Package.factory(pkg).perform_install(*args))
         end
       end
-      perform_install(*args)
+      tips.push(perform_install(*args))
     end
 
     # returns the package for specified dependency

@@ -89,14 +89,12 @@ module Autoparts
 
       def tips
         <<-EOS.unindent
-
-#{apache2_dependency.tips}
-
 PHP config file is located at:
   $ #{php5_ini_path}
 
 If Apache2 httpd is already running, you will need to restart it:
   $ parts restart apache2
+
         EOS
       end
 
