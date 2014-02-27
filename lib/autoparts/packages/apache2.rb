@@ -236,10 +236,16 @@ module Autoparts
           SSLRandomSeed connect builtin
           </IfModule>
 
-          MaxClients 1
-          ServerLimit 1
-          MaxRequestWorkers 25
-          ListenBackLog 1024
+          <IfModule mpm_event_module>
+              StartServers          1
+              ServerLimit           2
+              MinSpareThreads      15
+              MaxSpareThreads      25
+              ThreadLimit          25
+              ThreadsPerChild      25
+              MaxClients           50
+              MaxRequestsPerChild  88
+          </IfModule>
         EOS
       end
     end
