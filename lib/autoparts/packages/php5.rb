@@ -2,7 +2,7 @@ module Autoparts
   module Packages
     class Php5 < Package
       name 'php5'
-      version '5.5.8-nitrous1.1'
+      version '5.5.8-nitrous2'
       description 'PHP 5.5: A popular general-purpose scripting language that is especially suited to web development.'
       source_url 'http://us1.php.net/get/php-5.5.8.tar.gz/from/this/mirror'
       source_sha1 '19af9180c664c4b8f6c46fc10fbad9f935e07b52'
@@ -38,7 +38,7 @@ module Autoparts
             "--with-pdo-pgsql",
             "--with-readline",
             "--with-gd",
-            "--with-jpeg",
+            "--with-jpeg-dir=/usr/lib/x86_64-linux-gnu",
             "--with-curl",
             "--enable-zip",
             "--with-zlib",
