@@ -2,7 +2,7 @@ module Autoparts
   module Packages
     class Apache2 < Package
       name 'apache2'
-      version '2.4.7-nitrous1'
+      version '2.4.7'
       description 'Apache Web Server: A cross-platform open-source HTTP server for modern operating systems'
       source_url 'http://mirror.metrocast.net/apache/httpd/httpd-2.4.7.tar.gz'
       source_sha1 '9a73783b0f75226fb2afdcadd30ccba77ba05149'
