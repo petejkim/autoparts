@@ -97,6 +97,14 @@ module Autoparts
       ENV['AUTOPARTS_HOST'] || BINARY_HOST
     end
 
+    # if we found AUTOPARTS_BUCKET variable, use that as the bucket host,
+    # otherwise use the default production value.
+    #
+    # This is useful when we want to upload a package to staging bucket.
+    def binary_bucket
+      ENV['AUTOPARTS_BUCKET'] || BINARY_BUCKET
+    end
+
     def initialize
       @source_install = false
     end
@@ -381,7 +389,7 @@ module Autoparts
         puts "=> Uploading #{name} #{version}..."
         [binary_file_name, binary_sha1_file_name].each do |f|
           local_path = Path.archives + f
-          `s3cmd put --acl-public --guess-mime-type #{local_path} s3://#{BINARY_BUCKET}/#{f}`
+          `s3cmd put --acl-public --guess-mime-type #{local_path} s3://#{binary_bucket}/#{f}`
         end
         puts "=> Done"
       else
