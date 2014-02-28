@@ -5,6 +5,7 @@ require 'etc'
 module Autoparts
   class Package
     BINARY_HOST = 'http://parts.nitrous.io'.freeze
+    BINARY_BUCKET = 'nitrousio-autoparts-use1'.freeze
     WEB_HOOK_URL = 'https://www.nitrous.io/autoparts/webhook'.freeze
     BOX_ID_PATH = '/etc/action/box_id'.freeze
     include PackageDeps
@@ -371,7 +372,7 @@ module Autoparts
         puts "=> Uploading #{name} #{version}..."
         [binary_file_name, binary_sha1_file_name].each do |f|
           local_path = Path.archives + f
-          `s3cmd put --acl-public --guess-mime-type #{local_path} s3://nitrousio-autoparts-use1/#{f}`
+          `s3cmd put --acl-public --guess-mime-type #{local_path} s3://#{BINARY_BUCKET}/#{f}`
         end
         puts "=> Done"
       else
