@@ -88,6 +88,15 @@ module Autoparts
       end
     end
 
+    # if we found AUTOPARTS_HOST variable, use that as the binary host value,
+    # otherwise use the default production host.
+    #
+    # This is useful when we want to stage a test package but dont want the
+    # package to be on production bucket.
+    def binary_host
+      ENV['AUTOPARTS_HOST'] || BINARY_HOST
+    end
+
     def initialize
       @source_install = false
     end
@@ -126,11 +135,11 @@ module Autoparts
     end
 
     def binary_url
-      "#{BINARY_HOST}/#{name_with_version}-binary.tar.gz"
+      "#{binary_host}/#{name_with_version}-binary.tar.gz"
     end
 
     def binary_sha1_url
-      "#{BINARY_HOST}/#{binary_sha1_filename}"
+      "#{binary_host}/#{binary_sha1_filename}"
     end
 
     def binary_sha1
