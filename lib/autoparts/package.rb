@@ -5,6 +5,7 @@ require 'etc'
 module Autoparts
   class Package
     BINARY_HOST = 'http://parts.nitrous.io'.freeze
+    BINARY_BUCKET = 'nitrousio-autoparts-use1'.freeze
     WEB_HOOK_URL = 'https://www.nitrous.io/autoparts/webhook'.freeze
     BOX_ID_PATH = '/etc/action/box_id'.freeze
     include PackageDeps
@@ -87,6 +88,23 @@ module Autoparts
       end
     end
 
+    # if we found AUTOPARTS_HOST variable, use that as the binary host value,
+    # otherwise use the default production host.
+    #
+    # This is useful when we want to stage a test package but dont want the
+    # package to be on production bucket.
+    def binary_host
+      ENV['AUTOPARTS_HOST'] || BINARY_HOST
+    end
+
+    # if we found AUTOPARTS_BUCKET variable, use that as the bucket host,
+    # otherwise use the default production value.
+    #
+    # This is useful when we want to upload a package to staging bucket.
+    def binary_bucket
+      ENV['AUTOPARTS_BUCKET'] || BINARY_BUCKET
+    end
+
     def initialize
       @source_install = false
     end
@@ -125,11 +143,11 @@ module Autoparts
     end
 
     def binary_url
-      "#{BINARY_HOST}/#{name_with_version}-binary.tar.gz"
+      "#{binary_host}/#{name_with_version}-binary.tar.gz"
     end
 
     def binary_sha1_url
-      "#{BINARY_HOST}/#{binary_sha1_filename}"
+      "#{binary_host}/#{binary_sha1_filename}"
     end
 
     def binary_sha1
@@ -371,7 +389,7 @@ module Autoparts
         puts "=> Uploading #{name} #{version}..."
         [binary_file_name, binary_sha1_file_name].each do |f|
           local_path = Path.archives + f
-          `s3cmd put --acl-public --guess-mime-type #{local_path} s3://nitrousio-autoparts-use1/#{f}`
+          `s3cmd put --acl-public --guess-mime-type #{local_path} s3://#{binary_bucket}/#{f}`
         end
         puts "=> Done"
       else
