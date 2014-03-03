@@ -2,16 +2,16 @@ module Autoparts
   module Packages
     class ImageMagick < Package
       name 'image_magick'
-      version '6.8.7-5'
+      version '6.8.8-7'
       description 'ImageMagick: a software suite to create, edit, compose, or convert bitmap images.'
-      source_url 'http://www.imagemagick.org/download/ImageMagick-6.8.7-5.tar.gz'
-      source_sha1 'bfc03a14a95e13a25669f23dde915d5d7331e74f'
+      source_url 'http://www.imagemagick.org/download/ImageMagick-6.8.8-7.tar.gz'
+      source_sha1 '50e66290c1524de6a6c92e85bd29d33691b18cc7'
       source_filetype 'tar.gz'
       binary_url ''
       binary_sha1 ''
       
       def compile
-        Dir.chdir('ImageMagick-6.8.7-5') do
+        Dir.chdir('ImageMagick-6.8.8-7') do
 	  args = [
             "--prefix=#{prefix_path}"
           ]
@@ -21,7 +21,7 @@ module Autoparts
       end
       
       def install
-        Dir.chdir('ImageMagick-6.8.7-5') do
+        Dir.chdir('ImageMagick-6.8.8-7') do
           execute 'make', 'install'
         end
       end
