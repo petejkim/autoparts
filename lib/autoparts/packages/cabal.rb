@@ -16,6 +16,16 @@ module Autoparts
           execute "mkdir -p #{bin_path} && cp ~/.cabal/bin/cabal #{bin_path}"
         end
       end
+
+      def tips
+        <<-EOS.unindent
+Run "cabal update" after installing
+  $ cabal update
+
+Add "$HOME/.cabal/bin" to your PATH since all Cabal packages will be installed there
+        EOS
+      end
+
     end
   end
 end
