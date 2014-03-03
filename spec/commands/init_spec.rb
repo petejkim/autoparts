@@ -5,7 +5,7 @@ describe Autoparts::Commands::Init do
   Path = Autoparts::Path
 
   subject do
-    described_class.any_instance.stub :print_exports
+    Autoparts::Commands::Env.stub :print_exports
     described_class.any_instance.stub :show_help
     described_class.new [], []
   end
