@@ -16,11 +16,28 @@ module Autoparts
         execute 'chmod', '0755', composer_executable_path
       end
 
+      def env_file
+        Path.env + name
+      end
+
       def composer_executable_path
         bin_path + 'composer'
       end
 
+      def composer_env
+        'PATH="$HOME/.composer/vendor/bin:$PATH"'
+      end
+
+      def post_install
+        File.write(env_file, composer_env)
+      end
+
+      def post_uninstall
+        env_file.unlink if env_file.exist?
+      end
+
       def tips
+
         <<-EOS.unindent
           To check version of composer:
             $ composer --version
