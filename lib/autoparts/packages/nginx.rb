@@ -68,6 +68,7 @@ module Autoparts
         <<-EOS.unindent
           server {
             listen 3000;
+            listen 9500;
 
              location / {
                 root #{htdocs_path};

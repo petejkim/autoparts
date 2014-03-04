@@ -180,6 +180,7 @@ module Autoparts
           ServerRoot "#{prefix_path}"
           ServerName 0.0.0.0:3000
           Listen 3000
+          Listen 9500
 
           LoadModule access_compat_module modules/mod_access_compat.so
           LoadModule alias_module modules/mod_alias.so
