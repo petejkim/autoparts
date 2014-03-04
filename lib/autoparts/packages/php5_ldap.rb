@@ -1,8 +1,8 @@
-require File.join(File.dirname(__FILE__), 'php5ext')
+require File.join(File.dirname(__FILE__), 'php5_ext')
 
 module Autoparts
   module Packages
-    class Php5ExtLdap < Php5Ext
+    class Php5Ldap < Php5Ext
       name 'php5-ldap'
       description 'ldap module for php5'
       depends_on 'php5'

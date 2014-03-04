@@ -1,8 +1,8 @@
-require File.join(File.dirname(__FILE__), 'php5ext')
+require File.join(File.dirname(__FILE__), 'php5_ext')
 
 module Autoparts
   module Packages
-    class Php5ExtIMagic < Php5Ext
+    class Php5Imagick < Php5Ext
       name 'php5-imagick'
 
       def version

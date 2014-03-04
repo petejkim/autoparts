@@ -1,6 +1,6 @@
 module Autoparts
   module Packages
-    class Go < Package
+    class GoLang < Package
       name 'go-lang'
       version '1.2'
       description 'Go is an open source programming language that makes it easy to build simple, reliable, and efficient software.'
