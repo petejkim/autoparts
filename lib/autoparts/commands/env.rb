@@ -24,6 +24,9 @@ module Autoparts
         EXPORTS.each do |envvar, value|
           puts %Q(export #{envvar}="#{value}")
         end
+        Package.package_envs.each do |env|
+          puts env
+        end
       end
     end
   end

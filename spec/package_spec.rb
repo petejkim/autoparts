@@ -158,6 +158,57 @@ describe Autoparts::Package do
     end
   end
 
+  describe ".package_envs" do
+    context "when we have installed packages" do
+      it "returns list of required envs for installed packages" do
+	Class.new(Autoparts::Package) do
+	  name 'newfoo'
+	  version "0.0.1"
+	  def required_env
+	    [ "export TEST=true" ]
+	  end
+	end
+
+	Autoparts::Package.stub(:installed) { { "newfoo" => "0.0.1" } }
+	Autoparts::Package.package_envs.should eq(["export TEST=true"])
+      end
+
+      it "does not duplicate envs" do
+	Class.new(Autoparts::Package) do
+	  name 'newfoo'
+	  version "0.0.1"
+	  def required_env
+	    [ "export TEST=true" ]
+	  end
+	end
+
+	Class.new(Autoparts::Package) do
+	  name 'anotherfoo'
+	  version "0.0.1"
+	  def required_env
+	    [ "export TEST=true" ]
+	  end
+	end
+
+	Autoparts::Package.stub(:installed) { { "newfoo" => "0.0.1", "anotherfoo" => "0.0.1" } }
+	Autoparts::Package.package_envs.should eq(["export TEST=true"])
+      end
+
+      it "returns empty list when installed packages does not required envs" do
+	Class.new(Autoparts::Package) do
+	  name 'newfoo'
+	  version "0.0.1"
+	end
+	Autoparts::Package.stub(:installed) { { "newfoo" => "0.0.1" } }
+	Autoparts::Package.package_envs.should be_empty
+      end
+    end
+
+    it "returns empty list when we dont have any installed packages" do
+      Autoparts::Package.package_envs.should be_empty
+    end
+  end
+
   describe '.factory' do
     it 'attempts to load the package file, and creates an instance of package class by a given name' do
       expect(described_class).to receive(:require).with('autoparts/packages/foo')
