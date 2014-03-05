@@ -7,6 +7,8 @@ module Autoparts
       name 'ack'
       version '2.12'
       description 'Ack: A tool like grep, optimized for programmers'
+      category Category::UTILITIES
+
       source_url 'http://beyondgrep.com/ack-2.12-single-file'
       source_sha1 '667b5f2dd83143848a5bfa47f7ba848cbe556e93'
       source_filetype 'pl'

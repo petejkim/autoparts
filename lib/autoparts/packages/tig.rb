@@ -7,6 +7,8 @@ module Autoparts
       name 'tig'
       version '1.2.1'
       description 'Tig: An ncurses-based text-mode interface for git'
+      category Category::DEVELOPMENT_TOOLS
+
       source_url 'http://jonas.nitro.dk/tig/releases/tig-1.2.1.tar.gz'
       source_sha1 '5755bae7342debf94ef33973e0eaff6207e623dc'
       source_filetype 'tar.gz'

@@ -7,6 +7,8 @@ module Autoparts
       name 'phpmyadmin'
       version '4.1.7'
       description 'phpMyAdmin: A PHP-based web front-end to MySQL'
+      category Category::WEB_DEVELOPMENT
+
       source_url 'http://downloads.sourceforge.net/project/phpmyadmin/phpMyAdmin/4.1.7/phpMyAdmin-4.1.7-all-languages.tar.gz'
       source_sha1 '926c9261e698612e61c725c13262d951bada9cd3'
       source_filetype 'tar.gz'

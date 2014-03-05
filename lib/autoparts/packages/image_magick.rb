@@ -4,6 +4,8 @@ module Autoparts
       name 'image_magick'
       version '6.8.8-7'
       description 'ImageMagick: a software suite to create, edit, compose, or convert bitmap images.'
+      category Category::UTILITIES
+
       source_url 'http://www.imagemagick.org/download/ImageMagick-6.8.8-7.tar.gz'
       source_sha1 '50e66290c1524de6a6c92e85bd29d33691b18cc7'
       source_filetype 'tar.gz'

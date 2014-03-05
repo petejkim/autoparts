@@ -7,6 +7,8 @@ module Autoparts
       name 'elasticsearch'
       version '1.0.0'
       description 'Elasticsearch: A flexible and powerful open source, distributed, real-time search and analytics engine'
+      category Category::DATA_STORES
+
       source_url 'https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.0.0.tar.gz'
       source_sha1 'f190f496502a6608373fca3e8faf65b13dbcc3cd'
       source_filetype 'tar.gz'

@@ -6,7 +6,9 @@ module Autoparts
     class Nodejs < Package
       name 'nodejs'
       version '0.10.26'
-      description 'Node.JS: Platform built on Chrome\'s JavaScript runtime for easily building fast, scalable network applications'
+      description "Node.JS: A platform built on Chrome's JavaScript runtime for easily building fast, scalable network applications"
+      category Category::PROGRAMMING_LANGUAGES
+
       source_url 'http://nodejs.org/dist/v0.10.26/node-v0.10.26-linux-x64.tar.gz'
       source_sha1 'd15d39e119bdcf75c6fc222f51ff0630b2611160'
       source_filetype 'tar.gz'
@@ -19,4 +21,3 @@ module Autoparts
     end
   end
 end
-

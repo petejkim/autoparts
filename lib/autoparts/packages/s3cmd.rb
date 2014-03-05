@@ -7,6 +7,8 @@ module Autoparts
       name 's3cmd'
       version '1.0.1'
       description 's3cmd: Command line tool for managing Amazon S3 and CloudFront services'
+      category Category::UTILITIES
+
       source_url 'https://github.com/s3tools/s3cmd/archive/v1.0.1.zip'
       source_sha1 '4a6f7bfb9300b728ca466967b91aa07521ef6f80'
       source_filetype 'zip'

@@ -7,6 +7,8 @@ module Autoparts
       name 'libmcrypt'
       version '2.5.8'
       description 'Libmcrypt: A uniform interface to several symmetric encryption algorithms'
+      category Category::LIBRARIES
+
       source_url "http://downloads.sourceforge.net/project/mcrypt/Libmcrypt/2.5.8/libmcrypt-2.5.8.tar.gz"
       source_sha1 '9a426532e9087dd7737aabccff8b91abf9151a7a'
       source_filetype 'tar.gz'

@@ -7,6 +7,8 @@ module Autoparts
       name 'scala'
       version '2.10.3'
       description 'Scala: An object-functional programming language'
+      category Category::PROGRAMMING_LANGUAGES
+
       source_url 'http://www.scala-lang.org/files/archive/scala-2.10.3.tgz'
       source_sha1 '04cd6237f164940e1e993a127e7cb21297f3b7ae'
       source_filetype 'tgz'

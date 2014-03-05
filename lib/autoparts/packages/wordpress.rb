@@ -7,6 +7,8 @@ module Autoparts
       name 'wordpress'
       version '3.8.1'
       description 'WordPress: Web software you can use to create a beautiful website or blog'
+      category Category::WEB_DEVELOPMENT
+
       source_url 'http://wordpress.org/wordpress-3.8.1.tar.gz'
       source_sha1 '904487e0d70a2d2b6a018aaf99e21608d8f2db88'
       source_filetype 'tar.gz'

@@ -78,6 +78,10 @@ module Autoparts
         @description = val
       end
 
+      def category(val)
+        @category = val
+      end
+
       def source_url(val)
         @source_url = val
       end
@@ -122,6 +126,10 @@ module Autoparts
 
     def description
       self.class.instance_variable_get(:@description)
+    end
+
+    def category
+      self.class.instance_variable_get(:@category)
     end
 
     def name_with_version

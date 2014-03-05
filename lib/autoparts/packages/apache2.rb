@@ -7,6 +7,8 @@ module Autoparts
       name 'apache2'
       version '2.4.7-nitrous1'
       description 'Apache Web Server: A cross-platform open-source HTTP server for modern operating systems'
+      category Category::WEB_DEVELOPMENT
+
       source_url 'http://www.us.apache.org/dist//httpd/httpd-2.4.7.tar.gz'
       source_sha1 '9a73783b0f75226fb2afdcadd30ccba77ba05149'
       source_filetype 'tar.gz'

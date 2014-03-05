@@ -7,6 +7,8 @@ module Autoparts
       name 'tmux'
       version '1.9a'
       description 'Tmux: a terminal multiplexer that lets you switch easily between several programs in one terminal.'
+      category Category::UTILITIES
+
       source_url 'http://downloads.sourceforge.net/tmux/tmux-1.9a.tar.gz'
       source_sha1 '815264268e63c6c85fe8784e06a840883fcfc6a2'
       source_filetype 'tar.gz'

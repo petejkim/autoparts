@@ -7,6 +7,8 @@ module Autoparts
       name 'the_silver_searcher'
       version '0.18.1'
       description 'The Silver Searcher: A code-searching tool similar to ack, with focus on speed'
+      category Category::UTILITIES
+
       source_url 'https://github.com/ggreer/the_silver_searcher/archive/0.18.1.tar.gz'
       source_sha1 'efffa28a7e15261dfc027cf94653459a4db0dd92'
       source_filetype 'tar.gz'

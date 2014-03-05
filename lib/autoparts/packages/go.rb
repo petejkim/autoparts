@@ -7,6 +7,8 @@ module Autoparts
       name 'go'
       version '1.2.1'
       description 'Go: An open source programming language that makes it easy to build simple, reliable, and efficient software.'
+      category Category::PROGRAMMING_LANGUAGES
+
       source_url 'https://go.googlecode.com/files/go1.2.1.linux-amd64.tar.gz'
       source_sha1 '7605f577ff6ac2d608a3a4e829b255ae2ebc8dcf'
       source_filetype 'tar.gz'
@@ -37,5 +39,3 @@ module Autoparts
     end
   end
 end
-
-

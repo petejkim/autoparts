@@ -7,6 +7,8 @@ module Autoparts
       name 'mysql'
       version '5.6.13'
       description "MySQL: The world's most popular open-source relational database"
+      category Category::DATA_STORES
+
       source_url 'http://dev.mysql.com/get/Downloads/MySQL-5.6/mysql-5.6.13.tar.gz'
       source_sha1 '06e1d856cfb1f98844ef92af47d4f4f7036ef294'
       source_filetype 'tar.gz'

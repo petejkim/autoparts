@@ -9,25 +9,27 @@ class FooPackage < Autoparts::Package
   name 'foo'
   version '1.0'
   description "foo package"
+  category Autoparts::Category::PROGRAMMING_LANGUAGES
+
   source_url 'http://example.com/foo.tar.gz'
   source_sha1 'f00f00f00f00f00f00f00f00f00f00f00f00f00f'
   source_filetype 'tar.gz'
 
   def start
-
   end
 end
 
 class BarPackage < Autoparts::Package
   name 'bar'
   version '2.0'
+  category Autoparts::Category::DEPLOYMENT
+
   description "bar bar black sheep"
   source_url 'http://example.com/bar.zip'
   source_sha1 'babababababababababababababababababababa'
   source_filetype 'zip'
 
   def start
-
   end
 end
 
@@ -35,12 +37,13 @@ class BazPackage < Autoparts::Package
   name 'baz'
   version '2.1'
   description "baz baz black sheep"
+  category Autoparts::Category::LIBRARIES
+
   source_url 'http://example.com/baz.zip'
   source_sha1 'babababababababababababababababababababa'
   source_filetype 'zip'
 
   def start
-
   end
 end
 
@@ -264,6 +267,13 @@ describe Autoparts::Package do
     it 'returns the description set using the DSL keyword "description"' do
       expect(foo_package.description).to eq 'foo package'
       expect(bar_package.description).to eq 'bar bar black sheep'
+    end
+  end
+
+  describe '#category' do
+    it 'returns the category set using the DSL keyword "category"' do
+      expect(foo_package.category).to eq Autoparts::Category::PROGRAMMING_LANGUAGES
+      expect(bar_package.category).to eq Autoparts::Category::DEPLOYMENT
     end
   end
 

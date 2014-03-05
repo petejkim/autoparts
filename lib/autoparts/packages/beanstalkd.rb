@@ -4,6 +4,8 @@ module Autoparts
       name 'beanstalkd'
       version '1.9'
       description 'Beanstalk: A simple, fast work queue.'
+      category Category::DATA_STORES
+
       source_url 'https://github.com/kr/beanstalkd/archive/v1.9.tar.gz'
       source_sha1 'a3cdb93d9c7465491c58c8e7a99d63d779067845'
       source_filetype 'tar.gz'

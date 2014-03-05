@@ -7,6 +7,8 @@ module Autoparts
       name 'php5'
       version '5.5.8-nitrous2'
       description 'PHP 5.5: A popular general-purpose scripting language that is especially suited to web development.'
+      category Category::PROGRAMMING_LANGUAGES
+
       source_url 'http://us1.php.net/get/php-5.5.8.tar.gz/from/this/mirror'
       source_sha1 '19af9180c664c4b8f6c46fc10fbad9f935e07b52'
       source_filetype 'tar.gz'
@@ -86,14 +88,13 @@ module Autoparts
 
       def tips
         <<-EOS.unindent
+          #{apache2_dependency.tips}
 
-#{apache2_dependency.tips}
+          PHP config file is located at:
+            $ #{php5_ini_path}
 
-PHP config file is located at:
-  $ #{php5_ini_path}
-
-If Apache2 httpd is already running, you will need to restart it:
-  $ parts restart apache2
+          If Apache2 httpd is already running, you will need to restart it:
+            $ parts restart apache2
         EOS
       end
 
@@ -115,10 +116,10 @@ If Apache2 httpd is already running, you will need to restart it:
 
       def php5_apache_config
         <<-EOF.unindent
-        PHPIniDir #{php5_ini_path}
-        LoadModule php5_module modules/libphp5.so
-        AddHandler php5-script .php
-        DirectoryIndex index.php
+          PHPIniDir #{php5_ini_path}
+          LoadModule php5_module modules/libphp5.so
+          AddHandler php5-script .php
+          DirectoryIndex index.php
         EOF
       end
     end

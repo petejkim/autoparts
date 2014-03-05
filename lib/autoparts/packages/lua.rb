@@ -7,6 +7,8 @@ module Autoparts
       name 'lua'
       version '5.2.2'
       description 'Lua: A powerful, fast, lightweight, embeddable scripting language'
+      category Category::PROGRAMMING_LANGUAGES
+
       source_url 'http://www.lua.org/ftp/lua-5.2.2.tar.gz'
       source_sha1 '0857e41e5579726a4cb96732e80d7aa47165eaf5'
       source_filetype 'tar.gz'

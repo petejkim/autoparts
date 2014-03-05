@@ -7,6 +7,8 @@ module Autoparts
       name 'leiningen'
       version '2.3.2'
       description 'Leiningen: A build automation and dependency management tool for Clojure'
+      category Category::PROGRAMMING_LANGUAGES
+
       source_url 'https://leiningen.s3.amazonaws.com/downloads/leiningen-2.3.2-standalone.jar'
       source_sha1 'ed6f93be75c796408544042cfd26699d45b49725'
       source_filetype 'jar'

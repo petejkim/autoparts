@@ -7,6 +7,8 @@ module Autoparts
       name 'apr'
       version '1.5.0'
       description 'Apache Portable Runtime: Software libraries that provide a predictable and consistent interface to underlying platform-specific implementations'
+      category Category::LIBRARIES
+
       source_url 'http://mirrors.gigenet.com/apache//apr/apr-1.5.0.tar.gz'
       source_sha1 'c457adf42502a322967ea0499a150587585e5291'
       source_filetype 'tar.gz'
