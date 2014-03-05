@@ -1,4 +1,4 @@
-# Copyright (c) 2013, Irrational Industries Inc. (Nitrous.IO)
+# Copyright (c) 2012-2014, Irrational Industries Inc. (Nitrous.IO)
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without modification,
@@ -36,6 +36,25 @@ module Autoparts
           prefix_path.mkpath
           execute 'cp', '-R', '.', prefix_path
         end
+      end
+
+      def tips
+        <<-EOS.unindent
+
+Set the GOROOT environment variable to /home/action/.parts/bin
+  $ export GOROOT=/home/action/.parts/bin
+or add the line above to your ~/.bashrc or ~/.zshrc file
+
+As of go 1.2, a valid GOPATH is required to use the `go get` command:
+  http://golang.org/doc/code.html#GOPATH
+
+`go vet` and `go doc` are now part of the go.tools sub repo:
+  http://golang.org/doc/go1.2#go_tools_godoc
+
+To get `go vet` and `go doc` run:
+  go get code.google.com/p/go.tools/cmd/godoc
+  go get code.google.com/p/go.tools/cmd/vet
+        EOS
       end
     end
   end
