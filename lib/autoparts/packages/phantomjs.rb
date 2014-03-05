@@ -12,10 +12,9 @@ module Autoparts
       source_filetype 'tar.bz2'
 
       def install
-        Dir.chdir('phantomjs-1.9.1-linux-x86_64') do
-          prefix_path.mkpath
-          execute "mv * #{prefix_path}"
-        end
+        prefix_path.parent.mkpath
+        FileUtils.rm_rf prefix_path
+        execute 'mv', extracted_archive_path + "phantomjs-#{version}-linux-x86_64", prefix_path
       end
     end
   end

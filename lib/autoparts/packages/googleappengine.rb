@@ -12,10 +12,9 @@ module Autoparts
       source_filetype 'zip'
 
       def install
-        prefix_path.mkpath
-        Dir.chdir(extracted_archive_path + 'google_appengine') do
-          execute 'cp', '-r', '.', prefix_path
-        end
+        prefix_path.parent.mkpath
+        FileUtils.rm_rf prefix_path
+        execute 'mv', extracted_archive_path + 'google_appengine', prefix_path
       end
 
       def post_install

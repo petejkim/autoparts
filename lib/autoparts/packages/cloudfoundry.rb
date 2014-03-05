@@ -12,8 +12,10 @@ module Autoparts
       source_filetype 'tgz'
 
       def install
-        bin_path.mkpath
-        execute "mv * #{bin_path}"
+        bin_path.parent.mkpath
+        FileUtils.rm_rf bin_path
+
+        execute 'mv', extracted_archive_path, bin_path
         execute 'chmod', '0755', cf_executable_path
       end
 

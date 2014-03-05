@@ -16,11 +16,10 @@ module Autoparts
       depends_on 'apache2'
 
       def install
-        Dir.chdir(extracted_archive_path) do
-          prefix_path.mkpath
-          execute 'cp', '-r', 'phpMyAdmin-4.1.7-all-languages', phpmyadmin_path
-          execute 'cp', "phpMyAdmin-4.1.7-all-languages/#{phpmyadmin_sample_config}", prefix_path
-        end
+        phpmyadmin_path.parent.mkpath
+        FileUtils.rm_rf phpmyadmin_path
+        execute 'mv', extracted_archive_path, phpmyadmin_path
+        execute 'cp', phpmyadmin_path + phpmyadmin_sample_config, prefix_path
       end
 
       def phpmyadmin_path
@@ -102,7 +101,7 @@ module Autoparts
       end
 
       def post_install
-        Dir.chdir(phpmyadmin_path)do
+        Dir.chdir(phpmyadmin_path) do
           FileUtils.cp phpmyadmin_sample_config, phpmyadmin_config
           cookie_rnd = (0...24).map { ('a'..'z').to_a[rand(26)] }.join
           execute 'sed', '-i', "s|a8b7c6d|#{cookie_rnd}|g", phpmyadmin_config

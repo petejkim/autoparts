@@ -16,10 +16,9 @@ module Autoparts
       end
 
       def install
-        Dir.chdir('mongodb-linux-x86_64-2.4.6') do
-          prefix_path.mkpath
-          execute "mv * #{prefix_path}"
-        end
+        prefix_path.parent.mkpath
+        FileUtils.rm_rf prefix_path
+        execute 'mv', extracted_archive_path + "mongodb-linux-x86_64-#{version}", prefix_path
       end
 
       def post_install

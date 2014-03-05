@@ -12,10 +12,9 @@ module Autoparts
       source_filetype 'tgz'
 
       def install
-        Dir.chdir('scala-2.10.3') do
-          prefix_path.mkpath
-          execute 'cp', '-R', '.', prefix_path
-        end
+        prefix_path.parent.mkpath
+        FileUtils.rm_rf prefix_path
+        execute 'mv', extracted_archive_path + "scala-#{version}", prefix_path
       end
     end
   end

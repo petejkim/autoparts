@@ -12,10 +12,9 @@ module Autoparts
       source_filetype 'tar.gz'
 
       def install
-        Dir.chdir("go") do
-          prefix_path.mkpath
-          execute 'cp', '-R', '.', prefix_path
-        end
+        prefix_path.parent.mkpath
+        FileUtils.rm_rf prefix_path
+        execute 'mv', extracted_archive_path + 'go', prefix_path
       end
 
       def tips
