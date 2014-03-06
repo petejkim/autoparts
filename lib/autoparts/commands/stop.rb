@@ -18,7 +18,7 @@ module Autoparts
             end
             package = Package.factory(package_name)
             if package.respond_to? :stop
-              if File.exists?(autostart_file = Path.init + "#{package_name}.conf")
+              if File.exists?(autostart_file = Path.config + 'autostart' + package_name)
                 FileUtils.rm_rf autostart_file
               end
 

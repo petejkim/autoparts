@@ -22,13 +22,18 @@ module Autoparts
       def bin;      mkpath(root + 'bin')      end
       def etc;      mkpath(root + 'etc')      end
       def include;  mkpath(root + 'include')  end
-      def init;     mkpath(root + 'init')     end
       def lib;      mkpath(root + 'lib')      end
       def packages; mkpath(root + 'packages') end
       def sbin;     mkpath(root + 'sbin')     end
       def share;    mkpath(root + 'share')    end
       def tmp;      mkpath(root + 'tmp')      end
       def var;      mkpath(root + 'var')      end
+
+      def config;   mkpath(root + '.config')  end
+
+      def autostart
+        config + 'autostart'
+      end
 
       def partsinfo
         root + '.partsinfo'

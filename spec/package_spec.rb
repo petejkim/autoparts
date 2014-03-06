@@ -113,8 +113,9 @@ describe Autoparts::Package do
       FileUtils.touch (Autoparts::Path.packages + 'bar' + '2.0' + '.keep').to_s
       FileUtils.touch (Autoparts::Path.packages + 'baz' + '2.1' + '.keep').to_s
 
-      FileUtils.touch (Autoparts::Path.init + 'foo.conf').to_s
-      FileUtils.touch (Autoparts::Path.init + 'baz.conf').to_s
+      Autoparts::Path.autostart.mkpath
+      FileUtils.touch (Autoparts::Path.autostart + 'foo').to_s
+      FileUtils.touch (Autoparts::Path.autostart + 'baz').to_s
 
       FooPackage.any_instance.stub(:start) { 'foo' }
       BazPackage.any_instance.stub(:start) { 'baz' }
