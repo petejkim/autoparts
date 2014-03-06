@@ -55,6 +55,18 @@ module Autoparts
       end
 
       def start_all
+        # migrate old style config
+        init_path = Path.root + 'init'
+        if init_path.exist?
+          Path.autostart.mkpath
+          init_path.children.each do |package_conf_path|
+            package_name = package_conf_path.basename.sub_ext('').to_s
+            FileUtils.touch(Path.autostart + package_name)
+          end
+          FileUtils.rm_rf init_path
+        end
+
+        # new style config
         if Path.autostart.exist?
           Path.autostart.children.each do |package_pathname|
             begin
@@ -72,8 +84,8 @@ module Autoparts
 
       def description(val)
         @description = val
-      end
 
+      end
       def category(val)
         @category = val
       end

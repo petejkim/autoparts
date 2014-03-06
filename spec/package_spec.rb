@@ -112,17 +112,49 @@ describe Autoparts::Package do
       FileUtils.touch (Autoparts::Path.packages + 'foo' + '1.0' + '.keep').to_s
       FileUtils.touch (Autoparts::Path.packages + 'bar' + '2.0' + '.keep').to_s
       FileUtils.touch (Autoparts::Path.packages + 'baz' + '2.1' + '.keep').to_s
-
-      Autoparts::Path.autostart.mkpath
-      FileUtils.touch (Autoparts::Path.autostart + 'foo').to_s
-      FileUtils.touch (Autoparts::Path.autostart + 'baz').to_s
     end
 
-    it 'should start packages which are meant to be auto-started' do
-      expect(Autoparts::Commands::Start).to receive(:start).ordered.with 'foo', true
-      expect(Autoparts::Commands::Start).to receive(:start).ordered.with 'baz', true
-      expect(Autoparts::Commands::Start).not_to receive(:start).with 'bar', true
-      Autoparts::Package.start_all
+    context 'when .parts/.config/autostart/* exists' do
+      before do
+        Autoparts::Path.autostart.mkpath
+        FileUtils.touch (Autoparts::Path.autostart + 'foo').to_s
+        FileUtils.touch (Autoparts::Path.autostart + 'baz').to_s
+      end
+
+      it 'should start packages which are meant to be auto-started' do
+        expect(Autoparts::Commands::Start).to receive(:start).ordered.with 'foo', true
+        expect(Autoparts::Commands::Start).to receive(:start).ordered.with 'baz', true
+        expect(Autoparts::Commands::Start).not_to receive(:start).with 'bar', true
+        Autoparts::Package.start_all
+      end
+    end
+
+    context 'when .parts/init/*.conf exists (old config)' do
+      let(:init_path) { Autoparts::Path.root + 'init' }
+
+      before do
+        init_path.mkpath
+        FileUtils.touch init_path + 'foo.conf'
+        FileUtils.touch init_path + 'baz.conf'
+      end
+
+      it 'starts packages that are meant to be auto-started' do
+        expect(Autoparts::Commands::Start).to receive(:start).ordered.with 'foo', true
+        expect(Autoparts::Commands::Start).to receive(:start).ordered.with 'baz', true
+        expect(Autoparts::Commands::Start).not_to receive(:start).with 'bar', true
+        Autoparts::Package.start_all
+      end
+
+      it 'migrates to .parts/.config/autostart and then deletes init path' do
+        Autoparts::Package.start_all
+        expect(init_path + 'foo.conf').not_to exist
+        expect(init_path + 'baz.conf').not_to exist
+        expect(init_path).not_to exist
+
+        expect(Autoparts::Path.autostart).to exist
+        expect(Autoparts::Path.autostart + 'foo').to exist
+        expect(Autoparts::Path.autostart + 'baz').to exist
+      end
     end
   end
 
