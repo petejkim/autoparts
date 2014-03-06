@@ -19,7 +19,7 @@ module Autoparts
               end
             end
           end
-          Autoparts::Package.start_all(true) # Start silently
+          Autoparts::Package.start_all
           Env.print_exports
         else
           show_help

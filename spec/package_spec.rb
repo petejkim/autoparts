@@ -116,48 +116,13 @@ describe Autoparts::Package do
       Autoparts::Path.autostart.mkpath
       FileUtils.touch (Autoparts::Path.autostart + 'foo').to_s
       FileUtils.touch (Autoparts::Path.autostart + 'baz').to_s
-
-      FooPackage.any_instance.stub(:start) { 'foo' }
-      BazPackage.any_instance.stub(:start) { 'baz' }
     end
 
-    before do
-      Autoparts::Package.stub(:system) { true }
-    end
-
-    context 'none of the packages are running' do
-      before do
-        Autoparts::Package.any_instance.stub(:running?) { false }
-      end
-
-      it 'should start packages which are meant to be auto-started' do
-        expect(Autoparts::Package).to receive(:system).ordered.with "parts start foo", {}
-        expect(Autoparts::Package).to receive(:system).ordered.with "parts start baz", {}
-        Autoparts::Package.start_all
-      end
-    end
-
-    context 'all the packages are running' do
-      before do
-        Autoparts::Package.any_instance.stub(:running?) { true }
-      end
-
-      it 'should start packages which are meant to be auto-started' do
-        expect(Autoparts::Package).to_not receive(:system)
-        Autoparts::Package.start_all
-      end
-    end
-
-    context 'with silent=true' do
-      before do
-        Autoparts::Package.any_instance.stub(:running?) { false }
-      end
-
-      it 'should start packages which are meant to be auto-started' do
-        expect(Autoparts::Package).to receive(:system).ordered.with "parts start foo", { out: '/dev/null', err: '/dev/null' }
-        expect(Autoparts::Package).to receive(:system).ordered.with "parts start baz", { out: '/dev/null', err: '/dev/null' }
-        Autoparts::Package.start_all(true)
-      end
+    it 'should start packages which are meant to be auto-started' do
+      expect(Autoparts::Commands::Start).to receive(:start).ordered.with 'foo', true
+      expect(Autoparts::Commands::Start).to receive(:start).ordered.with 'baz', true
+      expect(Autoparts::Commands::Start).not_to receive(:start).with 'bar', true
+      Autoparts::Package.start_all
     end
   end
 

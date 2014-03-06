@@ -54,20 +54,16 @@ module Autoparts
         packages[val] = self
       end
 
-      def start_all(silent=false)
-        r = nil
-
-        installed.each_pair do |package_name, versions|
-          package = factory package_name
-          if File.exists?(Path.autostart + package_name) && package.respond_to?(:start)
-            unless package.running?
-              cmd = "parts start #{package_name}"
-              r = system(cmd, silent ? { out: '/dev/null', err: '/dev/null' } : {})
+      def start_all
+        if Path.autostart.exist?
+          Path.autostart.children.each do |package_pathname|
+            begin
+              Commands::Start.start(package_pathname.basename.to_s, true)
+            rescue
+              # ignore exceptions
             end
           end
         end
-
-        r
       end
 
       def version(val)
