@@ -860,4 +860,85 @@ describe Autoparts::Package do
       end
     end
   end
+
+  describe '#active_version' do
+    let(:config_active_package_path) { Autoparts::Path.config_active + 'foo' }
+
+    before do
+      Timecop.freeze(Time.now.to_i - 1) do
+        FileUtils.mkdir_p (Autoparts::Path.packages + 'foo' + '1.0').to_s
+      end
+      Timecop.freeze(Time.now.to_i - 2) do
+        FileUtils.mkdir_p (Autoparts::Path.packages + 'foo' + '0.9').to_s
+      end
+    end
+
+    context 'when .parts/.config/active/<package_name> is found' do
+      context 'when the version stated in the file is installed' do
+        before do
+          File.open(config_active_package_path, 'w') do |f|
+            f.write '0.9'
+          end
+        end
+
+        it 'returns the version stated in the file' do
+          expect(foo_package.active_version).to eq '0.9'
+        end
+
+        it 'does not change the version stated in the file' do
+          foo_package.active_version
+          expect(File.read(config_active_package_path.to_s)).to eq '0.9'
+        end
+      end
+
+      context 'when the version stated in the file is not installed' do
+        before do
+          File.open(config_active_package_path, 'w') do |f|
+            f.write '1.1'
+          end
+        end
+
+        it "finds and returns the latest installation's version" do
+          expect(foo_package.active_version).to eq '1.0'
+        end
+
+        it 'marks latest installation to be active' do
+          foo_package.active_version
+          expect(File.read(config_active_package_path.to_s)).to eq '1.0'
+        end
+      end
+    end
+
+    context 'when .parts/.config/active/<package_name> is not found' do
+      before do
+        Timecop.freeze(Time.now.to_i) do
+          FileUtils.mkdir_p (Autoparts::Path.packages + 'foo' + '1.1').to_s
+        end
+      end
+
+      it "finds and returns the latest installation's version" do
+        expect(foo_package.active_version).to eq '1.1'
+      end
+
+      it 'marks latest installation to be active' do
+        foo_package.active_version
+        expect(File.read(config_active_package_path.to_s)).to eq '1.1'
+      end
+    end
+  end
+
+  describe '#activate' do
+    let(:config_active_package_path) { Autoparts::Path.config_active + 'foo' }
+
+    before do
+      File.open(config_active_package_path, 'w') do |f|
+        f.write '0.9'
+      end
+    end
+
+    it 'marks the version as active' do
+      foo_package.activate('1.1')
+      expect(File.read(config_active_package_path.to_s)).to eq '1.1'
+    end
+  end
 end
