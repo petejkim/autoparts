@@ -26,8 +26,8 @@ module Autoparts
         end
         package = Package.factory(package_name)
         if package.respond_to? :start
-          Path.autostart.mkpath
-          FileUtils.touch(Path.autostart + package_name)
+          Path.config_autostart.mkpath
+          FileUtils.touch(Path.config_autostart + package_name)
           puts "=> Starting #{package_name}..." unless quiet
           raise StartFailedError.new "#{package_name} is already running." if package.running?
           package.start

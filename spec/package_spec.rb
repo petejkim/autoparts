@@ -116,9 +116,9 @@ describe Autoparts::Package do
 
     context 'when .parts/.config/autostart/* exists' do
       before do
-        Autoparts::Path.autostart.mkpath
-        FileUtils.touch (Autoparts::Path.autostart + 'foo').to_s
-        FileUtils.touch (Autoparts::Path.autostart + 'baz').to_s
+        Autoparts::Path.config_autostart.mkpath
+        FileUtils.touch (Autoparts::Path.config_autostart + 'foo').to_s
+        FileUtils.touch (Autoparts::Path.config_autostart + 'baz').to_s
       end
 
       it 'should start packages which are meant to be auto-started' do
@@ -151,9 +151,9 @@ describe Autoparts::Package do
         expect(init_path + 'baz.conf').not_to exist
         expect(init_path).not_to exist
 
-        expect(Autoparts::Path.autostart).to exist
-        expect(Autoparts::Path.autostart + 'foo').to exist
-        expect(Autoparts::Path.autostart + 'baz').to exist
+        expect(Autoparts::Path.config_autostart).to exist
+        expect(Autoparts::Path.config_autostart + 'foo').to exist
+        expect(Autoparts::Path.config_autostart + 'baz').to exist
       end
     end
   end

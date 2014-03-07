@@ -58,17 +58,17 @@ module Autoparts
         # migrate old style config
         init_path = Path.root + 'init'
         if init_path.exist?
-          Path.autostart.mkpath
+          Path.config_autostart.mkpath
           init_path.children.each do |package_conf_path|
             package_name = package_conf_path.basename.sub_ext('').to_s
-            FileUtils.touch(Path.autostart + package_name)
+            FileUtils.touch(Path.config_autostart + package_name)
           end
           FileUtils.rm_rf init_path
         end
 
         # new style config
-        if Path.autostart.exist?
-          Path.autostart.children.each do |package_pathname|
+        if Path.config_autostart.exist?
+          Path.config_autostart.children.each do |package_pathname|
             begin
               Commands::Start.start(package_pathname.basename.to_s, true)
             rescue

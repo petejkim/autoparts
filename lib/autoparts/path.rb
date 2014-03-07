@@ -31,7 +31,7 @@ module Autoparts
 
       def config;   mkpath(root + '.config')  end
 
-      def autostart
+      def config_autostart
         config + 'autostart'
       end
 
