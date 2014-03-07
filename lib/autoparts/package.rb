@@ -182,7 +182,7 @@ module Autoparts
     end
 
     def prefix_path
-      Path.packages + name + version
+      Path.packages + name + active_version
     end
 
     %w(bin sbin include lib libexec share).each do |d|
@@ -272,12 +272,18 @@ module Autoparts
     end
 
     def active_version
+      return @active_version unless @active_version.nil?
+
       config_active_package_path = Path.config_active + name
       package_path = Path.packages + name
 
       if config_active_package_path.exist?
         v = File.read(config_active_package_path).strip
         return v if (package_path + v).exist?
+      end
+
+      unless package_path.exist? && package_path.children.size > 0
+        return self.version
       end
 
       v = package_path.children.sort_by(&:mtime).last.basename.to_s
@@ -304,7 +310,7 @@ module Autoparts
           symlink_recursively f, t, options
         else
           if !only_executables || (only_executables && (f.executable? || f.symlink?))
-            t.rmtree if t.exist?
+            FileUtils.rm_rf(t)
             t.make_symlink(f)
           end
         end
@@ -375,6 +381,10 @@ module Autoparts
         Path.etc
         Path.var
 
+        unsymlink_all # unsymlink existing installation
+
+        @active_version = self.version # override active_version so that prefix_path returns path for the latest version
+
         if @source_install # install from source
           Dir.chdir(extracted_archive_path) do
             puts "=> Compiling..."
@@ -394,8 +404,8 @@ module Autoparts
         Dir.chdir(prefix_path) do
           post_install
           puts '=> Activating...'
-          symlink_all
           activate(version)
+          symlink_all
         end
       rescue => e
         archive_path.unlink if e.kind_of?(VerificationFailedError) && archive_path.exist?
@@ -405,6 +415,8 @@ module Autoparts
         puts "=> Installed #{name} #{version}\n"
         puts tips
         call_web_hook :installed
+      ensure
+        @active_version = nil
       end
     end
 
