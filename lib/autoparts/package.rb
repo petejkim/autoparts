@@ -449,7 +449,7 @@ module Autoparts
         autoparts_version = Autoparts::Commands::Help.version
 
         url = URI.parse(WEB_HOOK_URL)
-        http = Net::HTTP.new(parsed_url.host, parsed_url.port)
+        http = Net::HTTP.new(url.host, url.port)
         http.use_ssl = true
 
         req = Net::HTTP::Post.new(url.path)

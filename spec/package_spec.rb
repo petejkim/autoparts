@@ -826,8 +826,7 @@ describe Autoparts::Package do
     end
 
     it 'calls the endpoint with the action, name, version, box id and autoparts version' do
-      uri = URI.parse(Autoparts::Package::WEB_HOOK_URL)
-      stub_request(:post, uri.host)
+      stub_request(:post, Autoparts::Package::WEB_HOOK_URL)
 
       foo_package.call_web_hook :installed
 
@@ -844,7 +843,7 @@ describe Autoparts::Package do
 
     context 'when calling the endpoint raises an exception' do
       it 'fails silently, allowing the command to exit without an error status' do
-        allow_any_instance_of(Net::HTTP::Post).to receive(:new).and_raise('an error')
+        stub_request(:post, Autoparts::Package::WEB_HOOK_URL).to_timeout
         expect(foo_package.call_web_hook(:installed)).to be_nil
       end
     end
