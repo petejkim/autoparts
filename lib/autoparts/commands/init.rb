@@ -12,7 +12,7 @@ module Autoparts
           no_autoupdate_env = ENV['AUTOPARTS_NO_AUTOUPDATE']
           if autoupdate_due? && !(no_autoupdate_env && ['1', 'true'].include?(no_autoupdate_env.downcase))
             if Update.update(true)
-              File.open(Path.partsinfo, 'w') do |f|
+              File.open(Path.config_last_update, 'w') do |f|
                 f.write JSON.generate({
                   'last_update' => Time.now.to_i
                 })
@@ -46,7 +46,7 @@ module Autoparts
       def autoupdate_due?
         info = nil
         begin
-          info = JSON.parse(File.read(Path.partsinfo.to_s))
+          info = JSON.parse(File.read(Path.config_last_update.to_s))
         rescue
         end
 

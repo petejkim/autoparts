@@ -35,8 +35,8 @@ module Autoparts
         config + 'autostart'
       end
 
-      def partsinfo
-        root + '.partsinfo'
+      def config_last_update
+        root + 'last_update'
       end
     end
   end

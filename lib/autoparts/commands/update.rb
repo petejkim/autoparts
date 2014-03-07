@@ -7,7 +7,7 @@ module Autoparts
       def initialize(args, options)
         puts "=> Updating Autoparts..."
         if self.class.update
-          File.open(Path.partsinfo, 'w') do |f|
+          File.open(Path.config_last_update, 'w') do |f|
             f.write JSON.generate({
               'last_update' => Time.now.to_i
             })

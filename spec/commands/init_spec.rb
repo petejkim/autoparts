@@ -23,7 +23,7 @@ describe Autoparts::Commands::Init do
     context 'when the last update was performed less than a day ago' do
       it 'returns false' do
         Timecop.freeze do
-          File.open(Path.partsinfo, 'w') do |f|
+          File.open(Path.config_last_update, 'w') do |f|
             f.write JSON.generate({
               'last_update' => Time.now.to_i - 60 * 60 * 24 + 1
             })
@@ -36,7 +36,7 @@ describe Autoparts::Commands::Init do
     context 'when the last update was performed greater than or equal to a day ago' do
       it 'returns true' do
         Timecop.freeze do
-          File.open(Path.partsinfo, 'w') do |f|
+          File.open(Path.config_last_update, 'w') do |f|
             f.write JSON.generate({
               'last_update' => Time.now.to_i - 60 * 60 * 24
             })
