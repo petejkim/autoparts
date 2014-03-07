@@ -941,4 +941,17 @@ describe Autoparts::Package do
       expect(File.read(config_active_package_path.to_s)).to eq '1.1'
     end
   end
+
+  describe '#deactivate' do
+    let(:config_active_package_path) { Autoparts::Path.config_active + 'foo' }
+
+    it 'removes the file that marks the active version' do
+      File.open(config_active_package_path, 'w') do |f|
+        f.write '0.9'
+      end
+      expect(config_active_package_path).to exist
+      foo_package.deactivate
+      expect(config_active_package_path).not_to exist
+    end
+  end
 end

@@ -291,6 +291,10 @@ module Autoparts
       end
     end
 
+    def deactivate
+      FileUtils.rm_f(Path.config_active + name)
+    end
+
     def symlink_recursively(from, to, options={}) # Pathname, Pathname
       only_executables = !!options[:only_executables]
       to.mkpath unless to.exist?
@@ -414,6 +418,7 @@ module Autoparts
       end
       puts '=> Deactivating...'
       unsymlink_all
+      deactivate
 
       puts '=> Uninstalling...'
       prefix_path.rmtree if prefix_path.exist?
