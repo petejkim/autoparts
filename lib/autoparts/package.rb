@@ -38,7 +38,8 @@ module Autoparts
 
       def factory(name)
         begin
-          require "autoparts/packages/#{name}"
+          fileName = name.gsub '-', '_'
+          require "autoparts/packages/#{fileName}"
         rescue LoadError
         end
         if package_class = packages[name]

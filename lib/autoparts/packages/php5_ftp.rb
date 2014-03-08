@@ -1,8 +1,8 @@
-require File.join(File.dirname(__FILE__), 'php5ext')
+require File.join(File.dirname(__FILE__), 'php5_ext')
 
 module Autoparts
   module Packages
-    class Php5ExtFtp < Php5Ext
+    class Php5Ftp < Php5Ext
       name 'php5-ftp'
       description 'ftp module for php5'
       depends_on 'php5'

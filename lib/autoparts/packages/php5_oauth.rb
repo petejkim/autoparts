@@ -1,22 +1,22 @@
-require File.join(File.dirname(__FILE__), 'php5ext')
+require File.join(File.dirname(__FILE__), 'php5_ext')
 
 module Autoparts
   module Packages
-    class Php5ExtSsh2 < Php5Ext
-      name 'php5-ssh2'
+    class Php5Oauth < Php5Ext
+      name 'php5-oauth'
 
       def version
-        '0.12'
+        '1.2.3'
       end
 
-      description 'SSH2 module for php5'
+      description 'OAuth module for php5'
 
       def source_url
-        'http://pecl.php.net/get/ssh2-0.12.tgz'
+        'http://pecl.php.net/get/oauth-1.2.3.tgz'
       end
 
       def source_sha1
-        'b86a25bdd3f3558bbcaaa6d876309fbbb5ae134d'
+        'e2a42961c8134746fc0cd8ef9bd433f760b94975'
       end
 
       def source_filetype
@@ -26,11 +26,11 @@ module Autoparts
       depends_on 'php5'
 
       def php_extension_name
-        "ssh2"
+        "oauth"
       end
 
       def php_extension_dir
-        "ssh2-0.12"
+        "oauth-1.2.3"
       end
 
     end

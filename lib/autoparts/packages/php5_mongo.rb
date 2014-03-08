@@ -1,8 +1,8 @@
-require File.join(File.dirname(__FILE__), 'php5ext')
+require File.join(File.dirname(__FILE__), 'php5_ext')
 
 module Autoparts
   module Packages
-    class Php5ExtMongo < Php5Ext
+    class Php5Mongo < Php5Ext
       name 'php5-mongo'
 
       def version
