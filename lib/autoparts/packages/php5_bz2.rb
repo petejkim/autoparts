@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), 'php5_ext')
+require 'autoparts/packages/php5_ext'
 
 module Autoparts
   module Packages
