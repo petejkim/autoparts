@@ -1,3 +1,6 @@
+# Copyright (c) 2013-2014 Irrational Industries Inc. d.b.a. Nitrous.IO
+# This software is licensed under the [BSD 2-Clause license](https://raw.github.com/nitrous-io/autoparts/master/LICENSE).
+
 require 'unindent/unindent'
 require 'json'
 
@@ -9,38 +12,25 @@ module Autoparts
           no_autoupdate_env = ENV['AUTOPARTS_NO_AUTOUPDATE']
           if autoupdate_due? && !(no_autoupdate_env && ['1', 'true'].include?(no_autoupdate_env.downcase))
             if Update.update(true)
-              File.open(Path.partsinfo, 'w') do |f|
+              File.open(Path.config_last_update, 'w') do |f|
                 f.write JSON.generate({
                   'last_update' => Time.now.to_i
                 })
               end
             end
           end
-          print_exports
+          Autoparts::Package.start_all
+          Env.print_exports
         else
           show_help
         end
       end
 
-      def print_exports
-        puts <<-STR.unindent
-          export AUTOPARTS_ROOT="#{Path.root}"
-          export PATH="$AUTOPARTS_ROOT/bin:$AUTOPARTS_ROOT/sbin:$PATH"
-          export LD_LIBRARY_PATH="$AUTOPARTS_ROOT/lib:/usr/local/lib:/usr/lib:$LD_LIBRARY_PATH"
-          export LIBRARY_PATH="$AUTOPARTS_ROOT/lib:/usr/local/lib:/usr/lib:$LIBRARY_PATH"
-          export DYLD_FALLBACK_LIBRARY_PATH="$AUTOPARTS_ROOT/lib"
-          export C_INCLUDE_PATH="$AUTOPARTS_ROOT/include"
-          export CPLUS_INCLUDE_PATH="$AUTOPARTS_ROOT/include"
-          export OBJC_INCLUDE_PATH="$AUTOPARTS_ROOT/include"
-          export MAN_PATH="$AUTOPARTS_ROOT/share/man:/usr/local/share/man:/usr/share/man:$MAN_PATH"
-        STR
         Dir.foreach("#{Path.env}") do |item|
           next if item == '.' or item == '..'
           puts File.read(Path.env + item)
           puts "\n"
         end
-      end
-
       def show_help
         profile = case ENV['SHELL']
         when /bash/
@@ -61,7 +51,7 @@ module Autoparts
       def autoupdate_due?
         info = nil
         begin
-          info = JSON.parse(File.read(Path.partsinfo.to_s))
+          info = JSON.parse(File.read(Path.config_last_update.to_s))
         rescue
         end
 

@@ -1,22 +1,50 @@
+# Copyright (c) 2013-2014 Irrational Industries Inc. d.b.a. Nitrous.IO
+# This software is licensed under the [BSD 2-Clause license](https://raw.github.com/nitrous-io/autoparts/master/LICENSE).
+
 require 'spec_helper'
 require 'fileutils'
+require 'webmock/rspec'
 
 class FooPackage < Autoparts::Package
   name 'foo'
   version '1.0'
   description "foo package"
+  category Autoparts::Category::PROGRAMMING_LANGUAGES
+
   source_url 'http://example.com/foo.tar.gz'
   source_sha1 'f00f00f00f00f00f00f00f00f00f00f00f00f00f'
   source_filetype 'tar.gz'
+
+  def start
+  end
 end
 
 class BarPackage < Autoparts::Package
   name 'bar'
   version '2.0'
+  category Autoparts::Category::DEPLOYMENT
+
   description "bar bar black sheep"
   source_url 'http://example.com/bar.zip'
   source_sha1 'babababababababababababababababababababa'
   source_filetype 'zip'
+
+  def start
+  end
+end
+
+class BazPackage < Autoparts::Package
+  name 'baz'
+  version '2.1'
+  description "baz baz black sheep"
+  category Autoparts::Category::LIBRARIES
+
+  source_url 'http://example.com/baz.zip'
+  source_sha1 'babababababababababababababababababababa'
+  source_filetype 'zip'
+
+  def start
+  end
 end
 
 describe Autoparts::Package do
@@ -72,6 +100,61 @@ describe Autoparts::Package do
     it 'returns a boolean value of whether a package of a given name is installed' do
       expect(described_class.installed? 'mysql').to be_true
       expect(described_class.installed? 'nodejs').to be_false
+    end
+  end
+
+  describe '.start_all' do
+    before do
+      FileUtils.mkdir_p (Autoparts::Path.packages + 'foo' + '1.0').to_s
+      FileUtils.mkdir_p (Autoparts::Path.packages + 'bar' + '2.0').to_s
+      FileUtils.mkdir_p (Autoparts::Path.packages + 'baz' + '2.1').to_s
+
+      FileUtils.touch (Autoparts::Path.packages + 'foo' + '1.0' + '.keep').to_s
+      FileUtils.touch (Autoparts::Path.packages + 'bar' + '2.0' + '.keep').to_s
+      FileUtils.touch (Autoparts::Path.packages + 'baz' + '2.1' + '.keep').to_s
+    end
+
+    context 'when .parts/.config/autostart/* exists' do
+      before do
+        Autoparts::Path.config_autostart.mkpath
+        FileUtils.touch (Autoparts::Path.config_autostart + 'foo').to_s
+        FileUtils.touch (Autoparts::Path.config_autostart + 'baz').to_s
+      end
+
+      it 'should start packages which are meant to be auto-started' do
+        expect(Autoparts::Commands::Start).to receive(:start).ordered.with 'foo', true
+        expect(Autoparts::Commands::Start).to receive(:start).ordered.with 'baz', true
+        expect(Autoparts::Commands::Start).not_to receive(:start).with 'bar', true
+        Autoparts::Package.start_all
+      end
+    end
+
+    context 'when .parts/init/*.conf exists (old config)' do
+      let(:init_path) { Autoparts::Path.root + 'init' }
+
+      before do
+        init_path.mkpath
+        FileUtils.touch init_path + 'foo.conf'
+        FileUtils.touch init_path + 'baz.conf'
+      end
+
+      it 'starts packages that are meant to be auto-started' do
+        expect(Autoparts::Commands::Start).to receive(:start).ordered.with 'foo', true
+        expect(Autoparts::Commands::Start).to receive(:start).ordered.with 'baz', true
+        expect(Autoparts::Commands::Start).not_to receive(:start).with 'bar', true
+        Autoparts::Package.start_all
+      end
+
+      it 'migrates to .parts/.config/autostart and then deletes init path' do
+        Autoparts::Package.start_all
+        expect(init_path + 'foo.conf').not_to exist
+        expect(init_path + 'baz.conf').not_to exist
+        expect(init_path).not_to exist
+
+        expect(Autoparts::Path.config_autostart).to exist
+        expect(Autoparts::Path.config_autostart + 'foo').to exist
+        expect(Autoparts::Path.config_autostart + 'baz').to exist
+      end
     end
   end
 
@@ -182,6 +265,13 @@ describe Autoparts::Package do
     it 'returns the description set using the DSL keyword "description"' do
       expect(foo_package.description).to eq 'foo package'
       expect(bar_package.description).to eq 'bar bar black sheep'
+    end
+  end
+
+  describe '#category' do
+    it 'returns the category set using the DSL keyword "category"' do
+      expect(foo_package.category).to eq Autoparts::Category::PROGRAMMING_LANGUAGES
+      expect(bar_package.category).to eq Autoparts::Category::DEPLOYMENT
     end
   end
 
@@ -297,6 +387,24 @@ describe Autoparts::Package do
         expect {
           foo_package.execute 'echo', 'foo'
         }.to raise_error Autoparts::ExecutionFailedError, '"echo foo" failed'
+      end
+    end
+  end
+
+  describe '#execute_with_result' do
+    context 'when command succeeds' do
+      it 'returns true' do
+        expect(foo_package).to receive(:system).with('echo', 'lol', 'wut').and_return true
+        expect(foo_package.execute_with_result 'echo', 'lol', 'wut').to be_true
+      end
+    end
+
+    context 'when command fails' do
+      it 'returns the return value of the underlying system call' do
+        expect(foo_package).to receive(:system).with('echo', 'orly').and_return false
+        expect(foo_package.execute_with_result 'echo', 'orly').to be_false
+        expect(foo_package).to receive(:system).with('echo', 'failed').and_return nil
+        expect(foo_package.execute_with_result 'echo', 'failed').to be_nil
       end
     end
   end
@@ -718,19 +826,24 @@ describe Autoparts::Package do
     end
 
     it 'calls the endpoint with the action, name, version, box id and autoparts version' do
-      expect(Net::HTTP).to receive(:post_form).with URI('https://www.nitrous.io/autoparts/webhook'), {
-        'type' => 'installed',
-        'part_name' => 'foo',
-        'part_version' => '1.0',
-        'box_id' => '42',
-        'autoparts_version' => 'Autoparts 1.0.0-abcd'
-      }
+      stub_request(:post, Autoparts::Package::WEB_HOOK_URL)
+
       foo_package.call_web_hook :installed
+
+      expect(a_request(:post, Autoparts::Package::WEB_HOOK_URL).with(
+        query: {
+          'type' => 'installed',
+          'part_name' => 'foo',
+          'part_version' => '1.0',
+          'box_id' => '42',
+          'autoparts_version' => 'Autoparts 1.0.0-abcd'
+        }
+      ))
     end
 
     context 'when calling the endpoint raises an exception' do
       it 'fails silently, allowing the command to exit without an error status' do
-        expect(Net::HTTP).to receive(:post_form).and_raise('an error')
+        stub_request(:post, Autoparts::Package::WEB_HOOK_URL).to_timeout
         expect(foo_package.call_web_hook(:installed)).to be_nil
       end
     end
@@ -742,7 +855,7 @@ describe Autoparts::Package do
       end
 
       it 'should not call the endpoint' do
-        expect(Net::HTTP).to_not receive(:post_form)
+        expect_any_instance_of(Net::HTTP).to_not receive(:request)
         foo_package.call_web_hook :installed
       end
     end

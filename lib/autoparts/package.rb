@@ -1,3 +1,6 @@
+# Copyright (c) 2013-2014 Irrational Industries Inc. d.b.a. Nitrous.IO
+# This software is licensed under the [BSD 2-Clause license](https://raw.github.com/nitrous-io/autoparts/master/LICENSE).
+
 require 'unindent/unindent'
 require 'net/http'
 require 'etc'
@@ -6,6 +9,7 @@ module Autoparts
   class Package
     BOX_ID_FILE = '/etc/box'.freeze
     BOX_ID = File.read(BOX_ID_FILE).strip
+    BINARY_BUCKET = 'parts.codio.com'.freeze
     BINARY_HOST = 'http://parts.codio.com'.freeze
 #    WEB_HOOK_URL = 'https://www.nitrous.io/autoparts/webhook'.freeze
 #    BOX_ID_PATH = '/etc/action/box_id'.freeze
@@ -54,12 +58,40 @@ module Autoparts
         packages[val] = self
       end
 
+      def start_all
+        # migrate old style config
+        init_path = Path.root + 'init'
+        if init_path.exist?
+          Path.config_autostart.mkpath
+          init_path.children.each do |package_conf_path|
+            package_name = package_conf_path.basename.sub_ext('').to_s
+            FileUtils.touch(Path.config_autostart + package_name)
+          end
+          FileUtils.rm_rf init_path
+        end
+
+        # new style config
+        if Path.config_autostart.exist?
+          Path.config_autostart.children.each do |package_pathname|
+            begin
+              Commands::Start.start(package_pathname.basename.to_s, true)
+            rescue
+              # ignore exceptions
+            end
+          end
+        end
+      end
+
       def version(val)
         @version = val
       end
 
       def description(val)
         @description = val
+
+      end
+      def category(val)
+        @category = val
       end
 
       def source_url(val)
@@ -73,6 +105,23 @@ module Autoparts
       def source_filetype(val)
         @source_filetype = val
       end
+    end
+
+    # if we found AUTOPARTS_HOST variable, use that as the binary host value,
+    # otherwise use the default production host.
+    #
+    # This is useful when we want to stage a test package but dont want the
+    # package to be on production bucket.
+    def binary_host
+      ENV['AUTOPARTS_HOST'] || BINARY_HOST
+    end
+
+    # if we found AUTOPARTS_BUCKET variable, use that as the bucket host,
+    # otherwise use the default production value.
+    #
+    # This is useful when we want to upload a package to staging bucket.
+    def binary_bucket
+      ENV['AUTOPARTS_BUCKET'] || BINARY_BUCKET
     end
 
     def initialize
@@ -89,6 +138,10 @@ module Autoparts
 
     def description
       self.class.instance_variable_get(:@description)
+    end
+
+    def category
+      self.class.instance_variable_get(:@category)
     end
 
     def name_with_version
@@ -166,6 +219,11 @@ module Autoparts
       unless system(*args)
         raise ExecutionFailedError.new args.join(' ')
       end
+    end
+
+    def execute_with_result(*args)
+      args = args.map(&:to_s)
+      system(*args)
     end
 
     def archive_filename
@@ -356,7 +414,7 @@ module Autoparts
         puts "=> Uploading #{name} #{version}..."
         [binary_file_name, binary_sha1_file_name].each do |f|
           local_path = Path.archives + f
-          `s3cmd put --acl-public --guess-mime-type #{local_path} #{UPLOAD_PATH}/#{f}`
+          `s3cmd put --acl-public --guess-mime-type #{local_path} s3://#{binary_bucket}/#{f}`
         end
         puts "=> Done"
       else
@@ -397,13 +455,19 @@ module Autoparts
         box_id = File.read(BOX_ID_PATH).strip
         autoparts_version = Autoparts::Commands::Help.version
 
-        Net::HTTP.post_form URI(WEB_HOOK_URL), {
-          'type' => action.to_s,
-          'part_name' => self.name,
-          'part_version' => self.version,
-          'box_id' => box_id,
-          'autoparts_version' => autoparts_version
+        url = URI.parse(WEB_HOOK_URL)
+        http = Net::HTTP.new(url.host, url.port)
+        http.use_ssl = true
+
+        req = Net::HTTP::Post.new(url.path)
+        req.form_data = {
+          type: action.to_s,
+          part_name: self.name,
+          part_version: self.version,
+          box_id: box_id,
+          autoparts_version: autoparts_version
         }
+        http.request(req)
       rescue => e
         # We gulp the webhook exceptions,
         # so command would finish with a successful exit status.

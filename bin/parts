@@ -1,5 +1,8 @@
 #!/usr/bin/env ruby
 
+# Copyright (c) 2013-2014 Irrational Industries Inc. d.b.a. Nitrous.IO
+# This software is licensed under the [BSD 2-Clause license](https://raw.github.com/nitrous-io/autoparts/master/LICENSE).
+
 require 'pathname'
 
 EXECUTABLE_PATH = Pathname.new(__FILE__).realpath
@@ -17,6 +20,7 @@ cli = Autoparts::CLIParser.new(ARGV)
 
 commands = {
   'help'      => Autoparts::Commands::Help,
+  'env'      =>  Autoparts::Commands::Env,
   'init'      => Autoparts::Commands::Init,
   'info'      => Autoparts::Commands::Info,
   'install'   => Autoparts::Commands::Install,

@@ -1,3 +1,6 @@
+# Copyright (c) 2013-2014 Irrational Industries Inc. d.b.a. Nitrous.IO
+# This software is licensed under the [BSD 2-Clause license](https://raw.github.com/nitrous-io/autoparts/master/LICENSE).
+
 module Autoparts
   module Path
     class << self
@@ -27,8 +30,14 @@ module Autoparts
       def var;      mkpath(root + 'var')      end
       def env;      mkpath(root + 'env') end
 
-      def partsinfo
-        root + '.partsinfo'
+      def config;   mkpath(root + '.config')  end
+
+      def config_autostart
+        config + 'autostart'
+      end
+
+      def config_last_update
+        root + 'last_update'
       end
     end
   end

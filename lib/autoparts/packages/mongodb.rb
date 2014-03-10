@@ -1,9 +1,14 @@
+# Copyright (c) 2013-2014 Irrational Industries Inc. d.b.a. Nitrous.IO
+# This software is licensed under the [BSD 2-Clause license](https://raw.github.com/nitrous-io/autoparts/master/LICENSE).
+
 module Autoparts
   module Packages
     class MongoDB < Package
       name 'mongodb'
       version '2.4.6'
       description 'MongoDB: A cross-platform document-oriented NoSQL database system'
+      category Category::DATA_STORES
+
       source_url 'http://fastdl.mongodb.org/linux/mongodb-linux-x86_64-2.4.6.tgz'
       source_sha1 '428c67a23d7775d7972fd45509671f8662e014a3'
       source_filetype 'tar.gz'
@@ -13,10 +18,9 @@ module Autoparts
       end
 
       def install
-        Dir.chdir('mongodb-linux-x86_64-2.4.6') do
-          prefix_path.mkpath
-          execute "mv * #{prefix_path}"
-        end
+        prefix_path.parent.mkpath
+        FileUtils.rm_rf prefix_path
+        execute 'mv', extracted_archive_path + "mongodb-linux-x86_64-#{version}", prefix_path
       end
 
       def post_install
