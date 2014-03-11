@@ -178,6 +178,13 @@ module Autoparts
           ServerRoot "#{prefix_path}"
           ServerName 127.0.0.1
           Listen 0.0.0.0:3000
+          ServerLimit 1
+          MinSpareThreads 1
+          MaxSpareThreads 10
+          ThreadsPerChild 10
+          MaxRequestsPerChild 100
+          MaxRequestWorkers 10
+          ListenBackLog 1024
 
           LoadModule access_compat_module modules/mod_access_compat.so
           LoadModule alias_module modules/mod_alias.so
