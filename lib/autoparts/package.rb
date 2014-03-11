@@ -310,7 +310,7 @@ module Autoparts
           symlink_recursively f, t, options
         else
           if !only_executables || (only_executables && (f.executable? || f.symlink?))
-            FileUtils.rm_rf(t)
+            FileUtils.rm_rf(t.to_s) if t.exist?
             t.make_symlink(f)
           end
         end
