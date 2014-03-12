@@ -20,6 +20,9 @@ module Autoparts
       def install
         phpmyadmin_path.parent.mkpath
         FileUtils.rm_rf phpmyadmin_path
+        FileUtils.mkdir_p prefix_path
+        execute 'mv', extracted_archive_path + 'phpMyAdmin-4.1.7-all-languages/', phpmyadmin_path
+        execute 'rm', '-rf', "#{extracted_archive_path}/phpMyAdmin-4.1.7-all-languages"
         execute 'mv', extracted_archive_path, phpmyadmin_path
         execute 'cp', phpmyadmin_path + phpmyadmin_sample_config, prefix_path
       end
