@@ -15,14 +15,17 @@
 
 # Naming - Every package should start with `module Autoparts` and `module Packages`.
 # Your class should be nested within these modules, and named with the first letter 
-# capitalized (e.g. class Mysql). It should be a class of the type `Package`.
+# capitalized (e.g. class Mysql). It should be a subclass of the type `Package`.
 
 module Autoparts
   module Packages
     class MySQL < Package
       name 'mysql' # This should be the name of the part in all lowercase letters.
       version '5.6.13' # Please specify the version of the tool being installed.
-      description "MySQL: The world's most popular open-source relational database" # This description will display when viewing available parts with `parts search`.
+
+      # This description should contain the human readable package name (eg. 'MySQL'), followed by a colon and then description.
+
+      description "MySQL: The world's most popular open-source relational database"
 
       # The url of the archive (https preferrable):
 
@@ -33,8 +36,8 @@ module Autoparts
 
       source_sha1 '06e1d856cfb1f98844ef92af47d4f4f7036ef294'
 
-      # Specify the filetype being used. This will generally be the file extension, 
-      # but in some scenarios it will differ (e.g. 'php' filetype for '*.phar' files)
+      # source_filetype is used to determine how to extract the package. 
+      # Currently, variations of tar and zip are supported. Other filetypes are simply copied over without extraction.
 
       source_filetype 'tar.gz'
 
@@ -83,9 +86,6 @@ module Autoparts
           execute 'rm', '-rf', "#{prefix_path}/mysql-test"
         end
       end
-
-      # When building paths, you can utilize `+` or `/`.
-      # Note that you cannot nest more than two `/` when building a path.
 
       ## Post Install
 

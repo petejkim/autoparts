@@ -27,8 +27,29 @@ There are a few requirements if the part requires additional configurations:
 * Data files (e.g. database files) should be placed in `Path.var + name` (e.g. `~/.parts/var/postgresql`).
 * Log files should be placed in `Path.var + 'log' + "#{name}.log"` (e.g. `~/.parts/var/log/postgresql.log`).
 
-### Building a New Part
+### Contributing a New Part
 
 Take a look at [docs/example-part.rb](https://github.com/nitrous-io/autoparts/tree/master/docs/example-part.rb) for details on how a package is built.
 
-Once you have finished building a part, create a pull request with a [descriptive commit message](http://robots.thoughtbot.com/5-useful-tips-for-a-better-commit-message). We will quickly review the part to be merged.
+Follow this workflow to contribute an Autoparts package:
+
+1. Fork the [Autoparts repo](https://github.com/nitrous-io/autoparts) in GitHub.
+2. Create a new box in Nitrous.IO.
+3. cd to ~/.parts/autoparts
+4. Add the fork repo as a a git remote. (git remote add myfork git@github.com:YOUR-USERNAME/autoparts.git
+5. Create the new package file in ~/.parts/autoparts/lib/autoparts/packages/mypackage.rb
+6. Open a new console tab and check if the package works as expected.
+
+    parts search (see if the new package you created is listed)
+    parts install mypackage
+    parts start (if applicable)
+    parts stop
+    parts uninstall mypackage
+
+7. Reload the IDE and see if the above actions also works via the UI.
+8. After you're confident that the package works, commit and push the change to your fork.
+    
+    git commit -m "Added MyPackage."
+    git push myfork master
+
+9. Last, open a pull request via GitHub with a [descriptive commit message](http://robots.thoughtbot.com/5-useful-tips-for-a-better-commit-message). We will quickly review the part to be merged.
