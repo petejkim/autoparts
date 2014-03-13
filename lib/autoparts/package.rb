@@ -263,7 +263,8 @@ module Autoparts
           when 'zip'
             execute 'unzip', '-qq', archive_path
           when 'tar.xz'
-            execute 'unxz', '-qq', archive_path
+            execute 'unxz', '-fqq', archive_path
+            execute 'tar', 'xf', archive_path.sub('.xz', '')
           else
             execute 'cp', archive_path, extracted_archive_path
           end
