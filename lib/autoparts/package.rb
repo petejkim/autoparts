@@ -262,6 +262,8 @@ module Autoparts
             execute 'tar', 'xf', archive_path
           when 'zip'
             execute 'unzip', '-qq', archive_path
+          when 'tar.xz'
+            execute 'unxz', '-qq', archive_path
           else
             execute 'cp', archive_path, extracted_archive_path
           end
