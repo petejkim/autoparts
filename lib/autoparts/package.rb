@@ -258,7 +258,7 @@ module Autoparts
       Dir.chdir(extracted_archive_path) do
         if @source_install
           case source_filetype
-          when 'tar', 'tar.gz', 'tar.bz2', 'tar.bz', 'tgz', 'tbz2', 'tbz'
+          when 'tar', 'tar.gz', 'tar.bz2', 'tar.bz', 'tgz', 'tbz2', 'tbz', 'tar.xz', 'txz'
             execute 'tar', 'xf', archive_path
           when 'zip'
             execute 'unzip', '-qq', archive_path
