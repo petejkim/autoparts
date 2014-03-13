@@ -13,6 +13,7 @@ In order to create a new package you will need to provide the following informat
 * Package Name
 * Version
 * Description
+* Category (A list of categories can be found within [lib/autoparts/category.rb](https://github.com/nitrous-io/autoparts/blob/master/lib/autoparts/category.rb))
 * Source URL (official release source which package will always be located at)
 * Filetype (the extension of the file)
 * SHA-1 hash (hash should be available on same page as package. If not you can [generate](http://hash.online-convert.com/sha1-generator) a SHA-1 hash with the source file)

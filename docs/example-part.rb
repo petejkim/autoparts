@@ -27,6 +27,10 @@ module Autoparts
 
       description "MySQL: The world's most popular open-source relational database"
 
+      # Include a category for your part. A list of categories can be found at https://github.com/nitrous-io/autoparts/blob/master/lib/autoparts/category.rb .
+
+      category Category::DATA_STORES
+
       # The url of the archive (https preferrable):
 
       source_url 'http://dev.mysql.com/get/Downloads/MySQL-5.6/mysql-5.6.13.tar.gz'
