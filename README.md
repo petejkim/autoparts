@@ -3,7 +3,7 @@
 
 ### Installation
 
-Autoparts can be found in all Nitrous boxes within the directory `~/.parts/Autoparts`, 
+Autoparts can be found in all Nitrous boxes within the directory `~/.parts/autoparts`, 
 and can be utilized with the `parts` command.
 
 If it is not installed (or has been removed), run the following commands into the console:
@@ -34,7 +34,7 @@ install PostgresQL you will need to run the following command:
 
     $ parts install postgresql
 
-Certain parts such as databases will need to be started in order to utilize. Some box templates will 
+Certain parts such as databases will need to be started in order to be utilized. Some box templates will 
 start a database upon boot, but if not you can start/stop it manually.
 
     $ parts start postgresql 
