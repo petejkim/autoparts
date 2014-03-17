@@ -32,13 +32,9 @@ module Autoparts
 
       def config;   mkpath(root + '.config')  end
 
-      def config_autostart
-        config + 'autostart'
-      end
-
-      def config_last_update
-        root + 'last_update'
-      end
+      def config_autostart;   mkpath(config + 'autostart') end
+      def config_active;      mkpath(config + 'active')    end
+      def config_last_update; (root + 'last_update')       end # file, not dir
     end
   end
 end

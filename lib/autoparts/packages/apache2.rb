@@ -220,26 +220,26 @@ module Autoparts
 
           DocumentRoot "#{htdocs_path}"
           <Directory "#{htdocs_path}">
-              Options Indexes FollowSymLinks
-              AllowOverride All
-              Require all granted
+            Options Indexes FollowSymLinks
+            AllowOverride All
+            Require all granted
           </Directory>
 
           <IfModule dir_module>
-              DirectoryIndex index.html
+            DirectoryIndex index.html
           </IfModule>
 
           <Files ".ht*">
-              Require all denied
+            Require all denied
           </Files>
 
           ErrorLog "#{Path.var + name + "log" + "error_log"}"
           LogLevel warn
 
           <IfModule mime_module>
-              TypesConfig #{mime_types_path}
-              AddType application/x-compress .Z
-              AddType application/x-gzip .gz .tgz
+            TypesConfig #{mime_types_path}
+            AddType application/x-compress .Z
+            AddType application/x-gzip .gz .tgz
           </IfModule>
 
           <IfModule ssl_module>
@@ -247,10 +247,17 @@ module Autoparts
           SSLRandomSeed connect builtin
           </IfModule>
 
-          MaxClients 1
-          ServerLimit 1
-          MaxRequestWorkers 25
-          ListenBackLog 1024
+          <IfModule mpm_event_module>
+            StartServers              1
+            ServerLimit               1
+            MinSpareThreads           5
+            MaxSpareThreads           5
+            ThreadLimit               5
+            ThreadsPerChild           5
+            MaxRequestWorkers         5
+            MaxConnectionsPerChild   50
+            ListenBackLog          1024
+          </IfModule>
         EOS
       end
     end

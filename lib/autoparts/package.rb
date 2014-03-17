@@ -62,7 +62,6 @@ module Autoparts
         # migrate old style config
         init_path = Path.root + 'init'
         if init_path.exist?
-          Path.config_autostart.mkpath
           init_path.children.each do |package_conf_path|
             package_name = package_conf_path.basename.sub_ext('').to_s
             FileUtils.touch(Path.config_autostart + package_name)
@@ -187,7 +186,7 @@ module Autoparts
     end
 
     def prefix_path
-      Path.packages + name + version
+      Path.packages + name + active_version
     end
 
     %w(etc bin sbin include lib libexec share).each do |d|
@@ -276,6 +275,36 @@ module Autoparts
       end
     end
 
+    def active_version
+      return @active_version unless @active_version.nil?
+
+      config_active_package_path = Path.config_active + name
+      package_path = Path.packages + name
+
+      if config_active_package_path.exist?
+        v = File.read(config_active_package_path).strip
+        return v if (package_path + v).exist?
+      end
+
+      unless package_path.exist? && package_path.children.size > 0
+        return self.version
+      end
+
+      v = package_path.children.sort_by(&:mtime).last.basename.to_s
+      activate(v)
+      v
+    end
+
+    def activate(version)
+      File.open(Path.config_active + name, 'w') do |f|
+        f.write version
+      end
+    end
+
+    def deactivate
+      FileUtils.rm_f(Path.config_active + name)
+    end
+
     def symlink_recursively(from, to, options={}) # Pathname, Pathname
       only_executables = !!options[:only_executables]
       to.mkpath unless to.exist?
@@ -285,7 +314,7 @@ module Autoparts
           symlink_recursively f, t, options
         else
           if !only_executables || (only_executables && (f.executable? || f.symlink?))
-            t.rmtree if t.exist?
+            FileUtils.rm_rf(t.to_s) if t.exist?
             t.make_symlink(f)
           end
         end
@@ -304,6 +333,22 @@ module Autoparts
         end
         to.rmtree if to.children.empty?
       end if from.directory? && from.executable?
+    end
+
+    def symlink_all
+      symlink_recursively(bin_path,     Path.bin,  only_executables: true)
+      symlink_recursively(sbin_path,    Path.sbin, only_executables: true)
+      symlink_recursively(lib_path,     Path.lib)
+      symlink_recursively(include_path, Path.include)
+      symlink_recursively(share_path,   Path.share)
+    end
+
+    def unsymlink_all
+      unsymlink_recursively(bin_path,     Path.bin)
+      unsymlink_recursively(sbin_path,    Path.sbin)
+      unsymlink_recursively(lib_path,     Path.lib)
+      unsymlink_recursively(include_path, Path.include)
+      unsymlink_recursively(share_path,   Path.share)
     end
 
     def archive_installed_package
@@ -340,6 +385,10 @@ module Autoparts
         Path.etc
         Path.var
 
+        unsymlink_all # unsymlink existing installation
+
+        @active_version = self.version # override active_version so that prefix_path returns path for the latest version
+
         if @source_install # install from source
           Dir.chdir(extracted_archive_path) do
             puts "=> Compiling..."
@@ -358,12 +407,9 @@ module Autoparts
 
         Dir.chdir(prefix_path) do
           post_install
-          puts '=> Symlinking...'
-          symlink_recursively(bin_path,     Path.bin,  only_executables: true)
-          symlink_recursively(sbin_path,    Path.sbin, only_executables: true)
-          symlink_recursively(lib_path,     Path.lib)
-          symlink_recursively(include_path, Path.include)
-          symlink_recursively(share_path,   Path.share)
+          puts '=> Activating...'
+          activate(version)
+          symlink_all
         end
       rescue => e
         archive_path.unlink if e.kind_of?(VerificationFailedError) && archive_path.exist?
@@ -375,6 +421,8 @@ module Autoparts
         unless tips.empty?
           "============ #{name} ============".bold.red + "\n" + tips
         end
+      ensure
+        @active_version = nil
       end
     end
 
@@ -386,12 +434,9 @@ module Autoparts
         end
       rescue
       end
-      puts '=> Removing symlinks...'
-      unsymlink_recursively(bin_path,     Path.bin)
-      unsymlink_recursively(sbin_path,    Path.sbin)
-      unsymlink_recursively(lib_path,     Path.lib)
-      unsymlink_recursively(include_path, Path.include)
-      unsymlink_recursively(share_path,   Path.share)
+      puts '=> Deactivating...'
+      unsymlink_all
+      deactivate
 
       puts '=> Uninstalling...'
       prefix_path.rmtree if prefix_path.exist?
