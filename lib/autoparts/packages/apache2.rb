@@ -83,6 +83,8 @@ module Autoparts
           if pid.length > 0 && `ps -o cmd= #{pid}`.include?('httpd')
             return true
           end
+          #clean pid file if it is not httpd, apachectl will not run otherwise
+          File.unlink(pidFile)
         end
         false
       end
