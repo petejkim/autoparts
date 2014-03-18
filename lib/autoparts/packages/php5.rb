@@ -1,3 +1,6 @@
+# Copyright (c) 2013-2014 Application Craft Ltd. Codio
+# This software is licensed under the [BSD 2-Clause license](https://raw.github.com/codio/boxparts/master/LICENSE).
+
 module Autoparts
   module Packages
     class Php5 < Package

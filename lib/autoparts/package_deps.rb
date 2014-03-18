@@ -9,7 +9,8 @@ module Autoparts
       def depends_on(pkg)
         @dependencies ||= []
         begin
-          require "autoparts/packages/#{pkg}"
+          fileName = pkg.gsub '-', '_'
+          require "autoparts/packages/#{fileName}"
         rescue LoadError
         end
         @dependencies << packages[pkg]
