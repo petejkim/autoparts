@@ -5,6 +5,8 @@ module Autoparts
     class Php5Ldap < Php5Ext
       name 'php5-ldap'
       description 'ldap module for php5'
+      category Category::WEB_DEVELOPMENT
+
       depends_on 'php5'
 
       def php_extension_name

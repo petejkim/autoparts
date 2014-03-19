@@ -7,6 +7,7 @@ module Autoparts
       source_url 'https://phar.phpunit.de/phpunit.phar'
       source_sha1 'cf74cb5abe92190c6e9aa472124e28ae5d5e49ca'
       source_filetype 'php'
+      category Category::DEVELOPMENT_TOOLS
 
       depends_on 'php5'
 

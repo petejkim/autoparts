@@ -4,6 +4,7 @@ module Autoparts
   module Packages
     class Php5Mongo < Php5Ext
       name 'php5-mongo'
+      category Category::WEB_DEVELOPMENT
 
       def version
         '1.4.5'

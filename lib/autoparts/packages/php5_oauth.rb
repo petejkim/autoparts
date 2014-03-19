@@ -4,6 +4,7 @@ module Autoparts
   module Packages
     class Php5Oauth < Php5Ext
       name 'php5-oauth'
+      category Category::WEB_DEVELOPMENT
 
       def version
         '1.2.3'

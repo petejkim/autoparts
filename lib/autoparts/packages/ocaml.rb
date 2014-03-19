@@ -7,6 +7,7 @@ module Autoparts
       source_url 'http://caml.inria.fr/pub/distrib/ocaml-4.01/ocaml-4.01.0.tar.gz'
       source_sha1 '31ae98051d42e038f4fbc5fd338c4fa5c36744e0'
       source_filetype 'tar.gz'
+      category Category::PROGRAMMING_LANGUAGES
 
 
       def compile

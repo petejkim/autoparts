@@ -10,6 +10,7 @@ module Autoparts
       source_url 'http://www.us.apache.org/dist/maven/maven-3/3.2.1/binaries/apache-maven-3.2.1-bin.tar.gz'
       source_sha1 '40e1bf0775fd3ebcac1dbeb61153b871b86b894f'
       source_filetype 'tar.gz'
+      category Category::DEVELOPMENT_TOOLS
 
       def install
         Dir.chdir('apache-maven-3.2.1') do

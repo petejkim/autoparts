@@ -10,6 +10,7 @@ module Autoparts
       source_url 'http://us1.php.net/get/php-5.5.8.tar.gz/from/this/mirror'
       source_sha1 '19af9180c664c4b8f6c46fc10fbad9f935e07b52'
       source_filetype 'tar.gz'
+      category Category::WEB_DEVELOPMENT
 
       depends_on 'apache2'
       depends_on 'libmcrypt'

@@ -7,6 +7,7 @@ module Autoparts
       source_url 'http://download.microsoft.com/download/F/0/4/F04E054B-9DB5-4C24-AF84-DF1A290F5C73/TEE-CLC-12.0.0.zip'
       source_sha1 '3089f6d1b233a015aa05c9ad12dd4ac653f9ad8a'
       source_filetype 'zip'
+      category Category::DEPLOYMENT
 
       def install
           bin_path.mkpath

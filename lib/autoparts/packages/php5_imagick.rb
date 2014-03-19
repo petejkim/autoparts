@@ -7,6 +7,7 @@ module Autoparts
   module Packages
     class Php5Imagick < Php5Ext
       name 'php5-imagick'
+      category Category::WEB_DEVELOPMENT
 
       def version
         '3.1.2'

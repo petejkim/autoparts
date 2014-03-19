@@ -7,7 +7,7 @@ module Autoparts
       source_url 'https://www.rabbitmq.com/releases/rabbitmq-server/v3.2.3/rabbitmq-server-generic-unix-3.2.3.tar.gz'
       source_sha1 '3a66779c6387499aff1899a4761236bb7ee4e404'
       source_filetype 'tar.gz'
-
+      category Category::DATA_STORES
       depends_on 'erlang'
 
       def install

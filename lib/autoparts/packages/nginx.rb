@@ -7,6 +7,7 @@ module Autoparts
       source_url 'http://nginx.org/download/nginx-1.4.4.tar.gz'
       source_sha1 '304d5991ccde398af2002c0da980ae240cea9356'
       source_filetype 'tar.gz'
+      category Category::WEB_DEVELOPMENT
 
       def compile
         Dir.chdir('nginx-1.4.4') do
