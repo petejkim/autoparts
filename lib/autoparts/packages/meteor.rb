@@ -1,3 +1,6 @@
+# Copyright (c) 2013-2014 Irrational Industries Inc. d.b.a. Nitrous.IO
+# This software is licensed under the [BSD 2-Clause license](https://raw.github.com/nitrous-io/autoparts/master/LICENSE).
+
 module Autoparts
   module Packages
     class Meteor < Package
@@ -9,10 +12,9 @@ module Autoparts
       source_filetype 'tar.gz'
 
       def install
-        Dir.chdir('.meteor') do
-          prefix_path.mkpath
-          execute "mv * #{prefix_path}"
-        end
+        prefix_path.parent.mkpath
+        FileUtils.rm_rf prefix_path
+        execute 'mv', extracted_archive_path + ".meteor", prefix_path
       end
 
       def post_install

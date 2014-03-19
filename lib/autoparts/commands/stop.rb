@@ -1,3 +1,6 @@
+# Copyright (c) 2013-2014 Irrational Industries Inc. d.b.a. Nitrous.IO
+# This software is licensed under the [BSD 2-Clause license](https://raw.github.com/nitrous-io/autoparts/master/LICENSE).
+
 module Autoparts
   module Commands
     class Stop
@@ -15,6 +18,10 @@ module Autoparts
             end
             package = Package.factory(package_name)
             if package.respond_to? :stop
+              if File.exists?(autostart_file = Path.config + 'autostart' + package_name)
+                FileUtils.rm_rf autostart_file
+              end
+
               puts "=> Stopping #{package_name}..."
               raise StopFailedError.new "#{package_name} does not seem to be running." unless package.running?
               package.stop

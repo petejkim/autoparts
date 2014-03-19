@@ -1,9 +1,13 @@
+# Copyright (c) 2013-2014 Irrational Industries Inc. d.b.a. Nitrous.IO
+# This software is licensed under the [BSD 2-Clause license](https://raw.github.com/nitrous-io/autoparts/master/LICENSE).
+
 module Autoparts
   module Packages
     class MySQL < Package
       name 'mysql'
       version '5.6.15'
       description "MySQL: The world's most popular open-source relational database"
+      category Category::DATA_STORES
       source_url 'http://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.15.tar.gz'
       source_sha1 '90b46f973930c27eb8586387de5dfbc2af04d3ed'
       source_filetype 'tar.gz'
@@ -66,6 +70,10 @@ module Autoparts
 
       def mysql_var_path
         Path.var + 'mysql'
+      end
+
+      def mysql_executable_path
+        Path.bin + 'mysql'
       end
 
       def start

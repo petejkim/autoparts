@@ -1,9 +1,14 @@
+# Copyright (c) 2013-2014 Irrational Industries Inc. d.b.a. Nitrous.IO
+# This software is licensed under the [BSD 2-Clause license](https://raw.github.com/nitrous-io/autoparts/master/LICENSE).
+
 module Autoparts
   module Packages
     class Leiningen < Package
       name 'leiningen'
       version '2.3.2'
       description 'Leiningen: A build automation and dependency management tool for Clojure'
+      category Category::PROGRAMMING_LANGUAGES
+
       source_url 'https://leiningen.s3.amazonaws.com/downloads/leiningen-2.3.2-standalone.jar'
       source_sha1 'ed6f93be75c796408544042cfd26699d45b49725'
       source_filetype 'jar'
