@@ -3,10 +3,10 @@
 
 ### Installation
 
-Autoparts can be found in all Nitrous boxes within the directory `~/.parts/autoparts`, 
+Autoparts can be found in all Nitrous boxes within the directory `~/.parts/autoparts`,
 and can be utilized with the `parts` command.
 
-If it is not installed (or has been removed), run the following commands into the console:
+If it is not installed (or has been removed), run the following commands in the console:
 
 ```sh
 ruby -e "$(curl -fsSL https://raw.github.com/nitrous-io/autoparts/master/setup.rb)"
@@ -19,25 +19,25 @@ exec $SHELL -l
 
 ### Usage
 
-In this doc we will refer to installable packages as "parts". You can view all the parts 
+In this doc we will refer to installable packages as "parts". You can view all the parts
 which Autoparts supports by running the following command:
 
     $ parts search
 
-Autoparts will automatically update upon boot, but if needed you can manually update the repo 
-if you are not seeing the latest updates:
+Autoparts will automatically update when a box is started, but if needed you can manually
+update the repo if you are not seeing the latest updates:
 
     $ parts update
 
-To install a part (or update an existing part), utilize the install command. For example, to 
-install PostgresQL you will need to run the following command:
+To install a part (or update an existing part), utilize the install command. For example, to
+install PostgreSQL you will need to run the following command:
 
     $ parts install postgresql
 
-Certain parts such as databases will need to be started in order to be utilized. Some box templates will 
+Certain parts such as databases will need to be started in order to be utilized. Some box templates will
 start a database upon boot, but if not you can start/stop it manually.
 
-    $ parts start postgresql 
+    $ parts start postgresql
     $ parts stop postgresql
 
 For a full list of commands, run `parts help`.
