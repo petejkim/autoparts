@@ -1,25 +1,23 @@
 require 'autoparts/packages/php5_ext'
 
+#freetds library required, will research on a user request
+=begin
 module Autoparts
   module Packages
-    class Php5Ldap < Package
+    class Php5PdoDblib < Package
       include Php5Ext
 
-      name 'php5-ldap'
-      description 'ldap module for php5'
+      name 'php5-pdo-dblib'
+      description 'PDO DBLib module for php5'
       category Category::WEB_DEVELOPMENT
 
       depends_on 'php5'
 
       def php_extension_name
-        'ldap'
+        'pdo_dblib'
       end
 
-      def php_compile_args
-        [
-          "--with-libdir=lib/x86_64-linux-gnu/",
-        ]
-      end
     end
   end
 end
+=end

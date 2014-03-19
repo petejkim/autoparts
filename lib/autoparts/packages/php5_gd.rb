@@ -2,22 +2,27 @@ require 'autoparts/packages/php5_ext'
 
 module Autoparts
   module Packages
-    class Php5Ldap < Package
+    class Php5Gd < Package
       include Php5Ext
 
-      name 'php5-ldap'
-      description 'ldap module for php5'
+      name 'php5-gd'
+      description 'GD module for php5'
       category Category::WEB_DEVELOPMENT
 
       depends_on 'php5'
 
       def php_extension_name
-        'ldap'
+        'gd'
       end
 
       def php_compile_args
         [
-          "--with-libdir=lib/x86_64-linux-gnu/",
+          "--with-jpeg-dir",
+          "--with-png",
+          # "--with-freetype-dir",
+          # " --with-ttf",
+          "--with-xpm",
+          "--with-freetype",
         ]
       end
     end

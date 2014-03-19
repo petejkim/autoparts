@@ -2,7 +2,9 @@ require 'autoparts/packages/php5_ext'
 
 module Autoparts
   module Packages
-    class Php5Mysqli < Php5Ext
+    class Php5Mysqli < Package
+      include Php5Ext
+
       name 'php5-mysqli'
       description 'mysqli module for php5'
       category Category::WEB_DEVELOPMENT

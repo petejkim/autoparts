@@ -21,8 +21,8 @@ module Autoparts
 
       def env_content
         <<-EOS.unindent
-          export JAVA_HOME=/usr
-          export GRAILS_HOME=#{prefix_path}
+          export JAVA_HOME="/usr"
+          export GRAILS_HOME="#{prefix_path}"
         EOS
       end
       def env_file

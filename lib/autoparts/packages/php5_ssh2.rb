@@ -2,27 +2,16 @@ require 'autoparts/packages/php5_ext'
 
 module Autoparts
   module Packages
-    class Php5Ssh2 < Php5Ext
+    class Php5Ssh2 < Package
+      include Php5Ext
+
       name 'php5-ssh2'
-      category Category::WEB_DEVELOPMENT
-
-      def version
-        '0.12'
-      end
-
+      version '0.12'
       description 'SSH2 module for php5'
-
-      def source_url
-        'http://pecl.php.net/get/ssh2-0.12.tgz'
-      end
-
-      def source_sha1
-        'b86a25bdd3f3558bbcaaa6d876309fbbb5ae134d'
-      end
-
-      def source_filetype
-        'tgz'
-      end
+      source_url 'http://pecl.php.net/get/ssh2-0.12.tgz'
+      source_sha1 'b86a25bdd3f3558bbcaaa6d876309fbbb5ae134d'
+      source_filetype 'tgz'
+      category Category::WEB_DEVELOPMENT
 
       depends_on 'php5'
 

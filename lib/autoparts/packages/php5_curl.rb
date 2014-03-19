@@ -2,18 +2,18 @@ require 'autoparts/packages/php5_ext'
 
 module Autoparts
   module Packages
-    class Php5Bcmath < Package
+    class Php5Curl < Package
       include Php5Ext
 
-      name 'php5-bcmath'
-      description 'BC Math module for php5'
-      depends_on 'php5'
+      name 'php5-curl'
+      description 'curl module for php5'
       category Category::WEB_DEVELOPMENT
 
-      def php_extension_name
-        'bcmath'
-      end
+      depends_on 'php5'
 
+      def php_extension_name
+        'curl'
+      end
     end
   end
 end

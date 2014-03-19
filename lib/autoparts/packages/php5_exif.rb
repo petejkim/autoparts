@@ -2,7 +2,9 @@ require 'autoparts/packages/php5_ext'
 
 module Autoparts
   module Packages
-    class Php5Exif < Php5Ext
+    class Php5Exif < Package
+      include Php5Ext
+
       name 'php5-exif'
       description 'Exif module for php5'
       category Category::WEB_DEVELOPMENT
