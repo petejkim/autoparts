@@ -5,7 +5,7 @@ module Autoparts
   module Packages
     class Apache2 < Package
       name 'apache2'
-      version '2.4.7-nitrous1'
+      version '2.4.7'
       description 'Apache Web Server: A cross-platform open-source HTTP server for modern operating systems'
       category Category::WEB_DEVELOPMENT
 

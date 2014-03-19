@@ -11,7 +11,7 @@ module Autoparts
       source_filetype 'tar.gz'
 
       def compile
-        Dir.chdir('ImageMagick-6.8.8-7') do
+        Dir.chdir("ImageMagick-#{version}") do
           args = [
             "--prefix=#{prefix_path}"
           ]
@@ -21,7 +21,7 @@ module Autoparts
       end
 
       def install
-        Dir.chdir('ImageMagick-6.8.8-7') do
+        Dir.chdir("ImageMagick-#{version}") do
           execute 'make', 'install'
         end
       end

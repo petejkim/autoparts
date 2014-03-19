@@ -27,7 +27,7 @@ module Autoparts
       def install
         Dir.chdir(extracted_archive_path + name_with_version) do
           execute 'make install'
-        end
+        end\
       end
     end
   end
