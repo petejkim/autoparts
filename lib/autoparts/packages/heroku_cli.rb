@@ -7,6 +7,7 @@ module Autoparts
       source_url 'https://s3.amazonaws.com/assets.heroku.com/heroku-client/heroku-client.tgz'
       source_sha1 '5c4760414623b3e92bb0deaf5d49da695f8c7ad4'
       source_filetype 'tgz'
+      category Category::DEPLOYMENT
 
       def install
         prefix_path.mkpath

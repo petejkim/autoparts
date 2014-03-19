@@ -7,6 +7,7 @@ module Autoparts
       source_url 'http://www.haskell.org/platform/download/2013.2.0.0/haskell-platform-2013.2.0.0.tar.gz'
       source_sha1 '8669bb5add1826c0523fb130c095fb8bf23a30ce'
       source_filetype 'tar.gz'
+      category Category::PROGRAMMING_LANGUAGES
 
       depends_on 'ghc'
 

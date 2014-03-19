@@ -7,6 +7,7 @@ module Autoparts
       source_url 'http://www.sqlite.org/2013/sqlite-autoconf-3080200.tar.gz'
       source_sha1 '6033ef603ce221d367c665477514d972ef1dc90e'
       source_filetype 'tar.gz'
+      category Category::DATA_STORES
 
       def compile
         Dir.chdir('sqlite-autoconf-3080200') do

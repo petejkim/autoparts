@@ -6,6 +6,7 @@ module Autoparts
       name 'php5-imap'
       description 'IMAP module for php5'
       depends_on 'php5'
+      category Category::WEB_DEVELOPMENT
 
       def php_extension_name
         'imap'

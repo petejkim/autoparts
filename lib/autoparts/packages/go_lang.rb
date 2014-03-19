@@ -7,6 +7,7 @@ module Autoparts
       source_url 'https://go.googlecode.com/files/go1.2.linux-amd64.tar.gz'
       source_sha1 '664e5025eae91412a96a10f4ed1a8af6f0f32b7d'
       source_filetype 'tar.gz'
+      category Category::PROGRAMMING_LANGUAGES
 
       def install
         Dir.chdir('go') do

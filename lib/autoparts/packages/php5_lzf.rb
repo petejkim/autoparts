@@ -4,6 +4,7 @@ module Autoparts
   module Packages
     class Php5Lzf < Php5Ext
       name 'php5-lzf'
+      category Category::WEB_DEVELOPMENT
 
       def version
         '1.6.2'

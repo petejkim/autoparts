@@ -7,6 +7,7 @@ module Autoparts
       source_url 'https://github.com/ocaml/opam/archive/1.1.1.tar.gz'
       source_sha1 'f1a8291eb888bfae4476ee59984c9a30106cd483'
       source_filetype 'tar.gz'
+      category Category::DEVELOPMENT_TOOLS
 
       depends_on 'ocaml'
 

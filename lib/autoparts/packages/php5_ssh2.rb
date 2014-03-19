@@ -4,6 +4,7 @@ module Autoparts
   module Packages
     class Php5Ssh2 < Php5Ext
       name 'php5-ssh2'
+      category Category::WEB_DEVELOPMENT
 
       def version
         '0.12'
