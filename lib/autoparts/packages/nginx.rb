@@ -40,6 +40,7 @@ module Autoparts
         end
         add_nginx_ctl
         add_nginx_config
+        FileUtils.cp prefix_path + 'conf' + 'fastcgi_params', nginx_conf_path
       end
 
       def add_nginx_ctl
@@ -71,9 +72,10 @@ module Autoparts
             listen 3000;
             listen 9500;
 
-             location / {
-                root #{htdocs_path};
-             }
+            location / {
+             root #{htdocs_path};
+              # you handlers here
+            }
           }
         EOS
       end

@@ -5,7 +5,7 @@ module Autoparts
   module Packages
     class Php5 < Package
       name 'php5'
-      version '5.5.8-4'
+      version '5.5.8-5'
       description 'PHP 5.5: A popular general-purpose scripting language that is especially suited to web development. Prebuild extensions default + mbstring'
       source_url 'http://us1.php.net/get/php-5.5.8.tar.gz/from/this/mirror'
       source_sha1 '19af9180c664c4b8f6c46fc10fbad9f935e07b52'
@@ -60,13 +60,17 @@ module Autoparts
         unless php5_ini_path_additional.exist?
           FileUtils.mkdir_p(php5_ini_path_additional)
         end
+        File.write(env_file, env_content)
+      end
+
+      def post_uninstall
+        env_file.unlink if env_file.exist?
       end
 
       def tips
         <<-EOS.unindent
-PHP config file is located at:
-  $ #{php5_ini_path}
-
+          PHP config file is located at:
+            $ #{php5_ini_path}
         EOS
       end
 
@@ -76,6 +80,18 @@ PHP config file is located at:
 
       def php5_ini_path_additional
         Path.etc + "php5" + "conf.d"
+      end
+
+
+      def env_file
+        Path.env + 'php_pear'
+      end
+
+      def env_content
+        # bin path for pear extensions
+        <<-EOS.unindent
+          export PATH="#{bin_path}:$PATH"
+        EOS
       end
     end
   end

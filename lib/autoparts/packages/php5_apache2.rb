@@ -13,6 +13,7 @@ module Autoparts
       category Category::WEB_DEVELOPMENT
 
       depends_on 'apache2'
+      depends_on 'php5'
       depends_on 'libmcrypt'
 
       def compile
@@ -48,6 +49,7 @@ module Autoparts
 
       def install
         Dir.chdir('php-5.5.8') do
+          lib_path.mkpath
           execute 'cp', 'php.ini-development', "#{lib_path}/php.ini"
           # force apache2 to rewrite its config to get a pristine config
           # because php will rewrite it
@@ -65,33 +67,29 @@ module Autoparts
         unless apache2_php5_config_path.exist?
           File.open(apache2_php5_config_path, "w") { |f| f.write php5_apache_config }
         end
-        # copy php.ini over
-        unless php5_ini_path.exist?
-          FileUtils.mkdir_p(File.dirname(php5_ini_path))
-          execute 'cp', "#{lib_path}/php.ini", "#{php5_ini_path}"
-        end
-        unless php5_ini_path_additional.exist?
-          FileUtils.mkdir_p(php5_ini_path_additional)
-        end
+      end
+
+      def post_uninstall
+        apache2_libphp5_path.unlink if apache2_libphp5_path.exist?
+        apache2_php5_config_path.unlink if apache2_php5_config_path.exist?
       end
 
       def tips
         <<-EOS.unindent
-PHP config file is located at:
-  $ #{php5_ini_path}
+          PHP config file is located at:
+            $ #{php5_ini_path}
 
-If Apache2 httpd is already running, you will need to restart it:
-  $ parts restart apache2
-
+          If Apache2 httpd is already running, you will need to restart it:
+            $ parts restart apache2
         EOS
       end
 
       def php5_ini_path
-        Path.etc + "php5" + "php.ini"
+        get_dependency('php5').php5_ini_path
       end
 
       def php5_ini_path_additional
-        Path.etc + "php5" + "conf.d"
+        get_dependency('php5').php5_ini_path_additional
       end
 
       def apache2_dependency
