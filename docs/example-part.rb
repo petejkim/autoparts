@@ -93,7 +93,7 @@ module Autoparts
 
       ## Post Install
       #
-      # Utilized to delete any temporary data created in the install process.
+      # This is the method that gets called after binary/source installs. It's used to do additional setup (e.g. initializing a default db)
       # The archived file in ~/.parts/archives/ may be left in directory for future re-installs
       def post_install
         unless (mysql_var_path + 'mysql' + 'user.frm').exist?
