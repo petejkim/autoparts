@@ -1,9 +1,14 @@
+# Copyright (c) 2013-2014 Irrational Industries Inc. d.b.a. Nitrous.IO
+# This software is licensed under the [BSD 2-Clause license](https://raw.github.com/nitrous-io/autoparts/master/LICENSE).
+
 module Autoparts
   module Packages
     class AprUtil < Package
       name 'apr_util'
       version '1.5.3'
       description 'Apache Portable Runtime Utilities: Utilities that provide a predictable and consistent interface to underlying platform-specific implementations'
+      category Category::UTILITIES
+
       source_url 'http://mirrors.gigenet.com/apache//apr/apr-util-1.5.3.tar.gz'
       source_sha1 'bfee2277603c8136e12db5c7be7e9cbbd8794596'
       source_filetype 'tar.gz'

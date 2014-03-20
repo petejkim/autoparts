@@ -1,9 +1,14 @@
+# Copyright (c) 2013-2014 Irrational Industries Inc. d.b.a. Nitrous.IO
+# This software is licensed under the [BSD 2-Clause license](https://raw.github.com/nitrous-io/autoparts/master/LICENSE).
+
 module Autoparts
   module Packages
     class Memcached < Package
       name 'memcached'
       version '1.4.15'
       description 'Memcached: An open-source, high-performance memory object caching system'
+      category Category::DATA_STORES
+
       source_url 'http://memcached.googlecode.com/files/memcached-1.4.15.tar.gz'
       source_sha1 '12ec84011f408846250a462ab9e8e967a2e8cbbc'
       source_filetype 'tar.gz'

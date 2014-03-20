@@ -1,3 +1,6 @@
+# Copyright (c) 2013-2014 Irrational Industries Inc. d.b.a. Nitrous.IO
+# This software is licensed under the [BSD 2-Clause license](https://raw.github.com/nitrous-io/autoparts/master/LICENSE).
+
 module Autoparts
   module PackageDeps
     module ClassMethods
@@ -6,7 +9,8 @@ module Autoparts
       def depends_on(pkg)
         @dependencies ||= []
         begin
-          require "autoparts/packages/#{pkg}"
+          fileName = pkg.gsub '-', '_'
+          require "autoparts/packages/#{fileName}"
         rescue LoadError
         end
         @dependencies << packages[pkg]
@@ -23,12 +27,13 @@ module Autoparts
     alias_method :eql?, :==
 
     def perform_install_with_dependencies(*args)
+      tips = []
       dependencies.install_order.each do |pkg|
         unless Package.installed?(pkg)
-          Package.factory(pkg).perform_install(*args)
+          tips.push(Package.factory(pkg).perform_install(*args))
         end
       end
-      perform_install(*args)
+      tips.push(perform_install(*args))
     end
 
     # returns the package for specified dependency
