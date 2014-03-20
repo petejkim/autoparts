@@ -82,8 +82,13 @@ module Autoparts
       end
 
       def running?
-        pid = Path.var + name + "run" + "httpd.pid"
-        pid.exist?
+        if apache_pid_file_path.exist?
+          pid = File.read(apache_pid_file_path).strip
+          if pid.length > 1 && `ps -o cmd= #{pid}`.include?(httpd_path.basename.to_s)
+            return true
+          end
+        end
+        false
       end
 
       def tips
@@ -116,6 +121,14 @@ module Autoparts
 
       def mime_types_path
         Path.etc + name + 'mime.types'
+      end
+
+      def httpd_path
+        bin_path + 'httpd'
+      end
+
+      def apache_pid_file_path
+        Path.var + name + 'run' + 'httpd.pid'
       end
 
       def htdocs_path
