@@ -3,20 +3,19 @@
 
 module Autoparts
   module Packages
-    class Pip < Package
-      name 'pip'
-      version '1.5.4'
-      description 'Pip: A tool for installing and managing Python packages'
-      source_url 'https://pypi.python.org/packages/source/p/pip/pip-1.5.4.tar.gz'
-      source_sha1 '35ccb7430356186cf253615b70f8ee580610f734'
+    class Setuptools < Package
+      name 'setuptools'
+      version '2.2'
+      description 'Setuptools: Easily download, build, install, upgrade, and uninstall Python packages'
+      source_url 'https://pypi.python.org/packages/source/s/setuptools/setuptools-2.2.tar.gz'
+      source_sha1 '547eff11ea46613e8a9ba5b12a89c1010ecc4e51'
       source_filetype 'tgz'
       category Category::DEVELOPMENT_TOOLS
 
       depends_on "python2"
-      depends_on "setuptools"
 
-      def compile
-        Dir.chdir("pip-1.5.4") do
+      def install
+        Dir.chdir("setuptools-2.2") do
           args = [
             "-s", "setup.py",
             "--no-user-cfg",
