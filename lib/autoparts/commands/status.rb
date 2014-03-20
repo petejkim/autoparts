@@ -12,7 +12,10 @@ module Autoparts
             unless Package.installed? package_name
               raise PackageNotInstalledError.new package_name
             end
-            package = Package.factory(package_name)
+            begin
+              package = Package.factory(package_name)
+            rescue PackageNotFoundError => e
+            end
             if package.respond_to? :running?
               list[package_name] = package.running?
             end
