@@ -220,6 +220,7 @@ module Autoparts
           Default document root is located at:
             $ #{htdocs_path}
 
+          Install php5-fpm if you want to run php apps with nginx
         EOS
       end
 

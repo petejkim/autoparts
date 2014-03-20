@@ -5,10 +5,10 @@ module Autoparts
   module Packages
     class Php5Apache2 < Package
       name 'php5-apache2'
-      version '5.5.8-1'
+      version '5.5.10'
       description 'Php5 Apache: a php5 module for apache2.'
-      source_url 'http://us1.php.net/get/php-5.5.8.tar.gz/from/this/mirror'
-      source_sha1 '19af9180c664c4b8f6c46fc10fbad9f935e07b52'
+      source_url 'http://us1.php.net/get/php-5.5.10.tar.gz/from/this/mirror'
+      source_sha1 'fa13e3634373791a8cb427d43ab4dcf9fcb3e526'
       source_filetype 'tar.gz'
       category Category::WEB_DEVELOPMENT
 
@@ -17,7 +17,7 @@ module Autoparts
       depends_on 'libmcrypt'
 
       def compile
-        Dir.chdir('php-5.5.8') do
+        Dir.chdir("php-#{version}") do
           args = [
             "--with-apxs2=#{apache2_dependency.bin_path + "apxs"}",
             "--with-mcrypt=#{get_dependency("libmcrypt").prefix_path}",
@@ -48,7 +48,7 @@ module Autoparts
       end
 
       def install
-        Dir.chdir('php-5.5.8') do
+        Dir.chdir("php-#{version}") do
           lib_path.mkpath
           execute 'cp', 'php.ini-development', "#{lib_path}/php.ini"
           # force apache2 to rewrite its config to get a pristine config

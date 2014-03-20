@@ -5,10 +5,10 @@ module Autoparts
   module Packages
     class Php5Fpm < Package
       name 'php5-fpm'
-      version '5.5.8-5'
+      version '5.5.10'
       description ''
-      source_url 'http://us1.php.net/get/php-5.5.8.tar.gz/from/this/mirror'
-      source_sha1 '19af9180c664c4b8f6c46fc10fbad9f935e07b52'
+      source_url 'http://us1.php.net/get/php-5.5.10.tar.gz/from/this/mirror'
+      source_sha1 'fa13e3634373791a8cb427d43ab4dcf9fcb3e526'
       source_filetype 'tar.gz'
       category Category::WEB_DEVELOPMENT
 
@@ -16,7 +16,7 @@ module Autoparts
       depends_on 'libmcrypt'
 
       def compile
-        Dir.chdir('php-5.5.8') do
+        Dir.chdir("php-#{version}") do
           args = [
             "--with-mcrypt=#{get_dependency("libmcrypt").prefix_path}",
             # path
@@ -56,7 +56,7 @@ module Autoparts
 
       def install
         bin_path.mkpath
-        Dir.chdir('php-5.5.8') do
+        Dir.chdir("php-#{version}) do
           execute 'cp', 'sapi/fpm/init.d.php-fpm', manage_script
           execute 'cp', 'sapi/fpm/php-fpm', bin_path
           execute 'cp', 'php.ini-development', "#{lib_path}/php.ini"
@@ -82,7 +82,7 @@ module Autoparts
           ; Pid file
           ; Note: the default prefix is /usr/local/var
           ; Default Value: none
-          pid = #{Path.var}/php-fpm/php-fpm.pid
+          pid = #{Path.var}/php5-fpm/run/php-fpm.pid
 
           [www]
           listen = 127.0.0.1:9000
@@ -122,6 +122,15 @@ module Autoparts
       end
 
       def running?
+        pidFile = Path.var + name + "run" + "php-fpm.pid"
+        if File.exists?(pidFile)
+          pid = File.read(pidFile).strip
+          if pid.length > 0 && `ps -o cmd= #{pid}`.include?('php')
+            return true
+          end
+          #clean pid file if it is not right service
+          File.unlink(pidFile)
+        end
         false
       end
 
@@ -135,6 +144,12 @@ module Autoparts
 
           PHP-FPM extra config files directory is located at:
             $ #{fpm_conf_extra_dir}
+
+          To start the PHP-FPM server:
+            $ parts start php5-fpm
+
+          To stop the PHP-FPM server:
+            $ parts stop php5-fpm
 
           Add to your nginx config php handlers:
             location ~ \.php$ {
