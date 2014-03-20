@@ -7,7 +7,7 @@ module Autoparts
 
       name 'php5-lzf'
       category Category::WEB_DEVELOPMENT
-      version '1.6.2'
+      version '1.6.2-1'
       description 'LZF module for php5'
       source_url 'http://pecl.php.net/get/LZF-1.6.2.tgz'
       source_sha1 '9e24976b65a000ea09f0860daa1de13d5de4f022'
@@ -20,7 +20,7 @@ module Autoparts
       end
 
       def php_extension_dir
-        "LZF-#{version}"
+        "LZF-1.6.2"
       end
 
     end

@@ -6,8 +6,8 @@ module Autoparts
     class Php5Fpm < Package
       name 'php5-fpm'
       version '5.5.10'
-      description ''
-      source_url 'http://us1.php.net/get/php-5.5.10.tar.gz/from/this/mirror'
+      description 'PHP5-FPM: an alternative PHP FastCGI implementation with some additional features (mostly) useful for heavy-loaded sites.'
+      source_url 'http://ru2.php.net/get/php-5.5.10.tar.gz/from/this/mirror'
       source_sha1 'fa13e3634373791a8cb427d43ab4dcf9fcb3e526'
       source_filetype 'tar.gz'
       category Category::WEB_DEVELOPMENT
@@ -16,7 +16,7 @@ module Autoparts
       depends_on 'libmcrypt'
 
       def compile
-        Dir.chdir("php-#{version}") do
+        Dir.chdir("php-5.5.10") do
           args = [
             "--with-mcrypt=#{get_dependency("libmcrypt").prefix_path}",
             # path
@@ -25,7 +25,8 @@ module Autoparts
             "--sbindir=#{bin_path}",
             "--with-config-file-path=#{php5_ini_path}",
             "--with-config-file-scan-dir=#{php5_ini_path_additional}",
-            "--sysconfdir=#{Path.etc + name}",
+            "--sysconfdir=#{Path.etc + 'php5/fpm'}",
+            "--localstatedir=#{Path.var + name}",
             "--libdir=#{lib_path}",
             "--includedir=#{include_path}",
             "--datarootdir=#{share_path}/#{name}",
@@ -43,6 +44,9 @@ module Autoparts
             "--with-openssl",
             "--with-readline",
             "--enable-mbstring",
+            "--with-mysql",
+            "--with-mysqli",
+
           ]
           execute './configure', *args
           execute 'make'
@@ -56,10 +60,9 @@ module Autoparts
 
       def install
         bin_path.mkpath
-        Dir.chdir("php-#{version}) do
+        Dir.chdir("php-5.5.10") do
           execute 'cp', 'sapi/fpm/init.d.php-fpm', manage_script
           execute 'cp', 'sapi/fpm/php-fpm', bin_path
-          execute 'cp', 'php.ini-development', "#{lib_path}/php.ini"
         end
       end
 
@@ -68,7 +71,7 @@ module Autoparts
       end
 
       def fpm_conf_dir
-        Path.etc + "php5"
+        Path.etc + "php5" + "fpm"
       end
 
       def fpm_conf_path
@@ -83,7 +86,15 @@ module Autoparts
           ; Note: the default prefix is /usr/local/var
           ; Default Value: none
           pid = #{Path.var}/php5-fpm/run/php-fpm.pid
+        EOS
+      end
 
+      def pool_content_path
+        fpm_conf_extra_dir + 'www.conf'
+      end
+
+      def pool_content
+        <<-EOS.unindent
           [www]
           listen = 127.0.0.1:9000
           pm = dynamic
@@ -99,26 +110,27 @@ module Autoparts
           FileUtils.cp fpm_conf_path, fpm_conf_path.to_s + '.' + Time.now.to_s
         end
         File.write(fpm_conf_path, fpm_conf_content)
+
+        if pool_content_path.exist?
+          FileUtils.cp pool_content_path, pool_content_path.to_s + '.' + Time.now.to_s
+        end
+        File.write(pool_content_path, pool_content)
+
       end
 
       def post_install
+        fpm_conf_extra_dir.mkpath
+        FileUtils.mkdir_p(Path.var + name + 'log');
+        FileUtils.mkdir_p(Path.var + name + 'run');
         write_config
-        # copy php.ini over
-        unless php5_ini_path.exist?
-          FileUtils.mkdir_p(File.dirname(php5_ini_path))
-          execute 'cp', "#{lib_path}/php.ini", "#{php5_ini_path}"
-        end
-        unless php5_ini_path_additional.exist?
-          FileUtils.mkdir_p(php5_ini_path_additional)
-        end
       end
 
       def start
-        execute manage_script, 'start'
+        execute 'sh', manage_script, 'start'
       end
 
       def stop
-        execute manage_script, 'stop'
+        execute 'sh', manage_script, 'stop'
       end
 
       def running?

@@ -2,12 +2,12 @@ module Autoparts
   module Packages
     class ImageMagick < Package
       name 'image_magick'
-      version '6.8.8-7'
+      version '6.8.8-9'
       description 'ImageMagick: a software suite to create, edit, compose, or convert bitmap images.'
       category Category::UTILITIES
 
-      source_url 'http://www.imagemagick.org/download/ImageMagick-6.8.8-7.tar.gz'
-      source_sha1 '50e66290c1524de6a6c92e85bd29d33691b18cc7'
+      source_url 'http://www.imagemagick.org/download/ImageMagick-6.8.8-9.tar.gz'
+      source_sha1 'cb5eaf97ae1d8c71d9d15b372744bcb1f99cd7f8'
       source_filetype 'tar.gz'
 
       def compile

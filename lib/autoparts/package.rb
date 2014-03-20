@@ -374,7 +374,6 @@ module Autoparts
         end
 
         @source_install = source_install ||= (binary_present? == false)
-
         unless File.exist? archive_path
           puts "=> Downloading #{@source_install ? source_url : binary_url}..."
           download_archive
@@ -459,7 +458,7 @@ module Autoparts
         puts "=> Uploading #{name} #{version}..."
         [binary_file_name, binary_sha1_file_name].each do |f|
           local_path = Path.archives + f
-          `s3cmd put --acl-public --guess-mime-type #{local_path} s3://#{binary_bucket}/#{f}`
+          `s3cmd put --acl-public --guess-mime-type #{local_path} s3://#{binary_bucket}/#{BOX_ID}/#{f}`
         end
         puts "=> Done"
       else

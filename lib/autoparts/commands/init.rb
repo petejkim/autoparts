@@ -21,16 +21,12 @@ module Autoparts
           end
           Autoparts::Package.start_all
           Env.print_exports
+          Env.print_extra
         else
           show_help
         end
       end
 
-        Dir.foreach("#{Path.env}") do |item|
-          next if item == '.' or item == '..'
-          puts File.read(Path.env + item)
-          puts "\n"
-        end
       def show_help
         profile = case ENV['SHELL']
         when /bash/

@@ -11,7 +11,7 @@ module Autoparts
 
       depends_on 'apache2'
       depends_on 'php5-apache2'
-      depends_on 'php5-mysqli'
+      # depends_on 'php5-mysqli'
       depends_on 'php5-gd'
 
       def install

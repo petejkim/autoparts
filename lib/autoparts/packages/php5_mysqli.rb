@@ -1,3 +1,6 @@
+#compile problems
+
+=begin
 require 'autoparts/packages/php5_ext'
 
 module Autoparts
@@ -17,3 +20,4 @@ module Autoparts
     end
   end
 end
+=end

@@ -18,11 +18,20 @@ module Autoparts
 
       def initialize(args, options)
         Env.print_exports
+        Env.print_extra
       end
 
       def self.print_exports
         EXPORTS.each do |envvar, value|
           puts %Q(export #{envvar}="#{value}")
+        end
+      end
+
+      def self.print_extra
+        Dir.foreach(Path.env) do |item|
+          next if item == '.' or item == '..'
+          puts File.read(Path.env + item)
+          puts "\n"
         end
       end
     end

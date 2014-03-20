@@ -17,7 +17,7 @@ module Autoparts
       depends_on 'libmcrypt'
 
       def compile
-        Dir.chdir("php-#{version}") do
+        Dir.chdir("php-5.5.10") do
           args = [
             "--with-apxs2=#{apache2_dependency.bin_path + "apxs"}",
             "--with-mcrypt=#{get_dependency("libmcrypt").prefix_path}",
@@ -41,6 +41,8 @@ module Autoparts
             "--with-openssl",
             "--with-readline",
             "--enable-mbstring",
+            "--with-mysql",
+            "--with-mysqli",
           ]
           execute './configure', *args
           execute 'make'
@@ -48,7 +50,7 @@ module Autoparts
       end
 
       def install
-        Dir.chdir("php-#{version}") do
+        Dir.chdir("php-5.5.10") do
           lib_path.mkpath
           execute 'cp', 'php.ini-development', "#{lib_path}/php.ini"
           # force apache2 to rewrite its config to get a pristine config

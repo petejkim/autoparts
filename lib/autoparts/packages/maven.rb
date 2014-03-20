@@ -13,13 +13,11 @@ module Autoparts
       category Category::DEVELOPMENT_TOOLS
 
       def install
-        Dir.chdir('apache-maven-3.2.1') do
-          FileUtils.rm_rf prefix_path
-          execute 'mv', extracted_archive_path + "apache-maven-#{version}", prefix_path
-          Dir.chdir(prefix_path) do
-            execute 'rm', 'bin/mvn.bat'
-            execute 'rm', 'bin/mvnDebug.bat'
-          end
+        FileUtils.rm_rf prefix_path
+        execute 'mv', extracted_archive_path + "apache-maven-#{version}", prefix_path
+        Dir.chdir(prefix_path) do
+          execute 'rm', 'bin/mvn.bat'
+          execute 'rm', 'bin/mvnDebug.bat'
         end
       end
     end

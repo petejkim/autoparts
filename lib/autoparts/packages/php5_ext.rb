@@ -16,7 +16,7 @@ module Autoparts
         self.depends_on 'php5'
 
         def php_extension_dir
-          "php-#{version}/ext/" + php_extension_name
+          "php-5.5.10/ext/" + php_extension_name
         end
 
 
@@ -27,7 +27,7 @@ module Autoparts
         def compile
           Dir.chdir(php_extension_dir) do
             unless File.exist?('config.m4')
-              execute 'cp', 'config0.m4', 'config.m4'
+              Dir.glob('config?.m4').each { |f| execute 'cp', f, 'config.m4' }
             end
 
             execute 'phpize'

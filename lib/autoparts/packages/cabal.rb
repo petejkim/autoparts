@@ -19,15 +19,36 @@ module Autoparts
         end
       end
 
+
+
       def tips
         <<-EOS.unindent
           Run "cabal update" after installing
             $ cabal update
 
-          Add "$HOME/.cabal/bin" to your PATH since all Cabal packages will be installed there
+         Close and open terminal to have go-lang working after the install.
+         or reload shell with
+         . ./bash_profile
         EOS
       end
 
+      def post_install
+        File.write(env_file, env_content)
+      end
+
+      def post_uninstall
+        env_file.unlink if env_file.exist?
+      end
+
+      def env_file
+        Path.env + 'cabal'
+      end
+
+      def env_content
+        <<-EOS.unindent
+          export PATH="$HOME/.cabal/bin"
+        EOS
+      end
     end
   end
 end
