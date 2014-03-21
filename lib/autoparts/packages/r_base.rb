@@ -7,6 +7,7 @@ module Autoparts
       source_url 'http://cran.stat.ucla.edu/src/base/R-3/R-3.0.3.tar.gz'
       source_sha1 '82e83415d27a2fbbdcacb41c4aa14d8b36fdf470'
       source_filetype 'tar.gz'
+      category Category::PROGRAMMING_LANGUAGES
 
       def compile
         Dir.chdir('R-' + version) do

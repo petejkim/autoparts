@@ -7,6 +7,7 @@ module Autoparts
       source_url 'http://apache-mirror.rbc.ru/pub/apache/tomcat/tomcat-7/v7.0.52/bin/apache-tomcat-7.0.52.zip'
       source_sha1 'b922ee9691a07d6d75d0c429b6d1789c6c1f86df'
       source_filetype 'zip'
+      category Category::WEB_DEVELOPMENT
 
       def install
         prefix_path.mkpath

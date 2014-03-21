@@ -1,9 +1,14 @@
+# Copyright (c) 2013-2014 Irrational Industries Inc. d.b.a. Nitrous.IO
+# This software is licensed under the [BSD 2-Clause license](https://raw.github.com/nitrous-io/autoparts/master/LICENSE).
+
 module Autoparts
   module Packages
     class Apr < Package
       name 'apr'
       version '1.5.0'
       description 'Apache Portable Runtime: Software libraries that provide a predictable and consistent interface to underlying platform-specific implementations'
+      category Category::LIBRARIES
+
       source_url 'http://mirrors.gigenet.com/apache//apr/apr-1.5.0.tar.gz'
       source_sha1 'c457adf42502a322967ea0499a150587585e5291'
       source_filetype 'tar.gz'

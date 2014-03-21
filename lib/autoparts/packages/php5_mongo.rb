@@ -1,27 +1,18 @@
-require File.join(File.dirname(__FILE__), 'php5_ext')
+require 'autoparts/packages/php5_ext'
 
 module Autoparts
   module Packages
-    class Php5Mongo < Php5Ext
+    class Php5Mongo < Package
+      include Php5Ext
+
       name 'php5-mongo'
+      category Category::WEB_DEVELOPMENT
 
-      def version
-        '1.4.5'
-      end
-
+      version '1.4.5-1'
       description 'Mongo driver for php5'
-
-      def source_url
-        'http://pecl.php.net/get/mongo-1.4.5.tgz'
-      end
-
-      def source_sha1
-        'd9608822a3267f24748e9bdef5850e112f0ef54a'
-      end
-
-      def source_filetype
-        'tgz'
-      end
+      source_url 'http://pecl.php.net/get/mongo-1.4.5.tgz'
+      source_sha1 'd9608822a3267f24748e9bdef5850e112f0ef54a'
+      source_filetype 'tgz'
 
       depends_on 'php5'
 
@@ -32,12 +23,6 @@ module Autoparts
       def php_extension_dir
         "mongo-1.4.5"
       end
-
-      # def php_compile_args
-      #   [
-      #     "--with-imagick=#{get_dependency("image_magick").prefix_path}",
-      #   ]
-      # end
 
     end
   end

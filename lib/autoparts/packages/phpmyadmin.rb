@@ -7,10 +7,12 @@ module Autoparts
       source_url 'http://downloads.sourceforge.net/project/phpmyadmin/phpMyAdmin/4.1.7/phpMyAdmin-4.1.7-all-languages.tar.gz'
       source_sha1 '926c9261e698612e61c725c13262d951bada9cd3'
       source_filetype 'tar.gz'
+      category Category::WEB_DEVELOPMENT
 
-      depends_on 'php5'
-      depends_on 'php5-mysqli'
       depends_on 'apache2'
+      depends_on 'php5-apache2'
+      depends_on 'mysql'
+      depends_on 'php5-gd'
 
       def install
           myadmin_path.mkpath

@@ -7,6 +7,7 @@ module Autoparts
       source_url 'http://mirror.mephi.ru/mariadb/mariadb-5.5.36/kvm-tarbake-jaunty-x86/mariadb-5.5.36.tar.gz'
       source_sha1 'a6091356ffe524322431670ad03d68c389243d04'
       source_filetype 'tar.gz'
+      category Category::DATA_STORES
 
       def compile
         Dir.chdir(name_with_version) do

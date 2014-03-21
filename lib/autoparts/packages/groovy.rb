@@ -7,6 +7,7 @@ module Autoparts
       source_url 'http://dl.bintray.com/groovy/maven/groovy-binary-2.2.2.zip'
       source_sha1 'af74f5e08c089ac6baf4bca99eeb9df209340368'
       source_filetype 'zip'
+      category Category::PROGRAMMING_LANGUAGES
 
       def install
         prefix_path.mkpath

@@ -7,6 +7,7 @@ module Autoparts
       source_url 'http://dist.springframework.org.s3.amazonaws.com/release/GRAILS/grails-2.3.7.zip'
       source_sha1 '295f37fe989e8b3784258fcc14d2749737d8a2d0'
       source_filetype 'zip'
+      category Category::DEVELOPMENT_TOOLS
 
       depends_on 'groovy'
 
@@ -20,8 +21,8 @@ module Autoparts
 
       def env_content
         <<-EOS.unindent
-          export JAVA_HOME=/usr
-          export GRAILS_HOME=#{prefix_path}
+          export JAVA_HOME="/usr"
+          export GRAILS_HOME="#{prefix_path}"
         EOS
       end
       def env_file

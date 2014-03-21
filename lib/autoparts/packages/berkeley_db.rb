@@ -7,7 +7,7 @@ module Autoparts
       source_url 'http://download.oracle.com/berkeley-db/db-6.0.30.NC.tar.gz'
       source_sha1 '15d85cf617f6c5a92212afd457593b0b9167a1fc'
       source_filetype 'tar.gz'
-
+      category Category::DATA_STORES
 
       def compile
         Dir.chdir('db-6.0.30.NC') do

@@ -7,6 +7,7 @@ module Autoparts
       source_url 'ftp://ftp.openldap.org/pub/OpenLDAP/openldap-release/openldap-2.4.39.tgz'
       source_sha1 '2b8e8401214867c361f7212e7058f95118b5bd6c'
       source_filetype 'tgz'
+      category Category::UTILITIES
 
       depends_on 'berkeley_db'
 
@@ -27,7 +28,7 @@ module Autoparts
       def install
         Dir.chdir(extracted_archive_path + name_with_version) do
           execute 'make install'
-        end
+        end\
       end
     end
   end

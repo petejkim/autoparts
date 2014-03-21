@@ -3,10 +3,11 @@ module Autoparts
     class GoLang < Package
       name 'go-lang'
       version '1.2'
-      description 'Go is an open source programming language that makes it easy to build simple, reliable, and efficient software.'
+      description 'Go: an open source programming language that makes it easy to build simple, reliable, and efficient software.'
       source_url 'https://go.googlecode.com/files/go1.2.linux-amd64.tar.gz'
       source_sha1 '664e5025eae91412a96a10f4ed1a8af6f0f32b7d'
       source_filetype 'tar.gz'
+      category Category::PROGRAMMING_LANGUAGES
 
       def install
         Dir.chdir('go') do
@@ -44,7 +45,8 @@ module Autoparts
         <<-EOS.unindent
 
          Close and open terminal to have go-lang working after the install.
-
+         or reload shell with
+         . ./bash_profile
         EOS
       end
     end

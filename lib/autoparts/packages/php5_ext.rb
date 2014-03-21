@@ -1,72 +1,70 @@
 # Copyright (c) 2013-2014 Application Craft Ltd. Codio
 # This software is licensed under the [BSD 2-Clause license](https://raw.github.com/codio/boxparts/master/LICENSE).
 
+require 'active_support/concern'
+
 module Autoparts
   module Packages
-    class Php5Ext < Package
-      def version
-        '5.5.8'
-      end
+    module Php5Ext
+      extend ActiveSupport::Concern
 
-      def source_url
-        'http://us1.php.net/get/php-5.5.8.tar.gz/from/this/mirror'
-      end
+      included do
+        self.version '5.5.10'
+        self.source_url 'http://ru2.php.net/get/php-5.5.10.tar.gz/from/this/mirror'
+        self.source_sha1 'fa13e3634373791a8cb427d43ab4dcf9fcb3e526'
+        self.source_filetype  'tar.gz'
+        self.depends_on 'php5'
 
-      def source_sha1
-        '19af9180c664c4b8f6c46fc10fbad9f935e07b52'
-      end
-
-      def source_filetype
-        'tar.gz'
-      end
-
-      depends_on 'php5'
-
-      def php_extension_dir
-        "php-5.5.8/ext/" + php_extension_name
-      end
-
-
-      def php_compile_args
-        [ ]
-      end
-
-      def compile
-        Dir.chdir(php_extension_dir) do
-          execute 'phpize'
-          execute './configure', *php_compile_args
-          execute 'make'
+        def php_extension_dir
+          "php-5.5.10/ext/" + php_extension_name
         end
-      end
 
-      def config_name
-        "#{php_extension_name}.ini"
-      end
 
-      def extension_config_path
-        get_dependency("php5").php5_ini_path_additional + config_name
-      end
-
-      def extension_config
-        <<-EOF.unindent
-        extension=#{prefix_path}/#{php_extension_name}.so
-        EOF
-      end
-
-      def install
-        FileUtils.mkdir_p(prefix_path)
-        Dir.chdir("#{php_extension_dir}/modules") do
-          execute 'cp', "#{php_extension_name}.so", "#{prefix_path}"
-          execute 'cp', "#{php_extension_name}.la", "#{prefix_path}"
+        def php_compile_args
+          [ ]
         end
-      end
 
-      def post_install
-          File.open(extension_config_path, "w") { |f| f.write extension_config }
-      end
+        def compile
+          Dir.chdir(php_extension_dir) do
+            unless File.exist?('config.m4')
+              Dir.glob('config?.m4').each { |f| execute 'cp', f, 'config.m4' }
+            end
 
-      def post_uninstall
-        extension_config_path.unlink if extension_config_path.exist?
+            execute 'phpize'
+            execute './configure', *php_compile_args
+            execute 'make'
+          end
+        end
+
+        def config_name
+          "#{php_extension_name}.ini"
+        end
+
+        def extension_config_path
+          get_dependency("php5").php5_ini_path_additional + config_name
+        end
+
+        def extension_config
+          <<-EOF.unindent
+          extension=#{prefix_path}/#{php_extension_name}.so
+          EOF
+        end
+
+        def install
+          prefix_path.mkpath
+          Dir.chdir("#{php_extension_dir}/modules") do
+            execute 'cp', php_extension_name + '.so', prefix_path
+            execute 'cp', php_extension_name + '.la', prefix_path
+          end
+        end
+
+        def post_install
+            File.open(extension_config_path, "w") { |f| f.write extension_config }
+        end
+
+        def post_uninstall
+          extension_config_path.unlink if extension_config_path.exist?
+        end
       end
     end
   end

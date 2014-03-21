@@ -1,9 +1,14 @@
+# Copyright (c) 2013-2014 Irrational Industries Inc. d.b.a. Nitrous.IO
+# This software is licensed under the [BSD 2-Clause license](https://raw.github.com/nitrous-io/autoparts/master/LICENSE).
+
 module Autoparts
   module Packages
     class Composer < Package
       name 'composer'
       version '1.0.0-alpha8'
       description 'Composer: PHP5 Dependency management'
+      category Category::DEVELOPMENT_TOOLS
+
       source_url 'https://getcomposer.org/composer.phar'
       source_sha1 '22f3bd3e852f8793376417018ceaba81079a3c26'
       source_filetype 'php'

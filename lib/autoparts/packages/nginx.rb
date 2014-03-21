@@ -7,6 +7,7 @@ module Autoparts
       source_url 'http://nginx.org/download/nginx-1.4.4.tar.gz'
       source_sha1 '304d5991ccde398af2002c0da980ae240cea9356'
       source_filetype 'tar.gz'
+      category Category::WEB_DEVELOPMENT
 
       def compile
         Dir.chdir('nginx-1.4.4') do
@@ -39,6 +40,7 @@ module Autoparts
         end
         add_nginx_ctl
         add_nginx_config
+        FileUtils.cp prefix_path + 'conf' + 'fastcgi_params', nginx_conf_path
       end
 
       def add_nginx_ctl
@@ -70,9 +72,10 @@ module Autoparts
             listen 3000;
             listen 9500;
 
-             location / {
-                root #{htdocs_path};
-             }
+            location / {
+             root #{htdocs_path};
+              # you handlers here
+            }
           }
         EOS
       end
@@ -217,6 +220,7 @@ module Autoparts
           Default document root is located at:
             $ #{htdocs_path}
 
+          Install php5-fpm if you want to run php apps with nginx
         EOS
       end
 

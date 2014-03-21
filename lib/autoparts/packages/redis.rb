@@ -1,9 +1,14 @@
+# Copyright (c) 2013-2014 Irrational Industries Inc. d.b.a. Nitrous.IO
+# This software is licensed under the [BSD 2-Clause license](https://raw.github.com/nitrous-io/autoparts/master/LICENSE).
+
 module Autoparts
   module Packages
     class Redis < Package
       name 'redis'
       version '2.6.16'
       description 'Redis: An open-source, in-memory, key-value data store'
+      category Category::DATA_STORES
+
       source_url 'http://download.redis.io/releases/redis-2.6.16.tar.gz'
       source_sha1 'f94c0f623aaa8c310f9be2a88e81716de01ce0ce'
       source_filetype 'tar.gz'
