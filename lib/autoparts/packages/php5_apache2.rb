@@ -17,6 +17,7 @@ module Autoparts
       depends_on 'libmcrypt'
 
       def compile
+        apache2_libphp5_path.unlink if apache2_libphp5_path.exist?
         Dir.chdir("php-5.5.10") do
           args = [
             "--with-apxs2=#{apache2_dependency.bin_path + "apxs"}",
@@ -58,13 +59,13 @@ module Autoparts
           apache2_dependency.rewrite_config
           # copy libphp5.so over to the package so it will be distributed with
           # the binary
-          execute 'mv', "#{apache2_libphp5_path}", "#{lib_path + "libphp5.so"}"
+          execute 'mv', 'libs/libphp5.so', lib_path + "libphp5.so"
         end
       end
 
       def post_install
         # copy libphp5.so over to apache modules path
-        execute 'cp', "#{lib_path + "libphp5.so"}", "#{apache2_libphp5_path}"
+        execute 'cp', lib_path + "libphp5.so", apache2_libphp5_path
         # write php5_config if not exist
         unless apache2_php5_config_path.exist?
           File.open(apache2_php5_config_path, "w") { |f| f.write php5_apache_config }
