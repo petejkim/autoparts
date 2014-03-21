@@ -9,7 +9,7 @@ module Autoparts
       extend ActiveSupport::Concern
 
       included do
-        self.version '5.5.10'
+        self.version '5.5.10-1'
         self.source_url 'http://ru2.php.net/get/php-5.5.10.tar.gz/from/this/mirror'
         self.source_sha1 'fa13e3634373791a8cb427d43ab4dcf9fcb3e526'
         self.source_filetype  'tar.gz'
@@ -31,7 +31,9 @@ module Autoparts
             end
 
             execute 'phpize'
-            execute './configure', *php_compile_args
+            args = php_compile_args
+            args.push('--enable-maintainer-zts')
+            execute './configure', *args
             execute 'make'
           end
         end

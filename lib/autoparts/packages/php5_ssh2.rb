@@ -6,7 +6,7 @@ module Autoparts
       include Php5Ext
 
       name 'php5-ssh2'
-      version '0.12-1'
+      version '0.12-2'
       description 'SSH2 module for php5'
       source_url 'http://pecl.php.net/get/ssh2-0.12.tgz'
       source_sha1 'b86a25bdd3f3558bbcaaa6d876309fbbb5ae134d'

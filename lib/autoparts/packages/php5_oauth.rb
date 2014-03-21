@@ -6,7 +6,7 @@ module Autoparts
       include Php5Ext
 
       name 'php5-oauth'
-      version '1.2.3-1'
+      version '1.2.3-2'
       description 'OAuth module for php5'
       source_url 'http://pecl.php.net/get/oauth-1.2.3.tgz'
       source_sha1 'e2a42961c8134746fc0cd8ef9bd433f760b94975'

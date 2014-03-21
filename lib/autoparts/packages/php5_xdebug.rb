@@ -6,7 +6,7 @@ module Autoparts
       include Php5Ext
 
       name 'php5-xdebug'
-      version '2.2.4'
+      version '2.2.4-1'
       description 'Xdebug module for php5'
       source_url 'http://pecl.php.net/get/xdebug-2.2.4.tgz'
       source_sha1 '586a7f24330f5139b7b8cec8ed96b99f3d3a753d'
