@@ -4,8 +4,8 @@ module Autoparts
       name 'composer'
       version '1.0.0-alpha8'
       description 'Composer: PHP5 Dependency management'
-      source_url 'http://getcomposer.org/download/1.0.0-alpha8/composer.phar'
-      source_sha1 '6eefa41101a2d1a424c3d231a1f202dfe6f09cf8'
+      source_url 'https://getcomposer.org/composer.phar'
+      source_sha1 '22f3bd3e852f8793376417018ceaba81079a3c26'
       source_filetype 'php'
 
       depends_on 'php5'
