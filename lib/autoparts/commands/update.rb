@@ -18,7 +18,7 @@ module Autoparts
       def self.update(silent=false)
         r = nil
         Dir.chdir(PROJECT_ROOT) do
-          cmd = 'git pull --rebase origin master'
+          cmd = 'timeout 15 git pull --rebase origin master'
           r = system(cmd, silent ? { out: '/dev/null', err: '/dev/null' } : {})
         end
         r
