@@ -5,7 +5,7 @@ module Autoparts
   module Packages
     class S3cmd < Package
       name 's3cmd'
-      version '1.0.1'
+      version '1.0.1-1'
       description 's3cmd: Command line tool for managing Amazon S3 and CloudFront services'
       category Category::UTILITIES
 
@@ -16,7 +16,7 @@ module Autoparts
       def install
         prefix_path.parent.mkpath
         FileUtils.rm_rf prefix_path
-        execute 'mv', extracted_archive_path + name_with_version, prefix_path
+        execute 'mv', extracted_archive_path + 's3cmd-1.0.1', prefix_path
       end
 
       def post_install
