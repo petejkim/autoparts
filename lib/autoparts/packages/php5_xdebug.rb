@@ -20,7 +20,7 @@ module Autoparts
       end
 
       def php_extension_dir
-        "xdebug-#{version}"
+        "xdebug-2.2.4"
       end
 
       def php_compile_args
