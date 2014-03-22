@@ -13,17 +13,17 @@ vendor = File.join(PROJECT_ROOT, 'vendor')
 [lib, vendor].each do |d|
   $LOAD_PATH.unshift(d) unless $LOAD_PATH.include?(d)
 end
-
 require 'autoparts'
 
 cli = Autoparts::CLIParser.new(ARGV)
 
 commands = {
   'help'      => Autoparts::Commands::Help,
-  'env'      =>  Autoparts::Commands::Env,
+  'env'       =>  Autoparts::Commands::Env,
   'init'      => Autoparts::Commands::Init,
   'info'      => Autoparts::Commands::Info,
   'install'   => Autoparts::Commands::Install,
+  'upgrade'   => Autoparts::Commands::Upgrade,
   'list'      => Autoparts::Commands::List,
   'purge'     => Autoparts::Commands::Purge,
   'restart'   => Autoparts::Commands::Restart,
@@ -32,7 +32,7 @@ commands = {
   'status'    => Autoparts::Commands::Status,
   'stop'      => Autoparts::Commands::Stop,
   'uninstall' => Autoparts::Commands::Uninstall,
-  'update'    => Autoparts::Commands::Update
+  'update'    => Autoparts::Commands::Update,
 }
 
 unless ENV['AUTOPARTS_DEV'].nil?

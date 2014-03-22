@@ -21,15 +21,23 @@ module Autoparts
         hash = {}
         Path.packages.each_child do |pkg|
           if pkg.directory?
-            pkg.each_child do |ver|
-              if ver.directory? && !ver.children.empty?
-                hash[pkg.basename.to_s] ||= []
-                hash[pkg.basename.to_s].push ver.basename.to_s
-              end
-            end
+            hash[pkg.basename.to_s] = installed_versions(pkg)
           end
         end
         hash
+      end
+
+      def installed_versions(name)
+        pkg = Path.packages + name
+        version = []
+        if pkg.directory?
+          pkg.each_child do |ver|
+            if ver.directory? && !ver.children.empty?
+              version.push(ver.basename.to_s)
+            end
+          end
+        end
+        version
       end
 
       def installed?(name)

@@ -19,6 +19,7 @@ module Autoparts
             Some useful commands are:
               parts install PACKAGE...   # Install one or many packages
               parts uninstall PACKAGE... # Uninstall one or many packages
+              parts upgrade [PACKAGE...]  # Upgarde one or many packages
               parts purge PACKAGE...     # Uninstall and remove leftover data of one or many packages
               parts list                 # List all installed packages
               parts search [SEARCH_TERM] # Search for a package or list all available packages
