@@ -6,7 +6,7 @@ module Autoparts
     class Php5 < Package
       name 'php5'
       version '5.5.10-1'
-      description 'PHP 5.5: A popular general-purpose scripting language that is especially suited to web development. Prebuild extensions default + mbstring'
+      description 'PHP 5.5: A popular general-purpose scripting language that is especially suited to web development. Prebuild extensions default + mbstring, mysql, sqlite3 and openssl'
       source_url 'http://ru2.php.net/get/php-5.5.10.tar.gz/from/this/mirror'
       source_sha1 'fa13e3634373791a8cb427d43ab4dcf9fcb3e526'
       source_filetype 'tar.gz'
