@@ -87,7 +87,7 @@ module Autoparts
           To stop the Apache server:
             $ parts stop influxdb
 
-          Influxdb config is located at:
+          InfluxDB config is located at:
             $ #{influxdb_config_path}
         EOS
       end
