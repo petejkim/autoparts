@@ -74,6 +74,10 @@ module Autoparts
         <<-EOS.unindent
           PHP config file is located at:
             $ #{php5_ini_path}
+
+          Close and open a terminal or reload shell to
+          have installed pear packages available without full path
+          $ . ./bash_profile
         EOS
       end
 
