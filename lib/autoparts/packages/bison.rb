@@ -10,7 +10,7 @@ module Autoparts
       source_url 'http://ftpmirror.gnu.org/bison/bison-3.0.2.tar.gz'
       source_sha1 '4bbb9a1bdc7e4328eb4e6ef2479b3fe15cc49e54'
       source_filetype 'tar.gz'
-      category Category::DEVELOPMENT_TOOLS
+      category Category::LIBRARIES
 
       def compile
         Dir.chdir("bison-3.0.2") do

@@ -3,10 +3,11 @@ module Autoparts
     class Protobuf < Package
       name 'protobuf'
       version '2.5.0'
-      description 'Protocol Buffers: language- and platform-neutral mechanism for serializing structured data'
+      description 'Protocol Buffers: language and platform-neutral mechanism for serializing structured data'
       source_url 'https://protobuf.googlecode.com/files/protobuf-2.5.0.tar.bz2'
       source_sha1 '62c10dcdac4b69cc8c6bb19f73db40c264cb2726'
       source_filetype 'tar.bz2'
+      category Category::LIBRARIES
 
       def install
         Dir.chdir('protobuf-2.5.0') do

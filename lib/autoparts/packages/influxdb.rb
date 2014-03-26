@@ -11,6 +11,7 @@ module Autoparts
       source_url 'http://s3.amazonaws.com/influxdb/influxdb-0.5.0.amd64.tar.gz'
       source_sha1 'fa85c0ef67c44a0cec1330b296b9a5bb4569d8da'
       source_filetype 'tar.gz'
+      category Category::DATA_STORES
 
       def install
         Dir.chdir('build') do
