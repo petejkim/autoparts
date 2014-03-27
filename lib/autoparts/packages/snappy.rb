@@ -6,7 +6,7 @@ module Autoparts
     class Snappy < Package
       name 'snappy'
       version '1.1.1'
-      description 'Snappy: A fast compressor/decompressor'
+      description 'Snappy: A fast compression/decompression library'
       source_url 'https://snappy.googlecode.com/files/snappy-1.1.1.tar.gz'
       source_sha1 '2988f1227622d79c1e520d4317e299b61d042852'
       source_filetype 'tar.gz'
@@ -18,7 +18,7 @@ module Autoparts
             "--prefix=#{prefix_path}",
             "--disable-dependency-tracking",
           ]
-          execute "./configure", *args 
+          execute "./configure", *args
           execute "make"
         end
       end

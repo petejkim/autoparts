@@ -6,7 +6,7 @@ module Autoparts
     class Leveldb < Package
       name 'leveldb'
       version '1.15.0'
-      description 'Leveldb: A fast and lightweight key/value database library by Google.'
+      description 'LevelDB: A fast and lightweight key/value database library by Google'
       source_url 'https://leveldb.googlecode.com/files/leveldb-1.15.0.tar.gz'
       source_sha1 '74b70a1156d91807d8d84bfdd026e0bb5acbbf23'
       source_filetype 'tar.gz'
