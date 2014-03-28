@@ -20,6 +20,7 @@ module Autoparts
       end
 
       def post_install
+        FileUtils.rm_rf prefix_path bin_path
         bin_path.mkpath
         Dir[prefix_path + "*.py"].each do |p|
           basename = File.basename(p)
