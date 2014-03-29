@@ -9,8 +9,8 @@ module Autoparts
       description 'Google App Engine Python/PHP: A CLI for managing Google App Engine cloud services for Python and PHP'
       category Category::DEPLOYMENT
 
-      source_url 'https://commondatastorage.googleapis.com/appengine-sdks/featured/google_appengine_1.9.0.zip'
-      source_sha1 '923a7f99e058d93408d3940e0307bdf2769b7480'
+      source_url 'https://commondatastorage.googleapis.com/appengine-sdks/featured/google_appengine_1.9.1.zip'
+      source_sha1 'fd1f0973733fcc3def77d48847d33ae529589d9c'
       source_filetype 'zip'
 
       def install
