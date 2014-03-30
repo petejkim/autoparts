@@ -3,8 +3,7 @@ module Autoparts
     class Apache2ModWsgi < Package
       name 'apache2_mod_wsgi'
       version '3.4'
-      description 'Apache 2 WSGI module: an Apache module that provides a WSGI compliant
-interface for hosting Python based web applications within Apache.'
+      description 'Apache 2 WSGI module: an Apache module that provides a WSGI compliant interface for hosting Python based web applications within Apache.'
       source_url 'https://modwsgi.googlecode.com/files/mod_wsgi-3.4.tar.gz'
       source_sha1 '92ebc48e60ab658a984f97fd40cb71e0ae895469'
       source_filetype 'tar.gz'
