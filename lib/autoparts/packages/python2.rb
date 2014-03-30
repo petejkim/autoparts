@@ -5,7 +5,7 @@ module Autoparts
   module Packages
     class Python2 < Package
       name 'python2'
-      version '2.7.6'
+      version '2.7.6-1'
       description 'Python 2: The most friendly Programming Language'
       source_url 'http://www.python.org/ftp/python/2.7.6/Python-2.7.6.tgz'
       source_sha1 '8328d9f1d55574a287df384f4931a3942f03da64'
@@ -15,7 +15,8 @@ module Autoparts
       def compile
         Dir.chdir(python_version) do
           args = [
-            "--prefix=#{prefix_path}"
+            "--prefix=#{prefix_path}",
+            "--enable-shared",            
           ]
           execute "./configure", *args
           execute "make"
@@ -29,7 +30,7 @@ module Autoparts
       end
 
       def python_version
-        "Python-#{version}"
+        "Python-2.7.6"
       end
 
       def site_packages
