@@ -26,6 +26,9 @@ module Autoparts
       def install
         Dir.chdir(extracted_archive_path + name_with_version) do
           system 'make install'
+          system 'opam init -y -a'
+          system 'opam install -y async yojson core_extended core_bench cohttp cryptokit menhir utop'
+          system 'curl https://gist.githubusercontent.com/avsm/9874360/raw/9290fa85bee7313b7acecc5393c669c522bb6a52/.ocamlinit >> ~/.ocamlinit'
         end
       end
     end
