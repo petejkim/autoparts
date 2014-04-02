@@ -68,9 +68,8 @@ module Autoparts
       def tips
         <<-EOS.unindent
 
-        Close and open terminal to have opam working properly after the install.
-         or reload shell with
-         . ./bash_profile
+        Close and open your terminal to have opam working properly after the install, or reload the shell with
+          $ ./bash_profile
         EOS
       end
     end
