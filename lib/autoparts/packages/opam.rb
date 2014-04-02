@@ -69,7 +69,7 @@ module Autoparts
         <<-EOS.unindent
 
         Close and open your terminal to have opam working properly after the install, or reload the shell with
-          $ ./bash_profile
+          $ . ./bash_profile
         EOS
       end
     end
