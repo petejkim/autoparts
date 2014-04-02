@@ -59,32 +59,7 @@ module Autoparts
       def tips
         <<-EOS.unindent
         
-          Dropbox is installed, but before you run, be sure to link your account.
-          Run 'dropbox_init', wait for the URL in stdout, open it, and confirm synchronization. Then
-          wait for the script to complete.
-            $ dropbox_init
-            
-          To start the dropbox daemon:
-            $ parts start dropbox
-            
-          To stop the dropbox daemon:
-            $ parts stop dropbox
-            
-          Add your workspace or a folder to sync:
-            $ ln -s /home/codio/workspace/<path> /home/codio/Dropbox/<path>
-
-          Symlinks from the Dropbox folder to your workspace will not work, you have to copy files first 
-          and create a link from the workspace to the ~/Dropbox folder.
-            
-          Use dropbox.py to exclude folders from being synchronized:
-            $ dropbox.py exclude add /home/codio/Dropbox/<path>
-           
-          By default we try to exclude all files, to remove and therefore include a dir or file for
-          synchronization:
-            $ dropbox.py exclude remove /home/codio/Dropbox/<path>
-
-          Check for more information:
-            $ dropbox.py help
+        Please refer to https://codio.com/s/docs/specifics/dropbox/ for a comprehensive explanation of how to configure Codio for Dropbox operations.
             
         EOS
       end
