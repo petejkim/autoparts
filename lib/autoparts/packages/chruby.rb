@@ -18,11 +18,7 @@ module Autoparts
       end
 
       def required_env
-        env = ["source #{prefix_path}/share/chruby/chruby.sh"]
-        if rubies_dir.entries.length > 2
-          env << "export RUBIES=(#{rubies_dir + "*"})"
-        end
-        env
+        ["PREFIX=\"$AUTOPARTS_ROOT\" source \"$AUTOPARTS_ROOT/share/chruby/chruby.sh\""]
       end
 
       def tips
@@ -35,9 +31,7 @@ module Autoparts
       end
 
       def rubies_dir
-        path = Path.share + "ruby" + "rubies"
-        path.mkpath unless path.exist?
-        path
+        Path.mkpath(Path.opt + 'rubies')
       end
     end
   end
