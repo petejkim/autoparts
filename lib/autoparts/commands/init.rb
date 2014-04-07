@@ -17,6 +17,10 @@ module Autoparts
                   'last_update' => Time.now.to_i
                 })
               end
+              # rerun in case the code changes from underneath us break anything
+              if File.basename($0) == 'parts' && File.executable?($0)
+                exec({'AUTOPARTS_NO_AUTOUPDATE' => '1'}, "#{$0} init #{(options + args).join(' ')}")
+              end
             end
           end
           Autoparts::Package.start_all
