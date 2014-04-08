@@ -35,9 +35,9 @@ module Autoparts
             "--docdir=#{doc_path}",
             # features
             "--enable-opcache",
-            "--with-mysql",
-            "--with-mysqli",
-            "--with-pdo-mysql",
+            "--with-mysql=mysqlnd",
+            "--with-mysqli=mysqlnd",
+            "--with-pdo-mysql=mysqlnd",
             "--with-mysql-sock=/tmp/mysql.sock",
             "--with-openssl",
             "--with-pgsql",
