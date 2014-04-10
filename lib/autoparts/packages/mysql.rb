@@ -55,6 +55,7 @@ module Autoparts
             "--datadir=#{mysql_var_path}",
             "--tmpdir=/tmp",
             "--user=#{user}",
+	    "--no-defaults",
             '--verbose'
           ]
           execute "scripts/mysql_install_db", *args
