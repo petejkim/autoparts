@@ -2,11 +2,12 @@ module Autoparts
   module Packages
     class PhpUnit < Package
       name 'phpunit'
-      version '3.7.32'
+      version '4.0.14'
       description 'PHPUnit: A programmer-oriented unit testing framework for PHP'
-      source_url 'https://phar.phpunit.de/phpunit.phar'
-      source_sha1 'cf74cb5abe92190c6e9aa472124e28ae5d5e49ca'
+      source_url 'https://phar.phpunit.de/phpunit-4.0.14.phar'
+      source_sha1 '756c8ffd612a242ef1adb88a1d456de8f220ccd4'
       source_filetype 'php'
+      category Category::DEVELOPMENT_TOOLS
 
       depends_on 'php5'
 
