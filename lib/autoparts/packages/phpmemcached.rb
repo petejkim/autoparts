@@ -38,7 +38,7 @@ module Autoparts
       # sha1 hash is checked. Autoparts creates a temporary directory where the
       # archive is unpacked.
       def compile
-        Dir.chdir('phpmemcached-2.1.0') do
+        Dir.chdir('memcached-2.1.0') do
           args = [
             "--prefix=#{prefix_path}",
 	    "--with-libmemcached-dir=#{get_dependency("libmemcached").prefix_path}",
@@ -51,7 +51,7 @@ module Autoparts
       end
 
       def install
-        Dir.chdir('phpmemcached-2.1.0') do
+        Dir.chdir('memcached-2.1.0') do
           execute 'make install'
         end
       end
