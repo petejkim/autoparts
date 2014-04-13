@@ -7,7 +7,7 @@ module Autoparts
   module Packages
     class Python3 < Python2
       name 'python3'
-      version '3.4'
+      version '3.4.0'
       description 'Python 3: Next generation of the most friendly Programming Language'
       source_url 'http://www.python.org/ftp/python/3.4.0/Python-3.4.0.tgz'
       source_sha1 'bb5125d1c437caa5a62e0a3d0fee298e91196d6f'
