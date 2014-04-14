@@ -43,7 +43,7 @@ module Autoparts
           # Load environment variables for Autoparts automatically by
           # adding the following to #{profile}
 
-          eval "$(parts init -)"
+          eval "$(parts env)"
         STR
       end
 

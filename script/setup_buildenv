@@ -49,5 +49,5 @@ urlencoding_mode = normal
 use_https = False
 verbosity = WARNING" > /home/action/.s3cfg
 
-eval "$(parts init -)"
+eval "$(parts env)"
 exec /bin/bash
