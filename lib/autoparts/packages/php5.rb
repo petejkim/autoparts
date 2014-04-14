@@ -5,19 +5,19 @@ module Autoparts
   module Packages
     class Php5 < Package
       name 'php5'
-      version '5.5.8-nitrous2'
+      version '5.5.11'
       description 'PHP 5.5: A popular general-purpose scripting language that is especially suited to web development.'
       category Category::PROGRAMMING_LANGUAGES
 
-      source_url 'http://us1.php.net/get/php-5.5.8.tar.gz/from/this/mirror'
-      source_sha1 '19af9180c664c4b8f6c46fc10fbad9f935e07b52'
-      source_filetype 'tar.gz'
+      source_url 'http://us1.php.net/get/php-5.5.11.tar.bz2/from/this/mirror'
+      source_sha1 '58d660e5455b3f2abdfe3205182ffe3a58b5d1cd'
+      source_filetype 'tar.bz2'
 
       depends_on 'apache2'
       depends_on 'libmcrypt'
 
       def compile
-        Dir.chdir('php-5.5.8') do
+        Dir.chdir("php-#{version}") do
           args = [
             "--with-apxs2=#{apache2_dependency.bin_path + "apxs"}",
             "--with-mcrypt=#{get_dependency("libmcrypt").prefix_path}",
@@ -60,7 +60,7 @@ module Autoparts
       end
 
       def install
-        Dir.chdir('php-5.5.8') do
+        Dir.chdir("php-#{version}") do
           execute 'make install'
           execute 'cp', 'php.ini-development', "#{lib_path}/php.ini"
           # force apache2 to rewrite its config to get a pristine config
