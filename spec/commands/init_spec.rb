@@ -13,6 +13,21 @@ describe Autoparts::Commands::Init do
     described_class.new [], []
   end
 
+  describe 'when run with - option' do
+    it 'does not attempt starting all packages' do
+      expect(Autoparts::Package).not_to receive :start_all
+      described_class.any_instance.stub(:autoupdate_due?).and_return false
+      described_class.new([], ['-'])
+    end
+  end
+
+  describe 'when run with --start option' do
+    it 'starts all packages' do
+      expect(Autoparts::Package).to receive :start_all
+      described_class.new([], ['--start'])
+    end
+  end
+
   describe '#autoupdate_due?' do
     context 'when update has never been performed before' do
       it 'returns true' do
