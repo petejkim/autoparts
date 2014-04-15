@@ -26,7 +26,7 @@ def inject_parts_init(path)
   file = File.read(path)
   File.open(path, 'a') do |f|
     export_path = "export PATH=\"$HOME/#{relative_autoparts_bin_path}:$PATH\"\n"
-    parts_init = "eval \"$(parts init -)\"\n"
+    parts_init = "eval \"$(parts env)\"\n"
     f.write "\n"
     f.write export_path unless file.include? export_path
     f.write parts_init unless file.include? parts_init
