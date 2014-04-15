@@ -9,6 +9,8 @@ module Autoparts
     class Init
       def initialize(args, options)
         if options.first == '-'
+          # NOTE: a common usage of parts init is `eval $(parts init -)`.
+          # Ensure that everything run below does not have stray output
           no_autoupdate_env = ENV['AUTOPARTS_NO_AUTOUPDATE']
           if autoupdate_due? && !(no_autoupdate_env && ['1', 'true'].include?(no_autoupdate_env.downcase))
             if Update.update(true)
@@ -23,8 +25,9 @@ module Autoparts
               end
             end
           end
-          Autoparts::Package.start_all
           Env.print_exports
+        elsif options.include? '--start'
+          Autoparts::Package.start_all
         else
           show_help
         end
