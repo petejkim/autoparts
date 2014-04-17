@@ -5,12 +5,12 @@ module Autoparts
   module Packages
     class GoogleAppEngine < Package
       name 'googleappengine'
-      version '1.9.0'
+      version '1.9.3'
       description 'Google App Engine Python/PHP: A CLI for managing Google App Engine cloud services for Python and PHP'
       category Category::DEPLOYMENT
 
-      source_url 'https://commondatastorage.googleapis.com/appengine-sdks/featured/google_appengine_1.9.1.zip'
-      source_sha1 'fd1f0973733fcc3def77d48847d33ae529589d9c'
+      source_url 'https://commondatastorage.googleapis.com/appengine-sdks/featured/google_appengine_1.9.3.zip'
+      source_sha1 '4d4a535604a05bda3972c1abff6289f9b2ed9bfd'
       source_filetype 'zip'
 
       def install
