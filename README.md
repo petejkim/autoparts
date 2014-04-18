@@ -42,9 +42,17 @@ start a database upon boot, but if not you can start/stop it manually.
 
 For a full list of commands, run `parts help`.
 
+### Developing on Nitrous.IO
+
+Start hacking on this package manager on
+[Nitrous.IO](https://www.nitrous.io/?utm_source=github.com&utm_campaign=Autoparts&utm_medium=hackonnitrous)
+in seconds:
+
+[![Hack nitrous-io/autoparts on Nitrous.IO](https://d3o0mnbgv6k92a.cloudfront.net/assets/hack-l-v1-3cc067e71372f6045e1949af9d96095b.png)](https://www.nitrous.io/hack_button?source=embed&runtime=rails&repo=nitrous-io%2Fautoparts&file_to_open=docs%2Fcontributing.md)
+
 ### Contributing
 
-View [contributing.md](https://github.com/nitrous-io/autoparts/tree/master/docs/contributing.md) for documentation on this.
+View [contributing.md](https://github.com/nitrous-io/autoparts/tree/master/docs/contributing.md) for full documentation.
 
 ### Additional Languages
 
