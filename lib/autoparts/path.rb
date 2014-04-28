@@ -23,6 +23,7 @@ module Autoparts
       def etc;      mkpath(root + 'etc')      end
       def include;  mkpath(root + 'include')  end
       def lib;      mkpath(root + 'lib')      end
+      def opt;      mkpath(root + 'opt')      end
       def packages; mkpath(root + 'packages') end
       def sbin;     mkpath(root + 'sbin')     end
       def share;    mkpath(root + 'share')    end

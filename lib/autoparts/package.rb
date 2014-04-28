@@ -77,6 +77,25 @@ module Autoparts
         end
       end
 
+      # returns a hash of required environment variables that each package
+      # needs to be able to run properly. Its helpful when some package
+      # requires:
+      # - env variables to be set
+      # - sourcing commands / libraries from the terminal
+      def package_envs
+        envs = installed.map do |package_name, versions|
+          package = factory package_name
+          if package.respond_to? :required_env
+            package.send :required_env
+          end
+        end.flatten.compact
+        if envs
+          envs.uniq
+        else
+          []
+        end
+      end
+
       def version(val)
         @version = val
       end
@@ -310,8 +329,7 @@ module Autoparts
           symlink_recursively f, t, options
         else
           if !only_executables || (only_executables && (f.executable? || f.symlink?))
-            FileUtils.rm_rf(t.to_s) if t.exist?
-            t.make_symlink(f)
+            execute 'ln', '-sf', f, t
           end
         end
       end if from.directory? && from.executable?
@@ -406,6 +424,7 @@ module Autoparts
           puts '=> Activating...'
           activate(version)
           symlink_all
+          post_symlink
         end
       rescue => e
         archive_path.unlink if e.kind_of?(VerificationFailedError) && archive_path.exist?
@@ -522,6 +541,9 @@ module Autoparts
     def post_install # run post install commands - runs in installed package directory
     end
 
+    def post_symlink # run post symlink commands - run in installed package directory
+    end
+
     def post_uninstall # run post uninstall commands
     end
 
@@ -543,6 +565,9 @@ module Autoparts
 
     def information
       tips
+    end
+
+    def required_env # required env for package to function correctly
     end
     # -----
   end
