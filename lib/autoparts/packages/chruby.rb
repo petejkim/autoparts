@@ -18,15 +18,15 @@ module Autoparts
       end
 
       def required_env
-        ["PREFIX=\"$AUTOPARTS_ROOT\" source \"$AUTOPARTS_ROOT/share/chruby/chruby.sh\""]
+        [
+          'PREFIX="$AUTOPARTS_ROOT" source "$AUTOPARTS_ROOT/share/chruby/chruby.sh"',
+          'source "$AUTOPARTS_ROOT/share/chruby/auto.sh"'
+        ]
       end
 
       def tips
         <<-EOF.unindent
-        You have succesfully installed chruby
-
-        To activate chruby in the current shell:
-          $ eval "$(parts init -)"
+          To activate chruby, please restart your shell session.
         EOF
       end
 

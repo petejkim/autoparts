@@ -30,6 +30,9 @@ module Autoparts
 
       def post_install
         execute "ln", "-sf", prefix_path, chruby_path
+        File.open(Pathname.new(Dir.home) + '.ruby-version', 'w') do |f|
+          f.write "ruby-#{version}"
+        end
       end
 
       def post_uninstall
@@ -46,14 +49,13 @@ module Autoparts
 
       def tips
         <<-EOF.unindent
-        You can switch ruby versions with chruby
-        First, reload chruby definitions
-          $ eval "$(parts init -)"
-        Then, new ruby version should appear in chruby list
-          $ chruby
-        And you can switch to the new version
-          $ chruby new_ruby_version
-        More information about chruby here https://github.com/postmodern/chruby
+          Please restart your shell session to use the newly installed version of Ruby.
+
+          * You can install Bundler by running `gem install bundler`.
+          * You can switch between installed Ruby versions using `chruby`.
+          * You can set default Ruby version by editing ~/.ruby-version file.
+
+          Read more about chruby at: https://github.com/postmodern/chruby
         EOF
       end
     end
