@@ -5,16 +5,16 @@ module Autoparts
   module Packages
     class Erlang < Package
       name 'erlang'
-      version 'R16B03-1'
+      version '17.0'
       description 'Erlang/OTP: A programming language used to build massively scalable soft real-time systems with requirements on high availability'
       category Category::PROGRAMMING_LANGUAGES
 
-      source_url 'https://github.com/erlang/otp/archive/OTP_R16B03-1.tar.gz'
-      source_sha1 'b8f6ff90d9eb766984bb63bf553c3be72674d970'
+      source_url 'https://github.com/erlang/otp/archive/OTP-17.0.tar.gz'
+      source_sha1 'efa0dd17267ff41d47df94978b7573535c0da775'
       source_filetype 'tar.gz'
 
       def compile
-        Dir.chdir("otp-OTP_#{version}") do
+        Dir.chdir("otp-OTP-#{version}") do
           execute "./otp_build autoconf"
 
           args = [
@@ -34,7 +34,7 @@ module Autoparts
       end
 
       def install
-        Dir.chdir("otp-OTP_#{version}") do
+        Dir.chdir("otp-OTP-#{version}") do
           bin_path.mkpath
           execute 'make', 'install'
         end
