@@ -56,6 +56,7 @@ module Autoparts
             "--enable-intl"
           ]
           execute './configure', *args
+          execute 'sed -i \'/^BUILD_/ s/\$(CC)/\$(CXX)/g\' Makefile'
           execute 'make'
         end
       end
