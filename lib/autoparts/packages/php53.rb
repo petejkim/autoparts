@@ -29,8 +29,8 @@ module Autoparts
             "--sysconfdir=#{Path.etc + name}",
             "--libdir=#{lib_path}",
             "--includedir=#{include_path}",
-            "--datarootdir=#{share_path}/#{name}",
-            "--datadir=#{share_path}/#{name}",
+            # "--datarootdir=#{share_path}/#{name}",
+            # "--datadir=#{share_path}/#{name}",
             "--mandir=#{man_path}",
             "--docdir=#{doc_path}",
             # features
