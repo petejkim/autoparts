@@ -5,12 +5,12 @@ module Autoparts
   module Packages
     class Php5 < Package
       name 'php53'
-      version '5.3.14'
+      version '5.3.27'
       description 'PHP 5.3: A popular general-purpose scripting language that is especially suited to web development.'
       category Category::PROGRAMMING_LANGUAGES
 
-      source_url 'http://museum.php.net/php5/php-5.3.14.tar.bz2'
-      source_sha1 '71f3840395eb35f730d8dd255513e4ebdae4b1b0'
+      source_url 'http://museum.php.net/php5/php-5.3.27.tar.bz2'
+      source_sha1 '4f95682940ebe1bc1a93812d593460625a2aae64'
       source_filetype 'tar.bz2'
 
       depends_on 'apache2'
@@ -56,7 +56,6 @@ module Autoparts
             "--enable-intl"
           ]
           execute './configure', *args
-          execute 'sed -i \'/^BUILD_/ s/\$(CC)/\$(CXX)/g\' Makefile'
           execute 'make'
         end
       end
