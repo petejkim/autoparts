@@ -9,8 +9,8 @@ module Autoparts
       description 'PHP 5.3: A popular general-purpose scripting language that is especially suited to web development.'
       category Category::PROGRAMMING_LANGUAGES
 
-      source_url 'http://us1.php.net/get/php-5.3.28.tar.bz2/from/this/mirror'
-      source_sha1 'f985ca1f6a5f49ebfb25a08f1837a44c563b31f8'
+      source_url 'http://us1.php.net/get/php-5.4.28.tar.bz2/from/this/mirror'
+      source_sha1 '857d458b0daf89f36f8d652c5d8bd5fe509bc691'
       source_filetype 'tar.bz2'
 
       depends_on 'apache2'
