@@ -5,12 +5,12 @@ module Autoparts
   module Packages
     class Php5 < Package
       name 'php53'
-      version '5.3.28'
+      version '5.3.14'
       description 'PHP 5.3: A popular general-purpose scripting language that is especially suited to web development.'
       category Category::PROGRAMMING_LANGUAGES
 
-      source_url 'http://us1.php.net/get/php-5.3.28.tar.bz2/from/this/mirror'
-      source_sha1 'f985ca1f6a5f49ebfb25a08f1837a44c563b31f8'
+      source_url 'http://museum.php.net/php5/php-5.3.14.tar.bz2'
+      source_sha1 '71f3840395eb35f730d8dd255513e4ebdae4b1b0'
       source_filetype 'tar.bz2'
 
       depends_on 'apache2'
@@ -34,7 +34,7 @@ module Autoparts
             # "--mandir=#{man_path}",
             # "--docdir=#{doc_path}",
             # features
-            "--enable-opcache",
+            # "--enable-opcache",
             "--with-mysql=mysqlnd",
             "--with-mysqli=mysqlnd",
             "--with-pdo-mysql=mysqlnd",
