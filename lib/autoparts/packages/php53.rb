@@ -46,7 +46,7 @@ module Autoparts
             "--with-gd",
             "--with-jpeg-dir=/usr/lib/x86_64-linux-gnu",
             "--with-curl",
-            "--with-curlwrappers"
+            "--with-curlwrappers",
             "--enable-zip",
             "--with-zlib",
             "--with-iconv",
