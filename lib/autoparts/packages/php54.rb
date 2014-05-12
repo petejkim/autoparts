@@ -6,7 +6,7 @@ module Autoparts
     class Php5 < Package
       name 'php54'
       version '5.4.28'
-      description 'PHP 5.3: A popular general-purpose scripting language that is especially suited to web development.'
+      description 'PHP 5.4: A popular general-purpose scripting language that is especially suited to web development.'
       category Category::PROGRAMMING_LANGUAGES
 
       source_url 'http://us1.php.net/get/php-5.4.28.tar.bz2/from/this/mirror'
@@ -23,12 +23,18 @@ module Autoparts
             "--with-mcrypt=#{get_dependency("libmcrypt").prefix_path}",
             # path
             "--prefix=#{prefix_path}",
-            # "--sbindir=#{bin_path}",
+            # "--bindir=#{bin_path}",
+            #"--sbindir=#{bin_path}",
             "--with-config-file-path=#{php5_ini_path}",
             "--sysconfdir=#{Path.etc + name}",
             "--with-libdir=#{lib_path}",
             "--includedir=#{include_path}",
+            # "--datarootdir=#{share_path}/#{name}",
+            # "--datadir=#{share_path}/#{name}",
+            # "--mandir=#{man_path}",
+            # "--docdir=#{doc_path}",
             # features
+            # "--enable-opcache",
             "--with-mysql=mysqlnd",
             "--with-mysqli=mysqlnd",
             "--with-pdo-mysql=mysqlnd",
