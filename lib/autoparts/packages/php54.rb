@@ -5,7 +5,7 @@ module Autoparts
   module Packages
     class Php5 < Package
       name 'php54'
-      version '5.4.27'
+      version '5.4.28'
       description 'PHP 5.3: A popular general-purpose scripting language that is especially suited to web development.'
       category Category::PROGRAMMING_LANGUAGES
 
