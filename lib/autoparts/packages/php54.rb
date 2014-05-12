@@ -23,7 +23,7 @@ module Autoparts
             "--with-mcrypt=#{get_dependency("libmcrypt").prefix_path}",
             # path
             "--prefix=#{prefix_path}",
-            "--sbindir=#{bin_path}",
+            # "--sbindir=#{bin_path}",
             "--with-config-file-path=#{php5_ini_path}",
             "--sysconfdir=#{Path.etc + name}",
             "--with-libdir=#{lib_path}",
