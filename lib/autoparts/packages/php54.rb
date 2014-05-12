@@ -23,16 +23,11 @@ module Autoparts
             "--with-mcrypt=#{get_dependency("libmcrypt").prefix_path}",
             # path
             "--prefix=#{prefix_path}",
-            "--bindir=#{bin_path}",
             "--sbindir=#{bin_path}",
             "--with-config-file-path=#{php5_ini_path}",
             "--sysconfdir=#{Path.etc + name}",
             "--with-libdir=#{lib_path}",
             "--includedir=#{include_path}",
-            # "--datarootdir=#{share_path}/#{name}",
-            # "--datadir=#{share_path}/#{name}",
-            # "--mandir=#{man_path}",
-            # "--docdir=#{doc_path}",
             # features
             "--with-mysql=mysqlnd",
             "--with-mysqli=mysqlnd",
