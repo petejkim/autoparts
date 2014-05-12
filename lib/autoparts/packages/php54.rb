@@ -34,7 +34,6 @@ module Autoparts
             # "--mandir=#{man_path}",
             # "--docdir=#{doc_path}",
             # features
-            "--enable-opcache",
             "--with-mysql=mysqlnd",
             "--with-mysqli=mysqlnd",
             "--with-pdo-mysql=mysqlnd",
