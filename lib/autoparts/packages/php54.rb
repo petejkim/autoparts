@@ -27,7 +27,6 @@ module Autoparts
             "--with-gd",
             "--with-jpeg-dir=/usr/lib/x86_64-linux-gnu",
             "--with-png-dir=/usr/lib/x86_64-linux-gnu",
-            "--with-vpx-dir=/usr/lib/x86_64-linux-gnu",
             "--with-freetype-dir=/usr/lib/x86_64-linux-gnu",
             "--with-t1lib=/usr/lib/x86_64-linux-gnu",
             "--enable-gd-native-ttf",
