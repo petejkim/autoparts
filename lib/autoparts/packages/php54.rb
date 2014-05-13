@@ -14,6 +14,7 @@ module Autoparts
       source_filetype 'tar.bz2'
 
       depends_on 'apache2'
+      depends_on 'mysql'
       depends_on 'libmcrypt'
 
       def compile
@@ -21,33 +22,48 @@ module Autoparts
           args = [
             "--with-apxs2=#{apache2_dependency.bin_path + "apxs"}",
             "--with-mcrypt=#{get_dependency("libmcrypt").prefix_path}",
-            # path
             "--prefix=#{prefix_path}",
-            # "--bindir=#{bin_path}",
-            # "--sbindir=#{bin_path}",
+            "--with-curlwrappers",
+            "--with-gd",
+            "--with-jpeg-dir=/usr/lib/x86_64-linux-gnu",
+            "--with-png-dir=/usr/lib/x86_64-linux-gnu",
+            "--with-vpx-dir=/usr/lib/x86_64-linux-gnu",
+            "--with-freetype-dir=/usr/lib/x86_64-linux-gnu",
+            "--with-t1lib=/usr/lib/x86_64-linux-gnu",
+            "--enable-gd-native-ttf",
+            "--enable-exif"
             "--with-config-file-path=#{php5_ini_path}",
-            # "--sysconfdir=#{Path.etc + name}",
-            # "--with-libdir=#{lib_path}",
-            # "--includedir=#{include_path}",
-            # features
-            "--with-mysql=mysqlnd",
-            "--with-mysqli=mysqlnd",
-            "--with-pdo-mysql=mysqlnd",
-            "--with-mysql-sock=/tmp/mysql.sock",
+            "--with-config-file-scan-dir=#{php5_scan_path}",
+            "--with-zlib",
+            "--with-zlib-dir=/usr/lib/x86_64-linux-gnu",
+            "--with-gettext",
+            "--with-kerberos",
+            "--with-iconv",
+            "--enable-sockets",
             "--with-openssl",
+            "--with-pspell",
+            "--with-pdo-mysql=mysqlnd",
+            "--with-pdo-sqlite",
+            "--with-mysql=mysqlnd",
+            "--with-mysql-sock=/tmp/mysql.sock",
+            "--with-mysqli=mysqlnd",
+            "--enable-soap",
+            "--enable-xmlreader",
+            "--with-xsl",
+            "--with-curl",
+            "--with-tidy",
+            "--enable-mbstring",
             "--with-pgsql",
             "--with-pdo-pgsql",
             "--with-readline",
-            "--with-gd",
-            "--with-jpeg-dir=/usr/lib/x86_64-linux-gnu",
-            "--with-curl",
             "--enable-zip",
-            "--with-zlib",
-            "--with-iconv",
-            "--enable-mbstring",
-            "--enable-soap",
+            "--enable-sysvsem",
+            "--enable-sysvshm",
+            "--enable-json",
+            "--with-gmp",
             "--enable-bcmath",
             "--enable-intl"
+
           ]
           execute './configure', *args
           execute 'make'
@@ -97,6 +113,10 @@ module Autoparts
         Path.etc + "php5" + "php.ini"
       end
 
+      def php5_scan_path
+        Path.etc + "php5" + "conf.d"
+      end
+      
       def apache2_dependency
         @apache2_dependency ||= get_dependency "apache2"
       end
