@@ -39,7 +39,6 @@ module Autoparts
             "--with-iconv",
             "--enable-sockets",
             "--with-openssl",
-            "--with-pspell",
             "--with-pdo-mysql=mysqlnd",
             "--with-pdo-sqlite",
             "--with-mysql=mysqlnd",
