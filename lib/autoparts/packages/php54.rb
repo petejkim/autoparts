@@ -48,7 +48,6 @@ module Autoparts
             "--enable-xmlreader",
             "--with-xsl",
             "--with-curl",
-            "--with-tidy",
             "--enable-mbstring",
             "--with-pgsql",
             "--with-pdo-pgsql",
