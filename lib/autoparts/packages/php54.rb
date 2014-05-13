@@ -31,7 +31,7 @@ module Autoparts
             "--with-freetype-dir=/usr/lib/x86_64-linux-gnu",
             "--with-t1lib=/usr/lib/x86_64-linux-gnu",
             "--enable-gd-native-ttf",
-            "--enable-exif"
+            "--enable-exif",
             "--with-config-file-path=#{php5_ini_path}",
             "--with-config-file-scan-dir=#{php5_scan_path}",
             "--with-zlib",
@@ -116,7 +116,7 @@ module Autoparts
       def php5_scan_path
         Path.etc + "php5" + "conf.d"
       end
-      
+
       def apache2_dependency
         @apache2_dependency ||= get_dependency "apache2"
       end
