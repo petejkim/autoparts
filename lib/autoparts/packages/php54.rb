@@ -58,7 +58,6 @@ module Autoparts
             "--enable-sysvsem",
             "--enable-sysvshm",
             "--enable-json",
-            "--with-gmp",
             "--enable-bcmath",
             "--enable-intl"
 
