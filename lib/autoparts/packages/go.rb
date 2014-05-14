@@ -14,27 +14,48 @@ module Autoparts
       source_filetype 'tar.gz'
 
       def install
-        prefix_path.parent.mkpath
-        FileUtils.rm_rf prefix_path
-        execute 'mv', extracted_archive_path + 'go', prefix_path
+        goroot.parent.mkpath
+        FileUtils.rm_rf goroot
+        execute 'mv', extracted_archive_path + 'go', goroot
+      end
+
+      def symlink_all
+        # Manage symlinking ourselves.
+        go_binaries = Dir[goroot + 'bin' + '*']
+        execute 'ln', '-s', *go_binaries, Path.bin
+      end
+
+      def post_install
+        gopath.mkpath
+      end
+
+      def goroot
+        prefix_path
+      end
+
+      def gopath
+        Path.home + 'workspace' + 'go'
+      end
+
+      def required_env
+        [
+          "export GOROOT=#{goroot}",
+          "export GOPATH=#{gopath}",
+          "export PATH=$PATH:$GOPATH/bin"
+        ]
       end
 
       def tips
-        <<-EOS.unindent
-          Set the GOROOT environment variable to /home/action/.parts/bin
-            $ export GOROOT=/home/action/.parts/bin
-          or add the line above to your ~/.bashrc or ~/.zshrc file
+        tips = <<-EOS.unindent
+          The Go package requires the GOROOT and GOPATH environment variables to be set.
+          You'll probably also want to include $GOPATH/bin in your PATH.
 
-          As of go 1.2, a valid GOPATH is required to use the `go get` command:
-            http://golang.org/doc/code.html#GOPATH
+          Autoparts has already setup those environment variables for you:
+          you just need to start a new shell session.
 
-          `go vet` and `go doc` are now part of the go.tools sub repo:
-            http://golang.org/doc/go1.2#go_tools_godoc
-
-          To get `go vet` and `go doc` run:
-            go get code.google.com/p/go.tools/cmd/godoc
-            go get code.google.com/p/go.tools/cmd/vet
+          Alternatively, you can add these lines to your ~/.bashrc or ~/.zshrc file:
         EOS
+        tips + required_env.join("\n")
       end
     end
   end
