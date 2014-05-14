@@ -19,15 +19,37 @@ module Autoparts
         execute 'mv', extracted_archive_path + 'go', prefix_path
       end
 
+      def inject_goroot_and_gopath(path)
+        export_goroot = "export GOROOT=$HOME/.parts/bin:$PATH\n"
+        export_gopath = "export GOPATH=$HOME/workspace:$PATH\n"
+        file = File.read(path)
+
+        if !file.gsub!(/^export GOROOT=.*$/, export_goroot)
+          file = "#{file}\n#{export_goroot}"
+        end
+
+        if !file.gsub!(/^export GOPATH=.*$/, export_gopath)
+          file = "#{file}\n#{export_gopath}"
+        end
+
+        File.open(path, 'w+') { |f| f.write(file) }
+      end
+
+      def post_symlink
+        bashrc_path = Path.home + '.bashrc'
+        zshrc_path = Path.home + '.zshrc'
+
+        if bashrc_path.exist?
+          inject_goroot_and_gopath(bash_profile_path)
+        end
+
+        if zshrc_path.exist?
+          inject_goroot_and_gopath(bash_profile_path)
+        end
+      end
+
       def tips
         <<-EOS.unindent
-          Set the GOROOT environment variable to /home/action/.parts/bin
-            $ export GOROOT=/home/action/.parts/bin
-          or add the line above to your ~/.bashrc or ~/.zshrc file
-
-          As of go 1.2, a valid GOPATH is required to use the `go get` command:
-            http://golang.org/doc/code.html#GOPATH
-
           `go vet` and `go doc` are now part of the go.tools sub repo:
             http://golang.org/doc/go1.2#go_tools_godoc
 
