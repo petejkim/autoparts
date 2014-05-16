@@ -42,7 +42,7 @@ module Autoparts
 
       def tips
         tips = <<-EOS.unindent
-          Autoparts has added GOROOT and GOPATH environment varibles for you.
+          Autoparts has added GOROOT and GOPATH environment variables for you.
           To activate go, please restart your shell session.
         EOS
       end
