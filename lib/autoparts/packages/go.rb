@@ -5,32 +5,27 @@ module Autoparts
   module Packages
     class Go < Package
       name 'go'
-      version '1.2.1'
+      version '1.2.2'
       description 'Go: An open source programming language that makes it easy to build simple, reliable, and efficient software.'
       category Category::PROGRAMMING_LANGUAGES
 
-      source_url 'https://go.googlecode.com/files/go1.2.1.linux-amd64.tar.gz'
-      source_sha1 '7605f577ff6ac2d608a3a4e829b255ae2ebc8dcf'
+      source_url 'https://storage.googleapis.com/golang/go1.2.2.linux-amd64.tar.gz'
+      source_sha1 '6bd151ca49c435462c8bf019477a6244b958ebb5'
       source_filetype 'tar.gz'
 
       def install
-        goroot.parent.mkpath
-        FileUtils.rm_rf goroot
-        execute 'mv', extracted_archive_path + 'go', goroot
+        prefix_path.parent.mkpath
+        FileUtils.rm_rf prefix_path
+        execute 'mv', extracted_archive_path + 'go', prefix_path
       end
 
       def symlink_all
-        # Manage symlinking ourselves.
-        go_binaries = Dir[goroot + 'bin' + '*']
-        execute 'ln', '-s', *go_binaries, Path.bin
+        # Symlink only binaries
+        symlink_recursively(bin_path, Path.bin, only_executables: true)
       end
 
       def post_install
         gopath.mkpath
-      end
-
-      def goroot
-        prefix_path
       end
 
       def gopath
@@ -39,7 +34,7 @@ module Autoparts
 
       def required_env
         [
-          "export GOROOT=#{goroot}",
+          "export GOROOT=#{prefix_path}",
           "export GOPATH=#{gopath}",
           "export PATH=$PATH:$GOPATH/bin"
         ]
@@ -47,15 +42,9 @@ module Autoparts
 
       def tips
         tips = <<-EOS.unindent
-          The Go package requires the GOROOT and GOPATH environment variables to be set.
-          You'll probably also want to include $GOPATH/bin in your PATH.
-
-          Autoparts has already setup those environment variables for you:
-          you just need to start a new shell session.
-
-          Alternatively, you can add these lines to your ~/.bashrc or ~/.zshrc file:
+          Autoparts has added GOROOT and GOPATH environment varibles for you.
+          To activate go, please restart your shell session.
         EOS
-        tips + required_env.join("\n")
       end
     end
   end
