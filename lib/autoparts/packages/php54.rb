@@ -14,7 +14,6 @@ module Autoparts
       source_filetype 'tar.bz2'
 
       depends_on 'apache2'
-      depends_on 'mysql'
       depends_on 'libmcrypt'
 
       def compile
