@@ -14,6 +14,7 @@ module Autoparts
       source_filetype 'tar.bz2'
 
       depends_on 'apache2'
+      depends_on 'mysql'
       depends_on 'libmcrypt'
 
       def compile
@@ -66,6 +67,7 @@ module Autoparts
 
       def install
         Dir.chdir("php-#{version}") do
+          execute 'mkdir -p /home/action/.parts/packages/php54/5.4.28/bin'
           execute 'make install'
           execute 'cp', 'php.ini-development', "#{lib_path}/php.ini"
           # force apache2 to rewrite its config to get a pristine config
