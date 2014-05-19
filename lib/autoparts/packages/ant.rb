@@ -5,12 +5,12 @@ module Autoparts
   module Packages
     class Ant < Package
       name 'ant'
-      version '1.9.3'
+      version '1.9.4'
       description 'Ant: A pure Java build tool, simpler and easier to use than GNU Make'
       category Category::DEVELOPMENT_TOOLS
 
-      source_url 'http://www.us.apache.org/dist//ant/binaries/apache-ant-1.9.3-bin.tar.gz'
-      source_sha1 '11a0b936fba02f96b8d737d90c610382232ffea6'
+      source_url 'http://www.us.apache.org/dist//ant/binaries/apache-ant-1.9.4-bin.tar.gz'
+      source_sha1 '6c41481e8201f6b3f7e216146b95bb6de70208bb'
       source_filetype 'tar.gz'
 
       def install
