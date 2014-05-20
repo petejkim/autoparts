@@ -41,6 +41,13 @@ module Autoparts
       def common_version
         "2.7"
       end
+
+      # we want to cleanup site-packages to make sure that we dont include any
+      # wrong packages
+      def pre_archive
+        FileUtils.rm_rf site_packages
+        site_packages
+      end
     end
   end
 end
