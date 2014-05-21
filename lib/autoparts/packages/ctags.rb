@@ -1,7 +1,7 @@
 module Autoparts
   module Packages
-    class ExuberantCtags < Package
-      name 'exuberant_ctags'
+    class Ctags < Package
+      name 'ctags'
       version '5.8'
       description "Exuberant Ctags: A multilanguage implementation of Ctags"
       category Category::DEVELOPMENT_TOOLS
@@ -12,25 +12,25 @@ module Autoparts
       source_filetype 'tar.gz'
 
       def compile
-	Dir.chdir('ctags-5.8') do
-	  args = [
-	    "--prefix=#{prefix_path}",
-	  ]
-	  execute './configure', *args
-	  execute 'make'
-	end
+        Dir.chdir('ctags-5.8') do
+          args = [
+            "--prefix=#{prefix_path}",
+          ]
+          execute './configure', *args
+          execute 'make'
+        end
       end
 
       def install
-	Dir.chdir('ctags-5.8') do
-	  execute 'make install'
-	end
+        Dir.chdir('ctags-5.8') do
+          execute 'make install'
+        end
       end
 
       def tips
-	<<-STR.unindent
-	  Exuberant Ctags is added in your path. Restart your shell to use it
-	STR
+        <<-STR.unindent
+        Exuberant Ctags is added in your path.
+        STR
       end
     end
   end
