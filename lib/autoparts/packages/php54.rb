@@ -3,7 +3,7 @@
 
 module Autoparts
   module Packages
-    class Php5 < Package
+    class Php54 < Package
       name 'php54'
       version '5.4.28'
       description 'PHP 5.4: A popular general-purpose scripting language that is especially suited to web development.'
