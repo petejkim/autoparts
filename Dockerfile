@@ -38,6 +38,7 @@ RUN apt-get update; apt-get install -y \
   libgdbm-dev \
   libglib2.0-dev \
   libglib2.0-dev \
+  libicu-dev \
   libldap-2.4-2 \
   libldap2-dev \
   libltdl-dev \
@@ -75,12 +76,14 @@ RUN apt-get update; apt-get install -y \
   ruby1.9.3 \
   s3cmd \
   sqlite3 \
+  telnet \
   tsconf \
   unzip \
   util-linux \
   wget \
   whiptail \
   xz-utils \
+  zip \
   zlib1g \
   zlib1g-dev
 
