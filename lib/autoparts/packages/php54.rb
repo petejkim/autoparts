@@ -14,7 +14,6 @@ module Autoparts
       source_filetype 'tar.bz2'
 
       depends_on 'apache2'
-      depends_on 'mysql'
       depends_on 'libmcrypt'
 
       def compile
@@ -22,18 +21,29 @@ module Autoparts
 	  args = [
 	    "--with-apxs2=#{apache2_dependency.bin_path + "apxs"}",
 	    "--with-mcrypt=#{get_dependency("libmcrypt").prefix_path}",
+	    # path
 	    "--prefix=#{prefix_path}",
+	    "--bindir=#{bin_path}",
+	    "--sbindir=#{bin_path}",
+	    "--with-config-file-path=#{php5_ini_path}",
+	    "--with-config-file-scan-dir=#{php5_scan_path}",
+	    "--sysconfdir=#{Path.etc + name}",
+	    "--libdir=#{lib_path}",
+	    "--includedir=#{include_path}",
+	    "--datarootdir=#{share_path}/#{name}",
+	    "--datadir=#{share_path}/#{name}",
+	    "--mandir=#{man_path}",
+	    "--docdir=#{doc_path}",
+	    # features
 	    "--with-curlwrappers",
 	    "--with-gd",
 	    "--with-jpeg-dir=/usr/lib/x86_64-linux-gnu",
 	    "--with-png-dir=/usr/lib/x86_64-linux-gnu",
 	    "--with-freetype-dir=/usr/lib/x86_64-linux-gnu",
+	    "--with-zlib-dir=/usr/lib/x86_64-linux-gnu",
 	    "--enable-gd-native-ttf",
 	    "--enable-exif",
-	    "--with-config-file-path=#{php5_ini_path}",
-	    "--with-config-file-scan-dir=#{php5_scan_path}",
 	    "--with-zlib",
-	    "--with-zlib-dir=/usr/lib/x86_64-linux-gnu",
 	    "--with-gettext",
 	    "--with-kerberos",
 	    "--with-iconv",
@@ -58,7 +68,6 @@ module Autoparts
 	    "--enable-json",
 	    "--enable-bcmath",
 	    "--enable-intl"
-
 	  ]
 	  execute './configure', *args
 	  execute 'make'
@@ -67,7 +76,6 @@ module Autoparts
 
       def install
 	Dir.chdir("php-#{version}") do
-	  execute 'mkdir -p /home/action/.parts/packages/php54/5.4.28/bin'
 	  execute 'make install'
 	  execute 'cp', 'php.ini-development', "#{lib_path}/php.ini"
 	  # force apache2 to rewrite its config to get a pristine config
