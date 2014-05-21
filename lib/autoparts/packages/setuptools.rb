@@ -14,7 +14,7 @@ module Autoparts
 
       depends_on "python2"
 
-      def install
+      def compile
         Dir.chdir("setuptools-2.2") do
           args = [
             "-s", "setup.py",
@@ -29,8 +29,32 @@ module Autoparts
         end
       end
 
+      def install
+        required_files.each do |f|
+          execute "mv",
+            python_dependency.site_packages + f,
+            prefix_path + f
+        end
+      end
+
+      def post_install
+        required_files.each do |f|
+          execute "cp", "-rf",
+            prefix_path + f,
+            python_dependency.site_packages + f
+        end
+      end
+
       def python_dependency
         @python ||= get_dependency("python2")
+      end
+
+      def required_files
+        [
+          "easy-install.pth",
+          "setuptools-#{version}-py2.7.egg",
+          "setuptools.pth",
+        ]
       end
     end
   end

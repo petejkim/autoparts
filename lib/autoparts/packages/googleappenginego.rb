@@ -23,7 +23,11 @@ module Autoparts
           execute 'ln', '-s', prefix_path + basename, bin_path + basename
         end
         ["goapp", "gofmt", "godoc"].each do |p|
+<<<<<<< HEAD
           execute 'ln', '-s', prefix_path + p, bin_path + p 
+=======
+          execute 'ln', '-s', prefix_path + p, bin_path + p
+>>>>>>> 24cee82818499ccb0c1ec2673ad6aaad70cd907d
         end
       end
     end

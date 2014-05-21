@@ -367,6 +367,7 @@ module Autoparts
 
     def archive_installed_package
       @source_install = false
+      pre_archive
       Dir.chdir(prefix_path) do
         execute "tar -c . | gzip -n > #{temporary_archive_path}"
       end
@@ -568,6 +569,9 @@ module Autoparts
     end
 
     def required_env # required env for package to function correctly
+    end
+
+    def pre_archive # running before archive
     end
     # -----
   end
