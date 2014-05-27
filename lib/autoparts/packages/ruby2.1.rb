@@ -5,10 +5,10 @@ module Autoparts
   module Packages
     class Ruby21 < Package
       name 'ruby2.1'
-      version '2.1.1'
-      description 'Ruby 2.1.1: A dynamic programming language with a focus on simplicity and productivity.'
-      source_url 'http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.1.tar.gz'
-      source_sha1 '27cbc8ae98863b4607ede8085beca2a20f4c03fd'
+      version '2.1.2'
+      description 'Ruby 2.1.2: A dynamic programming language with a focus on simplicity and productivity.'
+      source_url 'http://cache.ruby-lang.org/pub/ruby/2.1/ruby-2.1.2.tar.gz'
+      source_sha1 'b818d56b4638f1949239038623b761517d4a5686'
       source_filetype 'tar.gz'
 
       depends_on 'chruby'
