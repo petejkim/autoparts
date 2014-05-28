@@ -43,9 +43,30 @@ module Autoparts
         prefix_path + 'etc/couchdb/default.ini'
       end
       
+      def couchdb_daemon_path
+        prefix_path + 'etc/init.d/couchdb'
+      end 
+      
+      def couchdb_daemon_conf_path
+        prefix_path + 'etc/default/couchdb'
+      end
+      
       def post_install
         execute 'sed', '-i', "s|bind_address = 127.0.0.1|bind_address = 0.0.0.0|g", couchdb_conf_path
+        execute 'sed', '-i', "s|COUCHDB_USER=couchdb||g", couchdb_daemon_conf_path
       end 
+      
+      def start
+        execute couchdb_daemon_path, 'start'
+      end
+
+      def stop
+        execute couchdb_daemon_path, 'stop'
+      end
+
+      def running?
+        !!system(couchdb_daemon_path.to_s, 'status', out: '/dev/null', err: '/dev/null')
+      end
       
     end
   end
