@@ -7,6 +7,8 @@ module Autoparts
       name 'ruby_install'
       version '0.4.1'
       description 'Ruby Install: Installs Ruby, JRuby, Rubinius, MagLev or MRuby'
+      category Category::DEVELOPMENT_TOOLS
+
       source_url 'https://github.com/postmodern/ruby-install/archive/v0.4.1.tar.gz'
       source_sha1 '8a62fa5e551101d433cf25bd67c06d47d00c3ab8'
       source_filetype 'tar.gz'
