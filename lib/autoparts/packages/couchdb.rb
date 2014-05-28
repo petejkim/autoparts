@@ -4,7 +4,7 @@
 module Autoparts
   module Packages
     class CouchDB < Package
-      name 'couchdb' 
+      name 'couchdb'
       version '1.5.1'
 
       description "CouchDB: A Database for the Web"
@@ -19,7 +19,7 @@ module Autoparts
 
       depends_on 'spidermonkey'
       depends_on 'erlangr16'
-      
+
       def compile
         Dir.chdir('apache-couchdb-1.5.1') do
           args = [
@@ -42,20 +42,20 @@ module Autoparts
       def couchdb_conf_path
         prefix_path + 'etc/couchdb/default.ini'
       end
-      
+
       def couchdb_daemon_path
         prefix_path + 'etc/init.d/couchdb'
-      end 
-      
+      end
+
       def couchdb_daemon_conf_path
         prefix_path + 'etc/default/couchdb'
       end
-      
+
       def post_install
         execute 'sed', '-i', "s|bind_address = 127.0.0.1|bind_address = 0.0.0.0|g", couchdb_conf_path
         execute 'sed', '-i', "s|COUCHDB_USER=couchdb||g", couchdb_daemon_conf_path
-      end 
-      
+      end
+
       def start
         execute couchdb_daemon_path, 'start'
       end
@@ -67,7 +67,16 @@ module Autoparts
       def running?
         !!system(couchdb_daemon_path.to_s, 'status', out: '/dev/null', err: '/dev/null')
       end
-      
+
+      def tips
+        <<-STR.unindent
+          To start the server:
+            $ parts start couchdb
+
+          To stop the server:
+            $ parts stop couchdb
+        STR
+      end
     end
   end
 end
