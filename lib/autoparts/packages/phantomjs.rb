@@ -5,12 +5,12 @@ module Autoparts
   module Packages
     class PhantomJS < Package
       name 'phantomjs'
-      version '1.9.1'
+      version '1.9.7'
       description 'PhantomJS: A headless WebKit scriptable with a JavaScript API'
       category Category::WEB_DEVELOPMENT
 
-      source_url 'https://phantomjs.googlecode.com/files/phantomjs-1.9.1-linux-x86_64.tar.bz2'
-      source_sha1 '8ab4753abd352eaed489709c6c7dd13dae67cd91'
+      source_url 'https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.7-linux-x86_64.tar.bz2'
+      source_sha1 'ca3581dfdfc22ceab2050cf55ea7200c535a7368'
       source_filetype 'tar.bz2'
 
       def install
