@@ -5,12 +5,12 @@ module Autoparts
   module Packages
     class Php5 < Package
       name 'php5'
-      version '5.5.11'
+      version '5.5.13'
       description 'PHP 5.5: A popular general-purpose scripting language that is especially suited to web development.'
       category Category::PROGRAMMING_LANGUAGES
 
-      source_url 'http://us1.php.net/get/php-5.5.11.tar.bz2/from/this/mirror'
-      source_sha1 '58d660e5455b3f2abdfe3205182ffe3a58b5d1cd'
+      source_url 'http://us1.php.net/get/php-5.5.13.tar.bz2/from/this/mirror'
+      source_sha1 'b16ff3218d2cc79a5acac577f7560dbb80f205d1'
       source_filetype 'tar.bz2'
 
       depends_on 'apache2'
