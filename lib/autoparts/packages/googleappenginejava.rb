@@ -13,7 +13,7 @@ module Autoparts
       def install
         prefix_path.parent.mkpath
         FileUtils.rm_rf prefix_path
-        execute 'mv', extracted_archive_path + 'appengine-java-sdk-1.9.5', prefix_path
+        execute 'mv', extracted_archive_path + "appengine-java-sdk-#{version}", prefix_path
       end
 
       def post_install
