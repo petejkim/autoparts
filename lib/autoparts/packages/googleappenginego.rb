@@ -3,7 +3,7 @@ module Autoparts
     class GoogleAppEngineGo < Package
       name 'googleappenginego'
       version '1.9.5'
-      description 'Google App Engine Go: A CLI for managing Google App Engine cloud services for Go'
+      description 'Google App Engine for Go: A CLI for managing Google App Engine cloud services for Go'
       category Category::DEPLOYMENT
 
       source_url 'https://storage.googleapis.com/appengine-sdks/featured/go_appengine_sdk_linux_amd64-1.9.5.zip'
@@ -20,10 +20,10 @@ module Autoparts
         bin_path.mkpath
         Dir[prefix_path + "*.py"].each do |p|
           basename = File.basename(p)
-          execute 'ln', '-s', prefix_path + basename, bin_path + basename
+          execute 'ln', '-fs', prefix_path + basename, bin_path + basename
         end
         ["goapp", "gofmt", "godoc"].each do |p|
-          execute 'ln', '-s', prefix_path + p, bin_path + p
+          execute 'ln', '-fs', prefix_path + p, bin_path + p
         end
       end
     end
