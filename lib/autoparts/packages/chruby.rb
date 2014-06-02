@@ -7,6 +7,8 @@ module Autoparts
       name 'chruby'
       version '0.3.8'
       description 'Chruby: Changes the current ruby'
+      category Category::DEVELOPMENT_TOOLS
+
       source_url 'https://github.com/postmodern/chruby/archive/v0.3.8.tar.gz'
       source_sha1 '320d13bacafeae72631093dba1cd5526147d03cc'
       source_filetype 'tar.gz'

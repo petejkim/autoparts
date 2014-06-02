@@ -11,6 +11,8 @@ module Autoparts
       source_sha1 'b818d56b4638f1949239038623b761517d4a5686'
       source_filetype 'tar.gz'
 
+      category Category::PROGRAMMING_LANGUAGES
+
       depends_on 'chruby'
 
       def compile
