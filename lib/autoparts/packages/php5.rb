@@ -25,8 +25,9 @@ module Autoparts
             "--prefix=#{prefix_path}",
             "--bindir=#{bin_path}",
             "--sbindir=#{bin_path}",
-            "--with-config-file-path=/home/action/.parts/etc/php5/",
-            "--sysconfdir=#{Path.etc + name}",
+            "--with-config-file-path=#{php5_config_path}",
+            "--with-config-file-scan-dir=#{php5_scan_path}",
+            "--sysconfdir=#{php5_config_path}",
             "--libdir=#{lib_path}",
             "--includedir=#{include_path}",
             "--datarootdir=#{share_path}/#{name}",
@@ -87,9 +88,7 @@ module Autoparts
       end
 
       def tips
-        <<-EOS.unindent
-          #{apache2_dependency.tips}
-
+        apache2_dependency.tips + "\n" + <<-EOS.unindent
           PHP config file is located at:
             $ #{php5_ini_path}
 
@@ -98,8 +97,12 @@ module Autoparts
         EOS
       end
 
+      def php5_config_path
+        Path.etc + "php5"
+      end
+
       def php5_ini_path
-        Path.etc + "php5" + "php.ini"
+        php5_config_path + "php.ini"
       end
 
       def apache2_dependency
