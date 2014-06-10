@@ -5,13 +5,11 @@ module Autoparts
   module Packages
     class HerokuToolbelt < Package
       name 'heroku_toolbelt'
-      # TODO: update to latest 3.6.0 once its stand-alone install is fixed, see
-      # https://github.com/heroku/heroku/issues/1085
-      version '3.5.0'
+      version '3.8.2'
       description 'CLI tool for creating and managing Heroku apps'
       category Category::DEPLOYMENT
-      source_url 'https://s3.amazonaws.com/assets.heroku.com/heroku-client/heroku-client-3.5.0.tgz'
-      source_sha1 '9896b7d45a872f21b191102a56afec9567f2713a'
+      source_url 'https://s3.amazonaws.com/assets.heroku.com/heroku-client/heroku-client-3.8.2.tgz'
+      source_sha1 '25210902d2b12b3aa484cf915c5719ea75a4e15b'
       source_filetype 'tar.gz'
 
       def install
