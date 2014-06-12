@@ -14,7 +14,7 @@ module Autoparts
       source_filetype 'tar.gz'
 
       def compile
-        Dir.chdir('postgresql-9.2.4') do
+        Dir.chdir(archive_dir) do
           args = [
             '--disable-debug',
             "--prefix=#{prefix_path}",
@@ -40,9 +40,13 @@ module Autoparts
       end
 
       def install
-        Dir.chdir('postgresql-9.2.4') do
+        Dir.chdir(archive_dir) do
           execute 'make install-world'
         end
+      end
+
+      def archive_dir
+        'postgresql-9.2.4'
       end
 
       def post_install
@@ -75,16 +79,20 @@ module Autoparts
       end
 
       def purge
+        if postgres_var_path.exist?
+          postgres_conf = postgres_var_path + 'postgresql.conf'
+          FileUtils.rm_rf postgres_conf
+        end
         postgres_var_path.rmtree if postgres_var_path.exist?
         postgres_log_path.rmtree if postgres_log_path.exist?
       end
 
       def postgres_var_path
-        Path.var + 'postgresql'
+        Path.var + "#{name}"
       end
 
       def postgres_log_path
-        Path.var + 'log' + 'postgresql'
+        Path.var + 'log' + "#{name}"
       end
 
       def pg_ctl_path
