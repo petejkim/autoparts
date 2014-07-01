@@ -5,12 +5,12 @@ module Autoparts
   module Packages
     class Php5 < Package
       name 'php5'
-      version '5.5.13'
+      version '5.5.14'
       description 'PHP 5.5: A popular general-purpose scripting language that is especially suited to web development.'
       category Category::PROGRAMMING_LANGUAGES
 
-      source_url 'http://us1.php.net/get/php-5.5.13.tar.bz2/from/this/mirror'
-      source_sha1 'b16ff3218d2cc79a5acac577f7560dbb80f205d1'
+      source_url 'http://www.php.net/get/php-5.5.14.tar.bz2/from/this/mirror'
+      source_sha1 '062d351da165aa0568e4d8cbc53a18d73b99f49a'
       source_filetype 'tar.bz2'
 
       depends_on 'apache2'
@@ -36,24 +36,38 @@ module Autoparts
             "--docdir=#{doc_path}",
             # features
             "--enable-opcache",
+            "--with-curl",
+            "--with-freetype-dir=/usr/lib/x86_64-linux-gnu",
+            "--with-gd",
+            "--with-gettext",
+            "--with-iconv",
+            "--with-jpeg-dir=/usr/lib/x86_64-linux-gnu",
+            "--with-kerberos",
             "--with-mysql=mysqlnd",
             "--with-mysqli=mysqlnd",
-            "--with-pdo-mysql=mysqlnd",
             "--with-mysql-sock=/tmp/mysql.sock",
             "--with-openssl",
-            "--with-pgsql",
+            "--with-pdo-mysql=mysqlnd",
             "--with-pdo-pgsql",
+            "--with-pdo-sqlite",
+            "--with-pgsql",
+            "--with-png-dir=/usr/lib/x86_64-linux-gnu",
             "--with-readline",
-            "--with-gd",
-            "--with-jpeg-dir=/usr/lib/x86_64-linux-gnu",
-            "--with-curl",
-            "--enable-zip",
             "--with-zlib",
-            "--with-iconv",
+            "--with-zlib-dir=/usr/lib/x86_64-linux-gnu",
+            "--with-xsl",
+            "--enable-bcmath",
+            "--enable-exif",
+            "--enable-gd-native-ttf",
+            "--enable-intl",
+            "--enable-json",
             "--enable-mbstring",
             "--enable-soap",
-            "--enable-bcmath",
-            "--enable-intl"
+            "--enable-sockets",
+            "--enable-sysvsem",
+            "--enable-sysvshm",
+            "--enable-xmlreader",
+            "--enable-zip"
           ]
           execute './configure', *args
           execute 'make'
@@ -103,6 +117,10 @@ module Autoparts
 
       def php5_ini_path
         php5_config_path + "php.ini"
+      end
+
+      def php5_scan_path
+        php5_config_path + "conf.d"
       end
 
       def apache2_dependency
