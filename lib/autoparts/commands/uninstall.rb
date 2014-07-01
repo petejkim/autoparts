@@ -7,7 +7,7 @@ module Autoparts
       def initialize(args, options)
         if args.empty?
           abort <<-EOS.unindent
-            Usage: parts uninstall PACKAGE...
+            Usage: parts uninstall PACKAGE... [--version=VERSION]
             Example: parts uninstall postgresql
           EOS
         end
@@ -18,14 +18,21 @@ module Autoparts
               raise PackageNotInstalledError.new package_name
             end
             pkg = nil
+            vopt = options.select {|o| o.start_with? '--version='}.last
+            ver = vopt ? vopt.split('=')[1] : nil
+
             begin
               pkg = Package.factory(package_name)
             rescue Autoparts::PackageNotFoundError => e
-              pkg = Class.new(Package) do
-                name(package_name)
-                version(installed[package_name].first)
-              end.new
             ensure
+              if pkg.nil?
+                pkg = Class.new(Package) do
+                  name(package_name)
+                  version(installed[package_name].first)
+                end.new
+              elsif ver
+                pkg.instance_variable_set(:@active_version, ver)
+              end
               pkg.perform_uninstall
             end
           end

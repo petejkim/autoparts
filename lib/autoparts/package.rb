@@ -458,7 +458,7 @@ module Autoparts
       parent.rmtree if parent.children.empty?
       post_uninstall
 
-      puts "=> Uninstalled #{name}\n"
+      puts "=> Uninstalled #{name} #{active_version}\n"
       call_web_hook :uninstalled
     end
 
