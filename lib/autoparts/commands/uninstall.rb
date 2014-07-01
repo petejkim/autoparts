@@ -12,11 +12,22 @@ module Autoparts
           EOS
         end
         begin
+          installed = Package.installed
           args.each do |package_name|
-            unless Package.installed? package_name
+            unless installed.has_key? package_name
               raise PackageNotInstalledError.new package_name
             end
-            Package.factory(package_name).perform_uninstall
+            pkg = nil
+            begin
+              pkg = Package.factory(package_name)
+            rescue Autoparts::PackageNotFoundError => e
+              pkg = Class.new(Package) do
+                name(package_name)
+                version(installed[package_name].first)
+              end.new
+            ensure
+              pkg.perform_uninstall
+            end
           end
         rescue => e
           abort "parts: ERROR: #{e}\nAborting!"
