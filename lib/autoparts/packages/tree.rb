@@ -3,7 +3,7 @@ module Autoparts
     class Tree < Package
       name 'tree'
       version '1.7.0'
-      description 'Tree is a recursive directory listing command'
+      description 'Tree: A recursive directory listing command'
       category Category::UTILITIES
 
       source_url 'http://mama.indstate.edu/users/ice/tree/src/tree-1.7.0.tgz'
@@ -11,13 +11,13 @@ module Autoparts
       source_filetype 'tgz'
 
       def compile
-        Dir.chdir('tree-1.7.0') do
+        Dir.chdir(name_with_version) do
           execute 'make'
         end
       end
 
       def install
-        Dir.chdir('tree-1.7.0') do
+        Dir.chdir(name_with_version) do
           execute 'make', "prefix=#{prefix_path}", 'install'
         end
       end
