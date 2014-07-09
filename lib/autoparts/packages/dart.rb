@@ -2,13 +2,13 @@ module Autoparts
   module Packages
     class Dart < Package
       name 'dart'
-      version '1.3.0'
+      version '1.5.3'
 
       description 'Dart: new platform for scalable web app engineering'
       category Category::PROGRAMMING_LANGUAGES
 
-      source_url 'http://storage.googleapis.com/dart-archive/channels/stable/release/34825/sdk/dartsdk-linux-x64-release.zip'
-      source_sha1 '17a023802141092b42edb6f4c1db1b909fa79e36'
+      source_url 'http://storage.googleapis.com/dart-archive/channels/stable/release/37972/sdk/dartsdk-linux-x64-release.zip'
+      source_sha1 '78e0691b4d5e4a8d3815f3c4e2e0909f7e8cbe86'
       source_filetype 'zip'
 
       def install
