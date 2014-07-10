@@ -21,18 +21,17 @@ module Autoparts
 
       def post_install
         bin_path.mkpath
-        es_config_file = prefix_path + 'config' + 'elasticsearch.yml'
 
         es_data_path.mkpath; es_log_path.mkpath; es_plugins_path.mkpath
 
-        execute 'sed', '-i', "s|# path.data:.*|path.data: #{es_data_path}|g", es_config_file
-        execute 'sed', '-i', "s|# path.logs: /path/to/logs|path.logs: #{es_log_path}|g", es_config_file
-        execute 'sed', '-i', "s|# path.plugins: /path/to/plugins|path.plugins: #{es_plugins_path}|g", es_config_file
-        execute 'sed', '-i', "s|#\\s*network.host:.*|network.host: 127.0.0.1|g", es_config_file
+        execute 'sed', '-i', "s|# path.data:.*|path.data: #{es_data_path}|g", es_config_path
+        execute 'sed', '-i', "s|# path.logs: /path/to/logs|path.logs: #{es_log_path}|g", es_config_path
+        execute 'sed', '-i', "s|# path.plugins: /path/to/plugins|path.plugins: #{es_plugins_path}|g", es_config_path
+        execute 'sed', '-i', "s|#\\s*network.host:.*|network.host: 127.0.0.1|g", es_config_path
       end
 
       def start
-        execute es_executable_path, '-d', '-p', es_pid_file_path
+        execute es_executable_path, '-d', '-p', es_pid_file_path, '--config', es_config_path
       end
 
       def stop
@@ -51,6 +50,10 @@ module Autoparts
           end
         end
         false
+      end
+
+      def es_config_path
+        prefix_path + 'config' + 'elasticsearch.yml'
       end
 
       def es_var_path
