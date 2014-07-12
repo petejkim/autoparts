@@ -7,7 +7,7 @@ module Autoparts
       source_url 'ftp://ftp.openldap.org/pub/OpenLDAP/openldap-release/openldap-2.4.39.tgz'
       source_sha1 '2b8e8401214867c361f7212e7058f95118b5bd6c'
       source_filetype 'tgz'
-      category Category::UTILITIES
+      category Category::DATA_STORES
 
       depends_on 'berkeley_db'
 
@@ -16,7 +16,9 @@ module Autoparts
           args = [
             "--prefix=#{prefix_path}",
             "--enable-ldap",
-            "--with-tls=openssl"
+            "--with-tls=openssl",
+	    "--enable-modules",
+	    "--enable-overlays"
           ]
 
           execute './configure', *args
