@@ -1,3 +1,5 @@
+require 'fileutils'
+
 module Autoparts
   module Packages
     class Openldap < Package
@@ -38,6 +40,8 @@ module Autoparts
 	open("#{config_path}/ldap.conf", "a") do |conf|
           conf.puts "URI     ldap://localhost:1389"
 	end
+
+	FileUtils.mkdir_p "#{prefix_path}/var/lib/ldap"
       end
 
       def slapd_path
