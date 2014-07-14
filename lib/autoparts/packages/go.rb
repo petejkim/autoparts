@@ -5,12 +5,12 @@ module Autoparts
   module Packages
     class Go < Package
       name 'go'
-      version '1.2.2'
+      version '1.3'
       description 'Go: An open source programming language that makes it easy to build simple, reliable, and efficient software.'
       category Category::PROGRAMMING_LANGUAGES
 
-      source_url 'https://storage.googleapis.com/golang/go1.2.2.linux-amd64.tar.gz'
-      source_sha1 '6bd151ca49c435462c8bf019477a6244b958ebb5'
+	  source_url 'http://golang.org/dl/go1.3.linux-amd64.tar.gz'
+      source_sha1 'b6b154933039987056ac307e20c25fa508a06ba6'
       source_filetype 'tar.gz'
 
       def install
