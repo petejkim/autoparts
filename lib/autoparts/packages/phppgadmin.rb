@@ -4,33 +4,31 @@ module Autoparts
       name 'phppgadmin'
       version '5.1'
       description 'phpPgAdmin: a web-based administration tool for PostgreSQL.'
-      source_url 'http://downloads.sourceforge.net/project/phppgadmin/phpPgAdmin%20%5Bstable%5D/phpPgAdmin-5.1/phpPgAdmin-5.1.tar.gz?r=http%3A%2F%2Fphppgadmin.sourceforge.net%2Fdoku.php%3Fid%3Ddownload&ts=1395472725&use_mirror=heanet'
-      source_sha1 'ef90fc9942c67ab95f063cacc43911a40d34fbc1'
-      source_filetype 'tar.gz'
       category Category::WEB_DEVELOPMENT
 
+      source_url 'http://sourceforge.net/projects/phppgadmin/files/phpPgAdmin%20%5Bstable%5D/phpPgAdmin-5.1/phpPgAdmin-5.1.tar.bz2'
+      source_sha1 'd7a1f42f79370e1006dcdf558ab888275a70c3c9'
+      source_filetype 'tar.gz'
+
       depends_on 'apache2'
-      depends_on 'php5-apache2'
+      depends_on 'php5'
       depends_on 'postgresql'
-      depends_on 'php5-gd'
 
       def install
-        phppgadmin_path.mkpath
-        Dir.chdir('phpPgAdmin-5.1') do
-          execute 'cp', '-r', '.', phppgadmin_path
-        end
+        phppgadmin_path.parent.mkpath
+        FileUtils.rm_rf phppgadmin_path
+        FileUtils.mkdir_p prefix_path
+        execute 'mv', extracted_archive_path + 'phpPgAdmin-5.1/', phppgadmin_path
+        execute 'rm', '-rf', "#{extracted_archive_path}/phpPgAdmin-5.1"
+        execute 'mv', extracted_archive_path, phppgadmin_path
       end
 
       def phppgadmin_path
-        prefix_path + 'phppgadmin'
+        htdocs_path + 'phppgadmin'
       end
 
-      def phpmyadmin_config
+      def phppgadmin_config
         'config.inc.php'
-      end
-
-      def phpmyadmin_sample_config
-        'config.sample.inc.php'
       end
 
       def phppgadmin_apache_config
@@ -79,6 +77,10 @@ module Autoparts
         EOS
       end
 
+      def apache2_dependency
+        get_dependency 'apache2'
+      end
+
       def apache_config_name
         name + '.conf'
       end
@@ -87,22 +89,28 @@ module Autoparts
         get_dependency("apache2").apache_custom_config_path + apache_config_name
       end
 
+      def htdocs_path
+        @htdocs_path ||= apache2_dependency.htdocs_path
+      end
+
       def post_install
         File.open(phppgadmin_apache_config_path, 'w') { |f| f.write phppgadmin_apache_config }
       end
 
       def post_uninstall
         phppgadmin_apache_config_path.unlink if phppgadmin_apache_config_path.exist?
+        phppgadmin_path.rmtree if phppgadmin_path.exist?
       end
 
       def tips
         <<-EOS.unindent
-          Restart apache to activate phpMyAdmin.
-            $ parts start apache2
+          Restart apache to activate phpPgAdmin.
 
-          PhpMyAdmin config file is #{phppgadmin_path}/{phpmyadmin_config}
+          $ parts start apache2
 
-          PhpMyAdmin URL is http://your-domain-name:3000/phppgadmin
+          PhpPgAdmin config file is #{phppgadmin_path}/#{phppgadmin_config}
+
+          PhpPgAdmin URL is http://your-domain-name/phppgadmin
         EOS
       end
     end
