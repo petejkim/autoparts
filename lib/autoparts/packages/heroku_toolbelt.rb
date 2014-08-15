@@ -5,11 +5,11 @@ module Autoparts
   module Packages
     class HerokuToolbelt < Package
       name 'heroku_toolbelt'
-      version '3.8.2'
+      version '3.9.0'
       description 'CLI tool for creating and managing Heroku apps'
       category Category::DEPLOYMENT
-      source_url 'https://s3.amazonaws.com/assets.heroku.com/heroku-client/heroku-client-3.8.2.tgz'
-      source_sha1 '25210902d2b12b3aa484cf915c5719ea75a4e15b'
+      source_url 'https://s3.amazonaws.com/assets.heroku.com/heroku-client/heroku-client-3.9.0.tgz'
+      source_sha1 'd5a27602a139bd6e71618418b0f4668ed483fcaf'
       source_filetype 'tar.gz'
 
       def install
