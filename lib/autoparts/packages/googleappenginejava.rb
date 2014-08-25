@@ -1,13 +1,16 @@
+# Copyright (c) 2013-2014 Irrational Industries Inc. d.b.a. Nitrous.IO
+# This software is licensed under the [BSD 2-Clause license](https://raw.github.com/nitrous-io/autoparts/master/LICENSE).
+
 module Autoparts
   module Packages
     class GoogleAppEngineJava < Package
       name 'googleappenginejava'
-      version '1.9.7'
+      version '1.9.9'
       description 'Google App Engine Java: A CLI for managing Google App Engine cloud services for Java'
       category Category::DEPLOYMENT
 
-      source_url 'https://storage.googleapis.com/appengine-sdks/featured/appengine-java-sdk-1.9.7.zip'
-      source_sha1 '8210a9f0db2254d55aa68431bbbc7570cbaee4a2'
+      source_url 'https://storage.googleapis.com/appengine-sdks/featured/appengine-java-sdk-1.9.9.zip'
+      source_sha1 'df8a3ff44a3cb9e06ecfb1b7ca11f41010b489b0'
       source_filetype 'zip'
 
       def install
