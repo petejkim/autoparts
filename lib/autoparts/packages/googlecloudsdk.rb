@@ -5,12 +5,12 @@ module Autoparts
   module Packages
     class GoogleCloudSDK < Package
       name 'googlecloudsdk'
-      version '0.9.25'
+      version '0.9.30'
       description 'Google Cloud SDK: Tools and libraries to easily create and manage resources on Google Cloud Platform'
       category Category::UTILITIES
 
       source_url 'https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.tar.gz'
-      source_sha1 '1c8194f38a995f0db31b1f0a306de04b7fe107fd'
+      source_sha1 '13646defc604ae1e50375ed6fe716025e812a14d'
       source_filetype 'tar.gz'
 
       def install
@@ -23,7 +23,7 @@ module Autoparts
           '--path-update=false',
           '--disable-installation-options',
           '--rc-path=/tmp/.bashrc'
-          ]
+        ]
         execute "#{prefix_path}/install.sh", *args
       end
 
