@@ -5,12 +5,12 @@ module Autoparts
   module Packages
     class GoogleCloudSDK < Package
       name 'googlecloudsdk'
-      version '0.9.25'
+      version '0.9.32'
       description 'Google Cloud SDK: Tools and libraries to easily create and manage resources on Google Cloud Platform'
       category Category::UTILITIES
 
       source_url 'https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.tar.gz'
-      source_sha1 '1c8194f38a995f0db31b1f0a306de04b7fe107fd'
+      source_sha1 'ca29880df010e5504b1153288e8395d9513e303f'
       source_filetype 'tar.gz'
 
       def install
