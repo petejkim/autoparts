@@ -5,16 +5,16 @@ module Autoparts
   module Packages
     class LibSodium < Package
       name 'libsodium'
-      version '0.6.0'
+      version '0.7.1'
       description 'Sodium: a new, easy-to-use software library for encryption, decryption, signatures, password hashing and more.'
       category Category::LIBRARIES
 
-      source_url 'https://download.libsodium.org/libsodium/releases/libsodium-0.6.0.tar.gz'
-      source_sha1 'd3e321bd3ca216ad7a2404aa05b31daf2b58e1c6'
+      source_url 'http://download.libsodium.org/libsodium/releases/libsodium-0.7.1.tar.gz'
+      source_sha1 'd0a4cfcc1f5a0717d5b3e77e6c4489595a15089e'
       source_filetype 'tar.gz'
 
       def compile
-          Dir.chdir('libsodium-0.6.0') do
+          Dir.chdir('libsodium-0.7.1') do
           args = [
               "--prefix=#{prefix_path}",
           ]
@@ -26,7 +26,7 @@ module Autoparts
       end
 
       def install
-          Dir.chdir('libsodium-0.6.0') do
+          Dir.chdir('libsodium-0.7.1') do
             prefix_path.parent.mkpath
             FileUtils.rm_rf prefix_path
             args = [
