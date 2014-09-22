@@ -50,13 +50,6 @@ module Autoparts
           exec "#{prefix_path}/meteor" "$@"
         EOF
       end
-
-      def tips
-        <<-EOS.unindent
-          Note: When running a Meteor app you will need to specify the host to use 0.0.0.0:
-            $ meteor -p 0.0.0.0:3000
-        EOS
-      end
     end
   end
 end
