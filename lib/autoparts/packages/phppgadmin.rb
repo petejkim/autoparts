@@ -111,6 +111,15 @@ module Autoparts
           PhpPgAdmin config file is #{phppgadmin_path}/#{phppgadmin_config}
 
           PhpPgAdmin URL is http://your-domain-name/phppgadmin
+
+          The default username is 'action'. You will need to utilize psql to create a password.
+
+          e.g.
+
+          $ psql -U action
+          # alter user postgres with password 'YOUR_NEW_PASSWORD';
+          # \q
+
         EOS
       end
     end
