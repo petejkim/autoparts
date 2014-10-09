@@ -10,7 +10,7 @@ module Autoparts
       category Category::UTILITIES
 
       source_url 'https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.tar.gz'
-      source_sha1 'ca29880df010e5504b1153288e8395d9513e303f'
+      source_sha1 'fea93c100de8d2c21d02962467e6a5154230de8b'
       source_filetype 'tar.gz'
 
       def install
@@ -35,7 +35,7 @@ module Autoparts
         # We put the bin folder from Google Cloud SDK into PATH
         # so new components installed can work properly.
         [
-          "export PATH=$PATH:#{prefix_path}/bin"
+          "export PATH=$PATH:#{bin_path}"
         ]
       end
 
