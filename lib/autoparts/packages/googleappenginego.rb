@@ -2,12 +2,12 @@ module Autoparts
   module Packages
     class GoogleAppEngineGo < Package
       name 'googleappenginego'
-      version '1.9.11'
+      version '1.9.13'
       description 'Google App Engine for Go: A CLI for managing Google App Engine cloud services for Go'
       category Category::DEPLOYMENT
 
-      source_url 'https://storage.googleapis.com/appengine-sdks/featured/go_appengine_sdk_linux_amd64-1.9.11.zip'
-      source_sha1 '6c2cf90de4d9dc5771ae0927e8e8005b967dffc3'
+      source_url 'https://storage.googleapis.com/appengine-sdks/featured/go_appengine_sdk_linux_amd64-1.9.13.zip'
+      source_sha1 'aa67ac85debc1ea9e332ac7382850e81c385cc63'
       source_filetype 'zip'
 
       def install
