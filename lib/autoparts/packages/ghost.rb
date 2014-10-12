@@ -45,7 +45,17 @@ module Autoparts
           execute 'npm start'
         end
       end
+
+      def stop
+        Dir.chdir(ghost_path) do
+          execute 'npm stop'
+        end
+      end
       
+      def running?
+        !!system(ghost_path.to_s, 'status', out: '/dev/null', err: '/dev/null')       
+      end
+
       def tips
         <<-EOS.unindent
           You're ready to blog with Ghost!
@@ -56,7 +66,8 @@ module Autoparts
           To terminate your Ghost instance, use Ctrl+C inside your terminal.
 
           By default, Ghost runs on port 4000 and is bound to all interfaces (0.0.0.0).
-          These settings can be changed inside your config.js. 
+          These settings can be changed inside the "config.js" file located inside your Ghost root,
+          located at ~/.parts/packages/ghost/0.5.2/ by default. 
 
           If this is your first time using ghost, go to "http://your-preview-address.com:4000/ghost"
           to get your account set up. 
