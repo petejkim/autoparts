@@ -7,12 +7,12 @@ module Autoparts
   module Packages
     class Ruby20 < Ruby21
       name 'ruby2.0'
-      version '2.0.0-p451'
+      version '2.0.0-p576'
       description 'Ruby 2.0.0: A dynamic programming language with a focus on simplicity and productivity.'
       category Category::PROGRAMMING_LANGUAGES
 
-      source_url 'http://cache.ruby-lang.org/pub/ruby/2.0/ruby-2.0.0-p451.tar.gz'
-      source_sha1 '258adeba517c04f2c972736dece6c27ecea03432'
+      source_url 'http://cache.ruby-lang.org/pub/ruby/2.0/ruby-2.0.0-p576.tar.gz'
+      source_sha1 '5bf54cbcc6c19729f85110d165eb90c702289662'
       source_filetype 'tar.gz'
 
       depends_on "chruby"
