@@ -5,12 +5,12 @@ module Autoparts
   module Packages
     class Meteor < Package
       name 'meteor'
-      version '0.9.4'
+      version '1.0'
       description 'Meteor: A real-time web development platform'
       category Category::WEB_DEVELOPMENT
 
-      source_url 'https://d3sqy0vbqsdhku.cloudfront.net/packages-bootstrap/0.9.4/meteor-bootstrap-os.linux.x86_64.tar.gz'
-      source_sha1 '10e365fda3e59a0958ef53e612fa4cdac2c91855'
+      source_url 'https://d3sqy0vbqsdhku.cloudfront.net/packages-bootstrap/1.0/meteor-bootstrap-os.linux.x86_64.tar.gz'
+      source_sha1 '6540e989c9acb4092608ad2cf4d1cc52bed14d97'
       source_filetype 'tar.gz'
 
       def install
