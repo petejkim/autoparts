@@ -7,12 +7,12 @@ module Autoparts
   module Packages
     class Ruby19 < Ruby21
       name 'ruby1.9'
-      version '1.9.3-p545'
+      version '1.9.3-p547'
       description 'Ruby 1.9.3: A dynamic programming language with a focus on simplicity and productivity.'
       category Category::PROGRAMMING_LANGUAGES
 
-      source_url 'http://cache.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p545.tar.gz'
-      source_sha1 '03455364740914e8d2dfd6421f681b3fb68a4313'
+      source_url 'http://cache.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p547.tar.gz'
+      source_sha1 '01a792f972f5787ce526a1aad62976c56c93174b'
       source_filetype 'tar.gz'
 
       depends_on "chruby"
