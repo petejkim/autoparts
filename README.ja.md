@@ -1,37 +1,65 @@
-Autoparts - A Package Manager for Nitrous.IO
-============================================
+# Autoparts
+*Nitrous.IOのためのパッケージマネージャー*
 
-### 必要な条件
+### インストール方法
 
-* **「bran」**ボックス: いくつかのパッケージは、「arya」ボックスでは正しく動作しない場合があります。今後新しく作成されるボックスはすべて「bran」ボックスになります。
+Autopartsは、全てのNitrousボックスの`~/.parts/autoparts`の中に入っています。
+そして、`parts` コマンドによって利用することが可能です。
 
-  ![Bran
-  box](https://raw.github.com/nitrous-io/action-assets/a7d29cbd686f2269ac930c01a8928accd19a0b89/support/screenshots/bran-box.png)
-
-* いくつかのパッケージはメインメモリに512MB以上の空き容量を必要とする可能性があります。
-
-### インストール
-
-以下のコマンドをあなたのボックスのターミナルで入力してください。
+もし、Autopartsがインストールされていない場合(もしくは、削除されている場合)、
+以下のコマンドをコンソールから入力してください。
 
 ```sh
 ruby -e "$(curl -fsSL https://raw.github.com/nitrous-io/autoparts/master/setup.rb)"
 exec $SHELL -l
 ```
+
+### 実行環境
+
+* パッケージによっては、512MB以上のRAMを必要とする場合があります。
+
 ### 使用方法
+※このドキュメントでは、インストール可能なパッケージを「パーツ」と呼びます。
 
-`parts help`を参照してください。
+以下のコマンドによって、全てのパーツを確認することが可能です。
 
-### パッケージ・ガイドライン
+    $ parts search
 
-* インストール後のセットアップ作業(例: confファイルを作成する/空のデータベースファイルを生成する)は、
-  `post_install`によって行なってください。
-* 設定ファイルは、`Path.etc` (例: `~/.parts/etc`)、または`Path.etc + name` (例: `~/.parts/etc/postgresql`)
-  に配置してください。
-* データファイル(例: データベースファイル)は、`Path.var + name` (例: `~/.parts/var/postgresql`)
-  に配置してください。
-* ログファイルは、`Path.var + 'log' + "#{name}.log"` (例:`~/.parts/var/log/postgresql.log`)
-  に配置してください。
+Autopartsはボックスが起動すると、自動的に更新されます。
+しかし、必要な場合/最新でないと思われる場合は、以下のコマンドから
+手動での更新が可能です。
+
+    $ parts update
+
+パーツのインストール(もしくはパーツの更新)を行うためには、インストールコマンドを使用します。
+例えば、以下のコマンドでPostgreSQLをインストールすることができます。
+
+    $ parts install postgresql
+
+データベース等のいくつかのパーツは、使用のために起動が必要となります。
+いくつかのボックステンプレートでは起動に際してデータベースが起動されますが、
+そうでない場合は起動と停止を手動で行うことができます。
+
+    $ parts start postgresql
+    $ parts stop postgresql
+
+全てのコマンドのリストを確認は、`parts help`を実行してください。
+
+### Nitrous.IOでの開発
+
+今すぐ、Nitrous.IO
+[Nitrous.IO](https://www.nitrous.io/?utm_source=github.com&utm_campaign=Autoparts&utm_medium=hackonnitrous)
+でこのパッケージマネージャを利用した開発を始められます。
+
+[![Hack nitrous-io/autoparts on Nitrous.IO](https://d3o0mnbgv6k92a.cloudfront.net/assets/hack-l-v1-3cc067e71372f6045e1949af9d96095b.png)](https://www.nitrous.io/hack_button?source=embed&runtime=rails&repo=nitrous-io%2Fautoparts&file_to_open=docs%2Fcontributing.md)
+
+### コントリビュート
+
+全てのドキュメントは[contributing.md](https://github.com/nitrous-io/autoparts/tree/master/docs/contributing.md)から確認してください。
+
+### その他の言語
+
+[English](https://github.com/action-io/autoparts/blob/master/README.md)
 
 - - -
 Copyright (c) 2013-2014 Irrational Industries Inc. d.b.a. Nitrous.IO
