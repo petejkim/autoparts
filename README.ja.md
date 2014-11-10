@@ -55,7 +55,7 @@ Autopartsはボックスが起動すると、自動的に更新されます。
 
 ### コントリビュート
 
-View [contributing.md](https://github.com/nitrous-io/autoparts/tree/master/docs/contributing.md) for full documentation.
+全てのドキュメントは[contributing.md](https://github.com/nitrous-io/autoparts/tree/master/docs/contributing.md)から確認してください。
 
 ### その他の言語
 
