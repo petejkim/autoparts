@@ -5,12 +5,12 @@ module Autoparts
   module Packages
     class Wordpress < Package
       name 'wordpress'
-      version '3.8.1'
+      version '4.0'
       description 'WordPress: Web software you can use to create a beautiful website or blog'
       category Category::WEB_DEVELOPMENT
 
-      source_url 'http://wordpress.org/wordpress-3.8.1.tar.gz'
-      source_sha1 '904487e0d70a2d2b6a018aaf99e21608d8f2db88'
+      source_url 'http://wordpress.org/wordpress-4.0.tar.gz'
+      source_sha1 '73449bbc015e3d1858f13f56f3289202bd756654'
       source_filetype 'tar.gz'
 
       depends_on  'php5'
