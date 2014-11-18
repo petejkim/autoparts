@@ -58,6 +58,8 @@ View [contributing.md](https://github.com/nitrous-io/autoparts/tree/master/docs/
 
 [日本語](https://github.com/action-io/autoparts/blob/master/README.ja.md)
 
+[Português (Brasil)](https://github.com/action-io/autoparts/blob/master/README.pt_br.md)
+
 - - -
 Copyright (c) 2013-2014 Irrational Industries Inc. d.b.a. Nitrous.IO
 This software is licensed under the [BSD 2-Clause license](https://raw.github.com/nitrous-io/autoparts/master/LICENSE).
