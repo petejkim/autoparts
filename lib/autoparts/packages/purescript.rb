@@ -5,11 +5,11 @@ module Autoparts
   module Packages
     class Purescript < Package
       name 'purescript'
-      version '0.6.0'
+      version '0.6.1'
       description 'PureScript is a small strongly, statically typed programming language with expressive types, written in and inspired by Haskell, and compiling to Javascript'
       category Category::PROGRAMMING_LANGUAGES
-      source_url 'https://github.com/purescript/purescript/releases/download/v0.6.0/linux64.tar.gz'
-      source_sha1 '35b4a5b5337a62015056b1665187d8487234fab7'
+      source_url 'https://github.com/purescript/purescript/releases/download/v0.6.1/linux64.tar.gz'
+      source_sha1 '8f6566804b2076844a0e3aac8c4207d7124cb8c1'
       source_filetype 'tar.gz'
 
       def install
