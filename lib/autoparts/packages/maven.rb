@@ -5,12 +5,12 @@ module Autoparts
   module Packages
     class Maven < Package
       name 'maven'
-      version '3.2.1'
+      version '3.2.5'
       description 'Maven: A software project management and comprehension tool'
       category Category::DEVELOPMENT_TOOLS
 
-      source_url 'http://www.us.apache.org/dist/maven/maven-3/3.2.1/binaries/apache-maven-3.2.1-bin.tar.gz'
-      source_sha1 '40e1bf0775fd3ebcac1dbeb61153b871b86b894f'
+      source_url 'http://www.us.apache.org/dist/maven/maven-3/3.2.5/binaries/apache-maven-3.2.5-bin.tar.gz'
+      source_sha1 '41009327d5494e0e8970b25b77ffed8934cd7ca1'
       source_filetype 'tar.gz'
 
       def install
