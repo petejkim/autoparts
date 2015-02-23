@@ -5,12 +5,12 @@ module Autoparts
   module Packages
     class PhpMyAdmin < Package
       name 'phpmyadmin'
-      version '4.1.7'
+      version '4.3.10'
       description 'phpMyAdmin: A PHP-based web front-end to MySQL'
       category Category::WEB_DEVELOPMENT
 
-      source_url 'http://downloads.sourceforge.net/project/phpmyadmin/phpMyAdmin/4.1.7/phpMyAdmin-4.1.7-all-languages.tar.gz'
-      source_sha1 '926c9261e698612e61c725c13262d951bada9cd3'
+      source_url 'http://downloads.sourceforge.net/project/phpmyadmin/phpMyAdmin/4.3.10/phpMyAdmin-4.3.10-all-languages.tar.gz'
+      source_sha1 '7c2deb91bcdddaf35104f957e65360b191da9cd2'
       source_filetype 'tar.gz'
 
       depends_on 'php5'
@@ -21,8 +21,8 @@ module Autoparts
         phpmyadmin_path.parent.mkpath
         FileUtils.rm_rf phpmyadmin_path
         FileUtils.mkdir_p prefix_path
-        execute 'mv', extracted_archive_path + 'phpMyAdmin-4.1.7-all-languages/', phpmyadmin_path
-        execute 'rm', '-rf', "#{extracted_archive_path}/phpMyAdmin-4.1.7-all-languages"
+        execute 'mv', extracted_archive_path + 'phpMyAdmin-4.3.10-all-languages/', phpmyadmin_path
+        execute 'rm', '-rf', "#{extracted_archive_path}/phpMyAdmin-4.3.10-all-languages"
         execute 'mv', extracted_archive_path, phpmyadmin_path
         execute 'cp', phpmyadmin_path + phpmyadmin_sample_config, prefix_path
       end
